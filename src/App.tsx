@@ -1,10 +1,13 @@
-import './App.css'
+import Signup from './pages/Login'
+import Login from './pages/Login'
 
 function App() {
   return (
-    <>
-      hello world
-    </>
+    <main>
+      <header>Astro Shop</header>
+      <Signup />
+      <Login />
+    </main>
   )
 }
 
