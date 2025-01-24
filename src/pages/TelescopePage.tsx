@@ -29,7 +29,7 @@ export default function TelescopePage() {
 
  return (
   <>
-   <Link to='/telescopes' />
+   <Link to='/telescopes'>Back to telescopes list</Link>
 
    {telescope ? (
     <ul>
