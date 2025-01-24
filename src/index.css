@@ -9,10 +9,15 @@ label {
 }
 
 .nav-container {
-  margin: 2rem 0;
+  margin: 1rem 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.shop-page-title {
+  width: 100%;
+  text-align: center;
 }
 
 .footer-container {

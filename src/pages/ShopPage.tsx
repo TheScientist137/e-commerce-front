@@ -35,7 +35,7 @@ export default function ShopPage() {
  return (
   <>
    <section>
-    <h1>Shop</h1>
+    <h1 className="shop-page-title">Welcome to AstroShop</h1>
     <ul>
      {telescopes.map((telescope) => (
        <li key={telescope.id}>
