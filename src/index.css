@@ -18,6 +18,11 @@ label {
   justify-content: space-around;
 }
 
+.nav-container p {
+  flex: 1;
+  text-align: center;
+}
+
 .nav-container button {
   margin-left: auto; /* Empuja el botón a la derecha */
 }
