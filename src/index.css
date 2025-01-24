@@ -8,6 +8,13 @@ label {
   display: block;
 }
 
+.nav-container {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .footer-container {
   margin: 2rem 0;
   display: flex;

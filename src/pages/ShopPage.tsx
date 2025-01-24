@@ -32,8 +32,6 @@ export default function ShopPage() {
   fetchTelescopes();
  }, []);
 
- if (!telescopes) return <p>Loading ...</p>
-
  return (
   <>
    <section>

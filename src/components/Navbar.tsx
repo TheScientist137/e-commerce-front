@@ -5,8 +5,7 @@ export default function Navbar() {
 
  const handleLogout = async () => {
   try {
-   // Hacemos una petición al backend para cerrar la sesión
-   await fetch('http://localhost:3000/api/auth/logout', {
+   await fetch('http://localhost:3000/api/auth/logout', { // Close session
     method: 'POST',
     credentials: 'include', // Asegúrate de enviar cookies de sesión
    });
@@ -20,15 +19,11 @@ export default function Navbar() {
  };
 
  return (
-  <nav>
-   <ul>
-    {user ? (
-     <>
-      <li>Welcome, {user}</li>
-      <li><button onClick={handleLogout}>Logout</button></li>
-     </>
-    ) : (null)}
-   </ul>
-  </nav>
+  <>
+   <div className="nav-container">
+    {user ? (<p>Welcome {user}</p>) : null}
+    <button onClick={handleLogout}>Logout</button>
+   </div>
+  </>
  );
 }
