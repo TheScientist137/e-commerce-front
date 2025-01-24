@@ -1,5 +1,4 @@
 import { useAuth } from "../hooks/useAuth";
-import { Link } from "react-router";
 
 export default function Navbar() {
  const { user, setUser } = useAuth();
