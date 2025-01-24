@@ -26,7 +26,7 @@ export default function Login() {
    const result = await response.json();
    console.log(result);
    setUser(result.user);
-   navigate('/shop/telescopes');
+   navigate('/telescopes');
 
   } catch (error) {
    console.error(error)

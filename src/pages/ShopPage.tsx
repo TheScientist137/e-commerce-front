@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import NavBar from "../components/NavBar";
 
 export type Telescope = {
  id: number,
@@ -33,16 +32,16 @@ export default function ShopPage() {
   fetchTelescopes();
  }, []);
 
+ if (!telescopes) return <p>Loading ...</p>
 
  return (
   <>
-   <NavBar />
    <section>
     <h1>Shop</h1>
     <ul>
      {telescopes.map((telescope) => (
        <li key={telescope.id}>
-        <Link to={`/shop/telescope/${telescope.id}`}>
+        <Link to={`/telescope/${telescope.id}`}>
          <h3>{telescope.name}</h3>
         </Link>
         <p>{telescope.brand}</p>

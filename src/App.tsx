@@ -5,6 +5,7 @@ import Signup from "./pages/Signup";
 import ShopPage from "./pages/ShopPage";
 import TelescopePage from "./pages/TelescopePage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Dashboard from "./components/Dashboard";
 
 export default function App() {
   return (
@@ -14,9 +15,11 @@ export default function App() {
           {/* ¿¿¿ Create Index Route ??? */}
           <Route index element={<Signup />} />
           <Route path="login" element={<Login />} />
-          <Route path="shop" element={<ProtectedRoute />}>
-            <Route path="telescopes" element={<ShopPage />} />
-            <Route path="telescope/:id" element={<TelescopePage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<Dashboard />}>
+              <Route path="telescopes" element={<ShopPage />} />
+              <Route path="telescope/:id" element={<TelescopePage />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
