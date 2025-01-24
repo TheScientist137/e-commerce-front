@@ -28,12 +28,7 @@ export default function Navbar() {
       <li>Welcome, {user}</li>
       <li><button onClick={handleLogout}>Logout</button></li>
      </>
-    ) : (
-     <>
-      <li><Link to="/login">Login</Link></li>
-      <li><Link to="/signup">Sign Up</Link></li>
-     </>
-    )}
+    ) : (null)}
    </ul>
   </nav>
  );

@@ -7,3 +7,9 @@
 label {
   display: block;
 }
+
+.footer-container {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
