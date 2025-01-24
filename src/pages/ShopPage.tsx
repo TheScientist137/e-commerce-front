@@ -15,7 +15,6 @@ export default function ShopPage() {
 
  useEffect(() => {
   const fetchTelescopes = async () => {
-
    try {
     const response = await fetch('http://localhost:3000/api/shop/telescopes', { credentials: 'include' });
     if (!response.ok) throw new Error('Error fetching telescopes');

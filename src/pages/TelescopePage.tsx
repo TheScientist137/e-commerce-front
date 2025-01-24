@@ -10,6 +10,10 @@ export default function TelescopePage() {
  const { user } = useAuth();
 
  useEffect(() => {
+  if (!user) {
+   navigate('/');
+  }
+
   const fetchTelescopeById = async () => {
    try {
     const response = await fetch(`http://localhost:3000/api/shop/telescopes/${id}`, { credentials: 'include' });

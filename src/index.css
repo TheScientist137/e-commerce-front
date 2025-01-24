@@ -9,10 +9,17 @@ label {
 }
 
 .nav-container {
-  margin: 1rem 0;
+  padding: 10px 20px;
   display: flex;
-  flex-direction: column;
+  background: #333;
+  color: white;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-around;
+}
+
+.nav-container button {
+  margin-left: auto; /* Empuja el botón a la derecha */
 }
 
 .shop-page-title {
@@ -21,7 +28,11 @@ label {
 }
 
 .footer-container {
-  margin: 2rem 0;
-  display: flex;
-  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
 }
