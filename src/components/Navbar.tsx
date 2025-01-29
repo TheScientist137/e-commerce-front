@@ -1,7 +1,9 @@
 import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router";
 
 export default function Navbar() {
  const { user, setUser } = useAuth();
+ const navigate = useNavigate();
 
  const handleLogout = async () => {
   try {
@@ -10,8 +12,8 @@ export default function Navbar() {
     credentials: 'include', // Asegúrate de enviar cookies de sesión
    });
 
-   // Limpiamos el estado del usuario en el frontend
    setUser(undefined);
+   navigate('/');
 
   } catch (error) {
    console.error('Error logging out:', error);

@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router"
+import { useParams, Link } from "react-router"
 import { Telescope } from "./ShopPage";
 import { useAuth } from "../hooks/useAuth";
 
 export default function TelescopePage() {
  const [telescope, setTelescope] = useState<Telescope | undefined>(undefined);
- const navigate = useNavigate();
  const { id } = useParams();
  const { user } = useAuth();
 
@@ -17,8 +16,7 @@ export default function TelescopePage() {
     if (!response.ok) throw new Error('Error fetching telescope by id');
 
     const data = await response.json();
-    console.log(data);
-    setTelescope(data.findTelescopeById);
+    setTelescope(data.telescope);
 
    } catch (error) {
     console.error('Error fetching telescope', error)
@@ -26,7 +24,7 @@ export default function TelescopePage() {
   }
 
   fetchTelescopeById()
- }, [id, user, navigate]);
+ }, [id, user]);
 
  return (
   <>

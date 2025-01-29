@@ -18,10 +18,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (!response.ok) throw new Error('Error fetching user');
 
     const data = await response.json();
-    setUser(data);
+
+    if (data) setUser(data.user);
+    console.log(data);
 
    } catch (error) {
-    console.error('Error fetching', error)
+    console.error('Error fetching', error);
     setUser(undefined);
    }
   }
