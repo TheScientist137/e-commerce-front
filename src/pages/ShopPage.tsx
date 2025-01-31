@@ -13,59 +13,89 @@ export type Telescope = {
 export type TelescopeType = {
   id: number,
   type: string,
-  description: string // mostrar al pulsar en el tipo
+  description: string
 }
 
 export default function ShopPage() {
   const [telescopes, setTelescopes] = useState<Telescope[]>([]);
-  const [filterType, setFilterType] = useState<TelescopeType['id']>(0)
-  
+  const [telescopeTypes, setTelescopeTypes] = useState<TelescopeType[]>([])
+  const [filterType, setFilterType] = useState<number | null>(null);
+
+  // Refactorizar codigo => services!!
+
+  // Fetch Telescopes
   useEffect(() => {
     const fetchTelescopes = async () => {
+
       try {
-        let url = 'http://localhost:3000/api/shop/telescopes';
-        if (filterType !== 0) url = `http://localhost:3000/api/shop/telescopes/type/${filterType}`;
+        const url = filterType
+          ? `http://localhost:3000/api/shop/telescopes/type/${filterType}`
+          : 'http://localhost:3000/api/shop/telescopes';
 
         const response = await fetch(url, { credentials: 'include' });
         if (!response.ok) throw new Error('Error fetching telescopes');
 
         const data = await response.json();
-        console.log(data.message);
-        console.log(data.telescopes);
+        console.log(data.message)
         setTelescopes(data.telescopes);
+
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    fetchTelescopes()
+  }, [filterType]);
+
+  // Fetch Telescopes Types
+  useEffect(() => {
+    const fetchTelescopeTypes = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/shop/telescopeTypes', { credentials: 'include' });
+        if (!response.ok) throw new Error('Error fetching telescope types');
+
+        const data = await response.json();
+        console.log(data.message);
+        setTelescopeTypes(data.getTelescopeTypes);
 
       } catch (error) {
         console.error(error);
       }
     }
 
-    fetchTelescopes();
-  }, [filterType]);
+    fetchTelescopeTypes();
+  }, []);
+
+  // Obtain telescope types
+  const [reflector, refractor] = telescopeTypes;
+
+  // Find selected type
+  const selectedType = telescopeTypes.find((type) => type.id === filterType);
 
   return (
-    <>
-      <section>
-        <h1 className="shop-page-title">Welcome to AstroShop</h1>
+    <section>
+      <h1 className="shop-page-title">Welcome to AstroShop</h1>
 
-        <button onClick={() => setFilterType(0)}>All</button>
-        <button onClick={() => setFilterType(1)}>Refractor</button>
-        <button onClick={() => setFilterType(2)}>Reflector</button>
+      <div>
+        <button onClick={() => setFilterType(null)}>All</button>
+        {reflector &&  <button onClick={() => setFilterType(reflector.id)}>{reflector.type}</button>}
+        {refractor &&  <button onClick={() => setFilterType(refractor.id)}>{refractor.type}</button>}
+      </div>
 
-        <ul>
-          {telescopes.map((telescope) => (
-            <li key={telescope.id}>
-              <Link to={`/telescope/${telescope.id}`}>
-                <h3>{telescope.name}</h3>
-              </Link>
-              <p>{telescope.brand}</p>
-              <p>{telescope.description}</p>
-              <p>{telescope.price} $</p>
-              <p>{telescope.telescopeType.type}</p>
-              <p>{telescope.telescopeType.description}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </>
+      <div>
+        {!selectedType ?
+         <p>Showing All Telescopes Types</p> :
+         <p>Showing All {selectedType.type} Telescopes: {selectedType.description}</p>}
+      </div>
+
+      {telescopes.map((telescope) => (
+        <ul key={telescope.id}>
+          <li><Link to={`/telescope/${telescope.id}`}><h3>{telescope.name}</h3></Link></li>
+          <li><p>{telescope.brand}</p></li>
+          <li><p>{telescope.description}</p></li>
+          <li><p>{telescope.price}</p></li>
+          <li><p>{telescope.telescopeType.type}</p></li>
+        </ul>))}
+    </section>
   )
 }

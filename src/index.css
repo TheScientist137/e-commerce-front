@@ -4,27 +4,33 @@
   box-sizing: border-box;
 }
 
-label {
-  display: block;
+html, body {
+  height: 100%;
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: space-between;
+  padding-top: 50px; /* Evita que el Navbar tape el contenido */
 }
 
 .nav-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   padding: 10px 20px;
-  display: flex;
   background: #333;
   color: white;
-  flex-direction: row;
+  display: flex;
   align-items: center;
   justify-content: space-around;
 }
 
-.nav-container p {
-  flex: 1;
-  text-align: center;
-}
-
 .nav-container button {
-  margin-left: auto; /* Empuja el botón a la derecha */
+  margin-left: auto;
 }
 
 .shop-page-title {

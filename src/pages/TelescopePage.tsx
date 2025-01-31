@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router"
 import { Telescope } from "./ShopPage";
-import { useAuth } from "../hooks/useAuth";
 
 export default function TelescopePage() {
  const [telescope, setTelescope] = useState<Telescope | undefined>(undefined);
  const { id } = useParams();
- const { user } = useAuth();
 
  useEffect(() => {
   const fetchTelescopeById = async () => {
@@ -24,7 +22,7 @@ export default function TelescopePage() {
   }
 
   fetchTelescopeById()
- }, [id, user]);
+ }, [id]);
 
  return (
   <>
@@ -36,6 +34,7 @@ export default function TelescopePage() {
      <li><p>{telescope.brand}</p></li>
      <li><p>{telescope.description}</p></li>
      <li><p>{telescope.price}</p></li>
+     <li><p>{telescope.telescopeType.type}</p></li>
     </ul>
    ) : (null)}
   </>
