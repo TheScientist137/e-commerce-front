@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import TelescopeCard from "../components/TelescopeCard";
 
 export type Telescope = {
   id: number,
@@ -78,15 +79,17 @@ export default function ShopPage() {
 
       <div>
         <button onClick={() => setFilterType(null)}>All</button>
-        {reflector &&  <button onClick={() => setFilterType(reflector.id)}>{reflector.type}</button>}
-        {refractor &&  <button onClick={() => setFilterType(refractor.id)}>{refractor.type}</button>}
+        {reflector && <button onClick={() => setFilterType(reflector.id)}>{reflector.type}</button>}
+        {refractor && <button onClick={() => setFilterType(refractor.id)}>{refractor.type}</button>}
       </div>
 
       <div>
         {!selectedType ?
-         <p>Showing All Telescopes Types</p> :
-         <p>Showing All {selectedType.type} Telescopes: {selectedType.description}</p>}
+          <p>Showing All Telescopes Types</p> :
+          <p>Showing All {selectedType.type} Telescopes: {selectedType.description}</p>}
       </div>
+
+      <TelescopeCard />
 
       {telescopes.map((telescope) => (
         <ul key={telescope.id}>

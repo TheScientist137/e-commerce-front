@@ -9,8 +9,7 @@ export default function TelescopePage() {
  useEffect(() => {
   const fetchTelescopeById = async () => {
    try {
-    const response = await fetch(`http://localhost:3000/api/shop/telescopes/${id}`, 
-     { credentials: 'include' });
+    const response = await fetch(`http://localhost:3000/api/shop/telescopes/${id}`, { credentials: 'include' });
     if (!response.ok) throw new Error('Error fetching telescope by id');
 
     const data = await response.json();

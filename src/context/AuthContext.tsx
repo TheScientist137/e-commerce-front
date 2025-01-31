@@ -12,8 +12,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
  useEffect(() => {
   const fetchUser = async () => {
    try {
-    const response = await fetch('http://localhost:3000/api/auth/user',
-     { credentials: 'include' });
+    const response = await fetch('http://localhost:3000/api/auth/user', { credentials: 'include' });
 
     if (!response.ok) throw new Error('Error fetching user');
 

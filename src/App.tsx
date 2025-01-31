@@ -11,10 +11,13 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+
         <Routes>
-          {/* ¿¿¿ Create Index Route ??? */}
+          {/* Authentication Routes */}
           <Route index element={<Signup />} />
           <Route path="login" element={<Login />} />
+
+          {/* Shop Dasboard Protected Routes */}
           <Route element={<ProtectedRoute />}>
             <Route element={<Dashboard />}>
               <Route path="telescopes" element={<ShopPage />} />
@@ -22,6 +25,7 @@ export default function App() {
             </Route>
           </Route>
         </Routes>
+        
       </BrowserRouter>
     </AuthProvider>
   )
