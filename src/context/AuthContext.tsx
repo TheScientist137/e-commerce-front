@@ -2,33 +2,36 @@ import { useEffect, useState } from "react";
 import { AuthContext } from "./contexts";
 
 export type AuthContextType = {
- user: string | undefined, // user name
+ user: string | undefined, 
  setUser: (user: string | undefined) => void,
+ loading: boolean,
 }
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
  const [user, setUser] = useState<string | undefined>(undefined);
+ const [loading, setLoading] = useState<boolean>(true);
+
+ const fetchUser = async () => {
+  try {
+   const response = await fetch('http://localhost:3000/api/auth/user', { credentials: 'include' });
+
+   if (!response.ok) throw new Error('Error fetching user');
+
+   const data = await response.json();
+   if (data) setUser(data.user);
+   console.log(data);
+
+  } catch (error) {
+   console.error('Error fetching', error);
+
+  } finally {
+   setLoading(false);
+  } 
+ }
 
  useEffect(() => {
-  const fetchUser = async () => {
-   try {
-    const response = await fetch('http://localhost:3000/api/auth/user', { credentials: 'include' });
-
-    if (!response.ok) throw new Error('Error fetching user');
-
-    const data = await response.json();
-
-    if (data) setUser(data.user);
-    console.log(data);
-
-   } catch (error) {
-    console.error('Error fetching', error);
-    setUser(undefined);
-   }
-  }
-
-  fetchUser();
+  fetchUser()
  }, []);
 
- return <AuthContext.Provider value={{ user, setUser }}>{children}</AuthContext.Provider>
+ return <AuthContext.Provider value={{ user, setUser, loading }}>{children}</AuthContext.Provider>
 }

@@ -2,7 +2,10 @@ import { Outlet, Navigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 
 export default function ProtectedRoute() {
- const { user } = useAuth();
+ const { user, loading } = useAuth();
 
- return user !== undefined ? <Outlet /> : <Navigate to='/' />;
+ if (loading) return <div>Loading...</div>
+ if (!user) return <Navigate to='/' /> // Signup page
+
+ return <Outlet />;
 }

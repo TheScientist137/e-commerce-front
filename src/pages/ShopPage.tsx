@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useAuth } from "../hooks/useAuth";
 import TelescopeCard from "../components/TelescopeCard";
 
 export type Telescope = {
@@ -21,19 +22,21 @@ export default function ShopPage() {
   const [telescopes, setTelescopes] = useState<Telescope[]>([]);
   const [telescopeTypes, setTelescopeTypes] = useState<TelescopeType[]>([])
   const [filterType, setFilterType] = useState<number | null>(null);
+  const { setUser, user } = useAuth();
 
   // Refactorizar codigo => services!!
 
   // Fetch Telescopes
   useEffect(() => {
     const fetchTelescopes = async () => {
-
       try {
         const url = filterType
           ? `http://localhost:3000/api/shop/telescopes/type/${filterType}`
           : 'http://localhost:3000/api/shop/telescopes';
 
         const response = await fetch(url, { credentials: 'include' });
+
+        if (response.status === 401) setUser(undefined);
         if (!response.ok) throw new Error('Error fetching telescopes');
 
         const data = await response.json();
@@ -41,12 +44,12 @@ export default function ShopPage() {
         setTelescopes(data.telescopes);
 
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     }
 
     fetchTelescopes()
-  }, [filterType]);
+  }, [filterType, user, setUser]);
 
   // Fetch Telescopes Types
   useEffect(() => {
@@ -72,6 +75,7 @@ export default function ShopPage() {
 
   // Find selected type
   const selectedType = telescopeTypes.find((type) => type.id === filterType);
+
 
   return (
     <section>

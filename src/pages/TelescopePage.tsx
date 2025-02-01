@@ -1,27 +1,32 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router"
+import { useAuth } from "../hooks/useAuth";
 import { Telescope } from "./ShopPage";
 
 export default function TelescopePage() {
  const [telescope, setTelescope] = useState<Telescope | undefined>(undefined);
+ const { user, setUser } = useAuth();
  const { id } = useParams();
+
 
  useEffect(() => {
   const fetchTelescopeById = async () => {
    try {
     const response = await fetch(`http://localhost:3000/api/shop/telescopes/${id}`, { credentials: 'include' });
+
+    if (response.status === 401) setUser(undefined);
     if (!response.ok) throw new Error('Error fetching telescope by id');
 
     const data = await response.json();
     setTelescope(data.telescope);
 
    } catch (error) {
-    console.error('Error fetching telescope', error)
+    console.error('Error fetching telescope', error);
    }
   }
 
   fetchTelescopeById()
- }, [id]);
+ }, [id, user, setUser]);
 
  return (
   <>
