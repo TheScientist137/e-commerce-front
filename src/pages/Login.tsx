@@ -24,6 +24,7 @@ export default function Login() {
    if (!response.ok) throw new Error('Failed on login');
 
    const result = await response.json();
+   
    console.log(result);
    setUser(result.user);
    navigate('/telescopes');

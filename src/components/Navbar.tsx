@@ -7,25 +7,28 @@ export default function Navbar() {
 
  const handleLogout = async () => {
   try {
-   await fetch('http://localhost:3000/api/auth/logout', { // Close session
+   const response = await fetch('http://localhost:3000/api/auth/logout', { 
     method: 'POST',
-    credentials: 'include', // Asegúrate de enviar cookies de sesión
+    credentials: 'include'
    });
+
+   if (response.status === 500) {
+    const error = await response.json();
+    console.log(error);
+   }
 
    setUser(undefined);
    navigate('/');
 
   } catch (error) {
-   console.error('Error logging out:', error);
+   console.error(error);
   }
  };
 
  return (
-  <>
-   <div className="nav-container">
-    {user ? (<p>Welcome {user}</p>) : null}
+  <div className="nav-container">
+    {user ? (<h2>Welcome {user}</h2>) : null}
     <button onClick={handleLogout}>Logout</button>
-   </div>
-  </>
+  </div>
  );
 }

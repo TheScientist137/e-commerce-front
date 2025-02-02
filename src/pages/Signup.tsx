@@ -25,7 +25,7 @@ export default function Signup() {
    navigate('/login');
    
   } catch (error) {
-   console.error('Error on signup', error);
+   console.error(error);
   }
  }
 

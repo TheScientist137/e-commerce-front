@@ -15,14 +15,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   try {
    const response = await fetch('http://localhost:3000/api/auth/user', { credentials: 'include' });
 
-   if (!response.ok) throw new Error('Error fetching user');
+   if (!response.ok) throw new Error('Not Authenticated');
 
    const data = await response.json();
    if (data) setUser(data.user);
    console.log(data);
 
   } catch (error) {
-   console.error('Error fetching', error);
+   console.error(error);
 
   } finally {
    setLoading(false);

@@ -21,7 +21,7 @@ export default function TelescopePage() {
     setTelescope(data.telescope);
 
    } catch (error) {
-    console.error('Error fetching telescope', error);
+    console.error(error);
    }
   }
 
@@ -29,7 +29,7 @@ export default function TelescopePage() {
  }, [id, user, setUser]);
 
  return (
-  <>
+  <section>
    <Link to='/telescopes'>Back to telescopes list</Link>
 
    {telescope ? (
@@ -41,6 +41,6 @@ export default function TelescopePage() {
      <li><p>{telescope.telescopeType.type}</p></li>
     </ul>
    ) : (null)}
-  </>
+  </section>
  )
 }
