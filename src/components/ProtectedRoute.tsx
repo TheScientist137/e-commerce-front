@@ -1,8 +1,8 @@
 import { Outlet, Navigate } from "react-router";
-import { useAuth } from "../hooks/useAuth";
+import { useGlobalContext } from "../hooks/useGlobalContext";
 
 export default function ProtectedRoute() {
- const { user, loading } = useAuth();
+ const { user, loading } = useGlobalContext();
 
  if (loading) return <div>Loading...</div>
  if (!user) return <Navigate to='/' /> 

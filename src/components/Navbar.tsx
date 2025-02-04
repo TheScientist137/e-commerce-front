@@ -1,8 +1,8 @@
-import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router";
+import { useGlobalContext } from "../hooks/useGlobalContext";
 
 export default function Navbar() {
- const { user, setUser } = useAuth();
+ const { user, setUser } = useGlobalContext();
  const navigate = useNavigate();
 
  const handleLogout = async () => {
@@ -19,6 +19,7 @@ export default function Navbar() {
 
    setUser(undefined);
    navigate('/');
+   localStorage.removeItem('cart');
 
   } catch (error) {
    console.error(error);

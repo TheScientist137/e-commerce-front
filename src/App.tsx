@@ -1,15 +1,16 @@
 import { BrowserRouter, Routes, Route } from "react-router";
-import { AuthProvider } from "./context/AuthContext";
+import { GlobalContextProvider } from "./context/GlobalContext";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ShopPage from "./pages/ShopPage";
 import TelescopePage from "./pages/TelescopePage";
+import ShoppingCartPage from "./pages/ShoppingCartPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./components/Dashboard";
 
 export default function App() {
   return (
-    <AuthProvider>
+    <GlobalContextProvider>
       <BrowserRouter>
 
         <Routes>
@@ -22,12 +23,13 @@ export default function App() {
             <Route element={<Dashboard />}>
               <Route path="telescopes" element={<ShopPage />} />
               <Route path="telescope/:id" element={<TelescopePage />} />
+              <Route path="cart" element={<ShoppingCartPage />} />
             </Route>
           </Route>
         </Routes>
         
       </BrowserRouter>
-    </AuthProvider>
+    </GlobalContextProvider>
   )
 }
 

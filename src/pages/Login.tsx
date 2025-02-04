@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useAuth } from "../hooks/useAuth";
+import { useGlobalContext } from "../hooks/useGlobalContext";
 
 export default function Login() {
  const [formData, setFormData] = useState({ email: '', password: '' });
  const navigate = useNavigate();
- const { setUser } = useAuth();
+ const { setUser } = useGlobalContext();
 
  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
   setFormData(prevData => ({ ...prevData, [event.target.name]: event.target.value }));

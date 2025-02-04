@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import { useGlobalContext } from "../hooks/useGlobalContext";
 import TelescopeList from "../components/TelescopeList";
 
 export type Telescope = {
@@ -11,7 +11,7 @@ export type Telescope = {
   telescopeType: TelescopeType,
 }
 
-type TelescopeType = {
+export type TelescopeType = {
   id: number,
   type: string,
   description: string
@@ -19,7 +19,7 @@ type TelescopeType = {
 
 export default function ShopPage() {
   const [telescopes, setTelescopes] = useState<Telescope[]>([]);
-  const { setUser, user } = useAuth();
+  const { setUser, user } = useGlobalContext();
 
   // Refactorizar codigo => services!!
 
