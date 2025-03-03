@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useGlobalContext } from "../hooks/useGlobalContext";
+import { setItem } from "../utils/localStorage";
 
 export default function Login() {
  const [formData, setFormData] = useState({ email: '', password: '' });
@@ -16,7 +17,7 @@ export default function Login() {
   try {
    const response = await fetch('http://localhost:3000/api/auth/login', {
     method: 'POST',
-    credentials: 'include', // Permite enviar cookies
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(formData)
    });
@@ -26,9 +27,10 @@ export default function Login() {
    const result = await response.json();
    console.log(result.message);
    //Set token on localStorage 
+   setItem('token', result.token);
 
+   // Set user name (comprobar si hace falta)
    setUser(result.user);
-   console.log(result.token);
    navigate('/telescopes');
   } catch (error) {
    console.error(error)

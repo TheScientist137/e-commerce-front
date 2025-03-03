@@ -19,7 +19,7 @@ export default function Navbar() {
       removeItem('token');
 
       setUser(undefined);
-      navigate('/');
+      navigate('/signup');
     } catch (error) {
       console.error(error);
     }
@@ -27,7 +27,7 @@ export default function Navbar() {
 
   return (
     <div className="nav-container">
-      {user ? (<h2>Welcome {user}</h2>) : null}
+      {user ? (<h2>Welcome {user.name}</h2>) : null}
       <button onClick={handleLogout}>Logout</button>
     </div>
   );
