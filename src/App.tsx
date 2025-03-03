@@ -8,11 +8,12 @@ import ShoppingCartPage from "./pages/ShoppingCartPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./components/Dashboard";
 
+// Update router!!!! => react-router v7
+
 export default function App() {
   return (
     <GlobalContextProvider>
       <BrowserRouter>
-
         <Routes>
           {/* Authentication Routes */}
           <Route index element={<Signup />} />
@@ -27,7 +28,7 @@ export default function App() {
             </Route>
           </Route>
         </Routes>
-        
+
       </BrowserRouter>
     </GlobalContextProvider>
   )

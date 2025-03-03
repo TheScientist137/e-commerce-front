@@ -6,11 +6,8 @@ export default function ShoppingCartPage() {
 
  console.log(cartItems);
 
- // make a localStorage.ts file to manage persistedData
-
  return (
   <section>
-
    <div>
     {cartItems.map((item) => (
      <div key={item.name}>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { getItem, removeItem, setItem } from "../utils/localStorage"
 import { Link } from "react-router"
 import { Telescope } from "../pages/ShopPage"
 
@@ -7,24 +8,28 @@ type TelescopeListProps = {
 }
 
 export default function TelescopeList({ telescopes }: TelescopeListProps) {
- const [filterType, setFilterType] = useState<number | null>(null);
+ const [filterType, setFilterType] = useState<number | undefined>(() => getItem('filterType') || undefined);
 
  // Guardar filtro en localStorage cuando cambie
  useEffect(() => {
-  localStorage.setItem('filterType', JSON.stringify(filterType));
- }, [filterType])
+  setItem('filterType', filterType)
+ }, [filterType]);
 
  // Type Telescope Filter
  const filterTelescopes = filterType ?
   telescopes.filter((telescope) => telescope.telescopeType.id === filterType) :
   telescopes;
 
+ // Mejorar y emtender mejor!!!!!!!!!!!
  const telescopeType = filterType !== null && telescopes.find((t) => t.telescopeType.id === filterType)?.telescopeType;
 
  return (
   <div>
    <div>
-    <button onClick={() => setFilterType(null)}>All</button>
+    <button onClick={() => {
+     setFilterType(undefined);
+     removeItem('filterType'); // Eliminar de local storage al resetear el filtro a undefined
+    }}>All</button>
     <button onClick={() => setFilterType(1)}>Reflector</button>
     <button onClick={() => setFilterType(2)}>Refractor</button>
    </div>
