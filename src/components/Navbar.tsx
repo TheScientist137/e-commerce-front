@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import { useGlobalContext } from "../hooks/useGlobalContext";
+import { removeItem } from "../utils/localStorage";
 
 export default function Navbar() {
   const { user, setUser } = useGlobalContext();
@@ -12,16 +13,13 @@ export default function Navbar() {
         credentials: 'include'
       });
 
-      if (response.status === 500) {
-        const error = await response.json();
-        throw new Error(error);
-      }
+      if (!response.ok) throw new Error('Failed to logout');
 
-      // Comprobar por que no cierra session
+      // Eliminate token from localStorage
+      removeItem('token');
 
       setUser(undefined);
       navigate('/');
-
     } catch (error) {
       console.error(error);
     }

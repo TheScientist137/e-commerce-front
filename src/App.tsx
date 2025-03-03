@@ -5,7 +5,6 @@ import Signup from "./pages/Signup";
 import ShopPage from "./pages/ShopPage";
 import TelescopePage from "./pages/TelescopePage";
 import ShoppingCartPage from "./pages/ShoppingCartPage";
-import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./components/Dashboard";
 
 // Update router!!!! => react-router v7
@@ -19,13 +18,11 @@ export default function App() {
           <Route index element={<Signup />} />
           <Route path="login" element={<Login />} />
 
-          {/* Shop Dasboard Protected Routes */}
-          <Route element={<ProtectedRoute />}>
-            <Route element={<Dashboard />}>
-              <Route path="telescopes" element={<ShopPage />} />
-              <Route path="telescope/:id" element={<TelescopePage />} />
-              <Route path="cart" element={<ShoppingCartPage />} />
-            </Route>
+          {/* Shop Dasboard Routes */}
+          <Route element={<Dashboard />}>
+            <Route path="telescopes" element={<ShopPage />} />
+            <Route path="telescope/:id" element={<TelescopePage />} />
+            <Route path="cart" element={<ShoppingCartPage />} />
           </Route>
         </Routes>
 

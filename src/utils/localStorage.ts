@@ -11,7 +11,8 @@ export const setItem = (key: string, value: unknown) => {
 export const getItem = (key: string) => {
  try {
   const item = window.localStorage.getItem(key);
-  return item ? JSON.parse(item) : undefined; // Check if item exists on localStorage and return it, otherwise return undefined
+  // Check if item exists on localStorage and return it, otherwise return undefined
+  return item ? JSON.parse(item) : undefined; 
  } catch (error) {
   console.log(error);
  }

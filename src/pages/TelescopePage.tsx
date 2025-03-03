@@ -9,7 +9,7 @@ export default function TelescopePage() {
   const { id } = useParams();
 
   const addToCart = (telescope: Telescope) => {
-    setCartItems((prevState) => [...prevState, telescope])
+    setCartItems((prevState) => [...prevState, telescope]);
   }
 
   useEffect(() => {
@@ -41,7 +41,6 @@ export default function TelescopePage() {
           <p>{telescope.brand}</p>
           <p>{telescope.description}</p>
           <p>{telescope.price}</p>
-          <p>{telescope.telescopeType.type}</p>
         </div>
       ) : (null)}
 
