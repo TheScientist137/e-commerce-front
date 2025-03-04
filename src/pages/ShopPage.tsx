@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import { Link } from "react-router";
+import { setItem, getItem } from "../utils/localStorage";
 
 export default function ShopPage() {
   const { setUser, telescopes, setTelescopes } = useGlobalContext();
@@ -18,15 +19,27 @@ export default function ShopPage() {
         if (!response.ok) throw new Error('Error fetching telescopes');
 
         const data = await response.json();
-        console.log(data.message)
-        // Save telescopes on context
+        console.log(data.message);
+
+        // Save telescopes data on globalContext
         setTelescopes(data.telescopes);
 
+        // Save telescopes on localStorage
+        setItem('telescopes', data.telescopes);
       } catch (error) {
         console.error(error);
       }
     }
 
+    // Verify if there is data on localStorage
+    // If there is data we use that data and do not call the api
+    const savedTelescopes = getItem('telescopes');
+    if (savedTelescopes) {
+      setTelescopes(savedTelescopes);
+      return;
+    }
+
+    // If there is no data on localStorage call the api
     fetchTelescopes()
   }, [setUser, setTelescopes]);
 
