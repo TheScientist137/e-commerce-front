@@ -1,35 +1,19 @@
-import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router"
 import { useGlobalContext } from "../hooks/useGlobalContext";
-import { Telescope } from "./ShopPage";
+import { Telescope } from "../context/GlobalContext";
 
 export default function TelescopePage() {
-  const [telescope, setTelescope] = useState<Telescope | undefined>(undefined);
-  const { user, setUser, setCartItems } = useGlobalContext();
   const { id } = useParams();
+  const { telescopes, setCartItems } = useGlobalContext();
 
+  // Find telescope by id if id is not undefined
+  const telescope = id && telescopes.find((t) => t.id === parseInt(id));
+  console.log(telescope)
+
+  // Add a telescope to the shopping cart
   const addToCart = (telescope: Telescope) => {
     setCartItems((prevState) => [...prevState, telescope]);
   }
-
-  useEffect(() => {
-    const fetchTelescopeById = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/api/shop/telescopes/${id}`, { credentials: 'include' });
-
-        if (response.status === 401) setUser(undefined);
-        if (!response.ok) throw new Error('Error fetching telescope by id');
-
-        const data = await response.json();
-        setTelescope(data.telescope);
-
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    fetchTelescopeById()
-  }, [id, user, setUser]);
 
   return (
     <section>
@@ -42,7 +26,7 @@ export default function TelescopePage() {
           <p>{telescope.description}</p>
           <p>{telescope.price}</p>
         </div>
-      ) : (null)}
+      ) : (<p>Telescope not found</p>)}
 
       <button onClick={() => telescope && addToCart(telescope)}>
         <Link to='/cart'>Add to cart</Link>

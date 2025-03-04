@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { GlobalContext } from "./contexts";
-import { Telescope } from "../pages/ShopPage";
 import { getItem, removeItem } from "../utils/localStorage";
 
 type User = {
@@ -9,23 +8,39 @@ type User = {
   email: string
 }
 
+export type Telescope = {
+  id: number,
+  name: string,
+  description: string,
+  price: number,
+  brand: string,
+  telescopeType: TelescopeType,
+}
+
+export type TelescopeType = {
+  id: number,
+  type: string,
+  description: string
+}
+
 export type GlobalContextType = {
   user: User | undefined,
-  loading: boolean,
   cartItems: Telescope[],
   setUser: (user: User | undefined) => void,
   setCartItems: React.Dispatch<React.SetStateAction<Telescope[]>>
+  telescopes: Telescope[],
+  setTelescopes: React.Dispatch<React.SetStateAction<Telescope[]>>
 }
 
 // Chanage context structure -- refactor
 
 export const GlobalContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | undefined>(undefined);
-  const [loading, setLoading] = useState<boolean>(true);
   const [cartItems, setCartItems] = useState<Telescope[]>([]);
+  const [telescopes, setTelescopes] = useState<Telescope[]>([]);
 
-  // Guardar cartItems en localStorage cada vez que cambie el carrito
 
+  // Mover funcion a services
   const fetchUser = async () => {
     try {
       // Check if there is a token on localStorage
@@ -50,8 +65,6 @@ export const GlobalContextProvider = ({ children }: { children: React.ReactNode 
       // If there is an error eliminate token and logout user
       removeItem('token');
       setUser(undefined);
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -60,7 +73,14 @@ export const GlobalContextProvider = ({ children }: { children: React.ReactNode 
   }, []);
 
   return (
-    <GlobalContext.Provider value={{ user, setUser, loading, cartItems, setCartItems }}>
+    <GlobalContext.Provider value={{
+      user,
+      setUser,
+      cartItems,
+      setCartItems,
+      telescopes,
+      setTelescopes
+    }}>
       {children}
     </GlobalContext.Provider>)
 }

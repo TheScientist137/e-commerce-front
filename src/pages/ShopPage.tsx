@@ -1,25 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useGlobalContext } from "../hooks/useGlobalContext";
-import TelescopeList from "../components/TelescopeList";
-
-export type Telescope = {
-  id: number,
-  name: string,
-  description: string,
-  price: number,
-  brand: string,
-  telescopeType: TelescopeType,
-}
-
-export type TelescopeType = {
-  id: number,
-  type: string,
-  description: string
-}
+import { Link } from "react-router";
 
 export default function ShopPage() {
-  const [telescopes, setTelescopes] = useState<Telescope[]>([]);
-  const { setUser, user } = useGlobalContext();
+  const { setUser, telescopes, setTelescopes } = useGlobalContext();
 
   // Refactorizar codigo => services!!
 
@@ -35,6 +19,7 @@ export default function ShopPage() {
 
         const data = await response.json();
         console.log(data.message)
+        // Save telescopes on context
         setTelescopes(data.telescopes);
 
       } catch (error) {
@@ -43,13 +28,22 @@ export default function ShopPage() {
     }
 
     fetchTelescopes()
-  }, [user, setUser]);
+  }, [setUser, setTelescopes]);
 
   // Type Telescope Filter
 
   return (
     <section>
-      <TelescopeList telescopes={telescopes} />
+      <div>
+        {telescopes.map((telescope) => (
+          <div key={telescope.id}>
+            <Link to={`/telescope/${telescope.id}`}><h3>{telescope.name}</h3></Link>
+            <p>Brand: {telescope.brand}</p>
+            <p>{telescope.description}</p>
+            <p>{telescope.price} $</p>
+          </div>
+        ))}
+      </div>
     </section>
   )
 }
