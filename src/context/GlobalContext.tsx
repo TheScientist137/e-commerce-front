@@ -17,6 +17,8 @@ export type GlobalContextType = {
   setCartItems: React.Dispatch<React.SetStateAction<Telescope[]>>
 }
 
+// Chanage context structure -- refactor
+
 export const GlobalContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
@@ -29,6 +31,7 @@ export const GlobalContextProvider = ({ children }: { children: React.ReactNode 
       // Check if there is a token on localStorage
       const token = getItem('token');
 
+      // If there is a token ...
       if (token) {
         const response = await fetch('http://localhost:3000/api/auth/user', {
           method: 'GET',

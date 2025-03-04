@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import { removeItem } from "../utils/localStorage";
 
 export default function Navbar() {
-  const { user, setUser } = useGlobalContext();
+  const { setUser } = useGlobalContext();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -27,7 +27,7 @@ export default function Navbar() {
 
   return (
     <div className="nav-container">
-      {user ? (<h2>Welcome {user.name}</h2>) : null}
+      <h1><Link to='/'>TelescopEcommerce</Link></h1>
       <button onClick={handleLogout}>Logout</button>
     </div>
   );

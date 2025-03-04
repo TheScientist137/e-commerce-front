@@ -4,44 +4,4 @@
   box-sizing: border-box;
 }
 
-html, body {
-  height: 100%;
-}
 
-.dashboard {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  justify-content: space-between;
-  padding-top: 50px; /* Evita que el Navbar tape el contenido */
-}
-
-.nav-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 10px 20px;
-  background: #333;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.nav-container button {
-  margin-left: auto;
-}
-
-.shop-page-title {
-  width: 100%;
-  text-align: center;
-}
-
-.footer-container {
-  width: 100%;
-  background: #333;
-  color: white;
-  text-align: center;
-  padding: 10px;
-}

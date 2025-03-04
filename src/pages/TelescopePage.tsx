@@ -33,7 +33,7 @@ export default function TelescopePage() {
 
   return (
     <section>
-      <Link to='/telescopes'>Back to telescopes list</Link>
+      <Link to='/'>Back to telescopes list</Link>
 
       {telescope ? (
         <div>

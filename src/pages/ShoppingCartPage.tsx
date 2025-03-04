@@ -18,7 +18,7 @@ export default function ShoppingCartPage() {
     ))}
    </div>
 
-   <Link to='/telescopes'>Back to shop</Link>
+   <Link to='/'>Back to shop</Link>
   </section>
  )
 }

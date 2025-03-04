@@ -26,7 +26,7 @@ export default function Login() {
 
    const result = await response.json();
    console.log(result.message);
-   //Set token on localStorage 
+   //Set token on localStorage after succesfull login
    setItem('token', result.token);
 
    // Set user name (comprobar si hace falta)

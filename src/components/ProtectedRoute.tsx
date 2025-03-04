@@ -1,6 +1,7 @@
 import { Outlet, Navigate } from "react-router";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 
+// Mopdificar
 export default function ProtectedRoute() {
  const { user, loading } = useGlobalContext();
 
