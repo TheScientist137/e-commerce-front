@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { GlobalContext } from "./contexts";
-import { getItem, removeItem } from "../utils/localStorage";
+import { getItem, removeItem, setItem } from "../utils/localStorage";
 
 type User = {
   id: number,
@@ -36,9 +36,16 @@ export type GlobalContextType = {
 
 export const GlobalContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | undefined>(undefined);
-  const [cartItems, setCartItems] = useState<Telescope[]>([]);
-  const [telescopes, setTelescopes] = useState<Telescope[]>([]);
+  const [telescopes, setTelescopes] = useState<Telescope[]>([]); // mover a shoppage?
+  const [cartItems, setCartItems] = useState<Telescope[]>(() => { // Initialize cartItems state with [] or savedItems
+    const savedItems = getItem('savedItems');
+    return savedItems ? savedItems : [];
+  });
 
+
+  useEffect(() => {
+    setItem('savedItems', cartItems);
+  }, [cartItems]);
 
   // Mover funcion a services
   const fetchUser = async () => {

@@ -6,6 +6,8 @@ export default function ShoppingCartPage() {
 
  console.log(cartItems);
 
+ // Modify cart quantity and price with buttons
+
  return (
   <section>
    <div>
@@ -13,6 +15,8 @@ export default function ShoppingCartPage() {
      <div key={item.name}>
       <p>{item.name}</p>
       <p>{item.brand}</p>
+      <button>-</button>
+      <button>+</button>
       <p>{item.price} $</p>
      </div>
     ))}

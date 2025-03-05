@@ -11,7 +11,9 @@ export default function TelescopePage() {
 
   // Add a telescope to the shopping cart
   const addToCart = (telescope: Telescope) => {
-    setCartItems((prevState) => [...prevState, telescope]);
+    if (telescope) {
+      setCartItems((prevState) => [...prevState, telescope]);
+    }
   }
 
   return (
@@ -27,7 +29,7 @@ export default function TelescopePage() {
         </div>
       ) : (<p>Telescope not found</p>)}
 
-      <button onClick={() => telescope && addToCart(telescope)}>
+      <button onClick={() => addToCart(telescope)}>
         <Link to='/cart'>Add to cart</Link>
       </button>
     </section>

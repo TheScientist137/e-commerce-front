@@ -28,7 +28,9 @@ export default function Navbar() {
   return (
     <div className="nav-container">
       <h1><Link to='/'>TelescopEcommerce</Link></h1>
+      <button>user</button>
       <button onClick={handleLogout}>Logout</button>
+      <button>Carrito</button>
     </div>
   );
 }
