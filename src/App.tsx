@@ -8,7 +8,7 @@ import ShoppingCartPage from "./pages/ShoppingCartPage";
 import Dashboard from "./components/Dashboard";
 // import ProtectedRoute from "./components/ProtectedRoute";
 
-// Update router!!!! => react-router v7
+// Update router!!!! => react-router v7 --  see documentation
 
 export default function App() {
   return (

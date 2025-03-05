@@ -6,6 +6,7 @@ import { getItem } from "../utils/localStorage";
 export default function TelescopePage() {
   const { setCartItems } = useGlobalContext();
 
+  // Get selected telescope from localStorage
   const telescope = getItem('selectedTelescope');
 
   // Add a telescope to the shopping cart
