@@ -22,7 +22,7 @@ export default function App() {
           {/* Shop Dasboard Routes -- Crear Protected Routes */}
           <Route element={<Dashboard />}>
             <Route index element={<ShopPage />} />
-            <Route path="telescope/:id" element={<TelescopePage />} />
+            <Route path="telescope" element={<TelescopePage />} />
             <Route path="cart" element={<ShoppingCartPage />} />
           </Route>
         </Routes>

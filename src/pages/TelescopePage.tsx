@@ -1,14 +1,12 @@
-import { useParams, Link } from "react-router"
+import { Link } from "react-router"
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import { Telescope } from "../context/GlobalContext";
+import { getItem } from "../utils/localStorage";
 
 export default function TelescopePage() {
-  const { id } = useParams();
-  const { telescopes, setCartItems } = useGlobalContext();
+  const { setCartItems } = useGlobalContext();
 
-  // Find telescope by id if id is not undefined
-  const telescope = id && telescopes.find((t) => t.id === parseInt(id));
-  console.log(telescope)
+  const telescope = getItem('selectedTelescope');
 
   // Add a telescope to the shopping cart
   const addToCart = (telescope: Telescope) => {
@@ -31,7 +29,6 @@ export default function TelescopePage() {
       <button onClick={() => telescope && addToCart(telescope)}>
         <Link to='/cart'>Add to cart</Link>
       </button>
-
     </section>
   )
 }

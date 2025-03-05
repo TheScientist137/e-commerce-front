@@ -25,8 +25,8 @@ export type TelescopeType = {
 
 export type GlobalContextType = {
   user: User | undefined,
-  cartItems: Telescope[],
   setUser: (user: User | undefined) => void,
+  cartItems: Telescope[],
   setCartItems: React.Dispatch<React.SetStateAction<Telescope[]>>
   telescopes: Telescope[],
   setTelescopes: React.Dispatch<React.SetStateAction<Telescope[]>>

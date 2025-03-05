@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useGlobalContext } from "../hooks/useGlobalContext";
 import { Link } from "react-router";
+import { useGlobalContext } from "../hooks/useGlobalContext";
 import { setItem, getItem } from "../utils/localStorage";
 
 export default function ShopPage() {
@@ -8,14 +8,14 @@ export default function ShopPage() {
 
   // Refactorizar codigo => services!!
 
-  // Fetch Telescopes
+  // Fetch Telescopes or use localStorage data
   useEffect(() => {
     const fetchTelescopes = async () => {
       try {
         const response = await fetch('http://localhost:3000/api/shop/telescopes',
           { credentials: 'include' });
 
-        if (response.status === 401) setUser(undefined);
+        if (response.status === 401) setUser(undefined); // necesario?
         if (!response.ok) throw new Error('Error fetching telescopes');
 
         const data = await response.json();
@@ -32,7 +32,7 @@ export default function ShopPage() {
     }
 
     // Verify if there is data on localStorage
-    // If there is data we use that data and do not call the api
+    // If there is we use that data and do not call the api
     const savedTelescopes = getItem('telescopes');
     if (savedTelescopes) {
       setTelescopes(savedTelescopes);
@@ -50,7 +50,12 @@ export default function ShopPage() {
       <div>
         {telescopes.map((telescope) => (
           <div key={telescope.id}>
-            <Link to={`/telescope/${telescope.id}`}><h3>{telescope.name}</h3></Link>
+            <Link
+              to={'/telescope'}
+              onClick={() => setItem('selectedTelescope', telescope)}
+              >
+              <h3>{telescope.name}</h3>
+            </Link>
             <p>Brand: {telescope.brand}</p>
             <p>{telescope.description}</p>
             <p>{telescope.price} $</p>
