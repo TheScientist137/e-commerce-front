@@ -15,7 +15,7 @@ export default function Navbar() {
 
       if (!response.ok) throw new Error('Failed to logout');
 
-      // Eliminate token from localStorage
+      // remove token from localStorage
       removeItem('token');
 
       setUser(undefined);
@@ -30,7 +30,7 @@ export default function Navbar() {
       <h1><Link to='/'>TelescopEcommerce</Link></h1>
       <button>user</button>
       <button onClick={handleLogout}>Logout</button>
-      <button>Carrito</button>
+      <button><Link to='/cart'>Cart</Link></button>
     </div>
   );
 }

@@ -23,11 +23,16 @@ export type TelescopeType = {
   description: string
 }
 
+export type CartItem = {
+  product: Telescope,
+  quantity: number
+}
+
 export type GlobalContextType = {
   user: User | undefined,
   setUser: (user: User | undefined) => void,
-  cartItems: Telescope[],
-  setCartItems: React.Dispatch<React.SetStateAction<Telescope[]>>
+  cartItems: CartItem[],
+  setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>
   telescopes: Telescope[],
   setTelescopes: React.Dispatch<React.SetStateAction<Telescope[]>>
 }
@@ -37,12 +42,12 @@ export type GlobalContextType = {
 export const GlobalContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [telescopes, setTelescopes] = useState<Telescope[]>([]); // mover a shoppage?
-  const [cartItems, setCartItems] = useState<Telescope[]>(() => { // Initialize cartItems state with [] or savedItems
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => { // Initialize cartItems state with [] or savedItems
     const savedItems = getItem('savedItems');
     return savedItems ? savedItems : [];
   });
 
-
+  // Update cartItems on localStorage
   useEffect(() => {
     setItem('savedItems', cartItems);
   }, [cartItems]);

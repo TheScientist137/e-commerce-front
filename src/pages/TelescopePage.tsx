@@ -9,16 +9,29 @@ export default function TelescopePage() {
   // Get selected telescope from localStorage
   const telescope = getItem('selectedTelescope');
 
-  // Add a telescope to the shopping cart
+  // Add a telescope to the shopping cart or
+  // increment quantity if the item already exists in the shopping cart
   const addToCart = (telescope: Telescope) => {
-    if (telescope) {
-      setCartItems((prevState) => [...prevState, telescope]);
-    }
+    if (!telescope) return;
+
+    setCartItems((prevState) => {
+      const existingItem = prevState.find(item => item.product.id === telescope.id);
+      // If existigItem exists return a new array with the quantity of that item incremented
+      if (existingItem) {
+        return prevState.map(item =>
+          item.product.id === telescope.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        ); // Otherwise return a new array with the new item
+      } else {
+        return [...prevState, { product: telescope, quantity: 1 }];
+      }
+    });
   }
 
   return (
     <section>
-      <Link to='/'>Back to telescopes list</Link>
+      <Link to='/'>Back shop</Link>
 
       {telescope ? (
         <div>
