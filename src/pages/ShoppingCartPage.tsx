@@ -12,7 +12,10 @@ export default function ShoppingCartPage() {
  // Increment the quantity of an item
  const incrementQuantity = (id: number) => {
   setCartItems((prevItems) => {
-   return prevItems.map((item) => item.product.id === id ? { ...item, quantity: item.quantity + 1 } : item);
+   return prevItems.map((item) => item.product.id === id ?
+    { ...item, quantity: item.quantity + 1 } :
+    item
+   );
   });
  }
 
@@ -25,26 +28,37 @@ export default function ShoppingCartPage() {
    );
   });
  }
- 
+
  // Calculate total items price
+ const calculateTotalPrice = () => {
+  const totalPrice = cartItems.reduce((total, item) =>
+   total + item.product.price * item.quantity, 0);
+  return totalPrice;
+ }
 
  return (
   <section>
-   <button>Proceed to checkout</button>
-
-   <div>
-    {cartItems.map((item) => (
-     <div key={item.product.id}>
-      <p>{item.product.name}</p>
-      <p>{item.product.brand}</p>
-      <button onClick={() => decrementQuantity(item.product.id)}>-</button>
-      <span>{item.quantity}</span>
-      <button onClick={() => incrementQuantity(item.product.id)}>+</button>
-      <button onClick={() => removeItem(item.product.id)}>DELETE</button>
-      <p>{item.product.price * item.quantity} $</p>
+   {cartItems.length > 0 ? (
+    <div>
+     <div>
+      {cartItems.map((item) => (
+       <div key={item.product.id}>
+        {/* Item Image */}
+        <p>{item.product.name}</p>
+        <p>{item.product.brand}</p>
+        <button onClick={() => decrementQuantity(item.product.id)}>-</button>
+        <span>{item.quantity}</span>
+        <button onClick={() => incrementQuantity(item.product.id)}>+</button>
+        <button onClick={() => removeItem(item.product.id)}>DELETE</button>
+        <p>{item.product.price * item.quantity} $</p>
+       </div>
+      ))}
      </div>
-    ))}
-   </div>
+     <p>Total: {calculateTotalPrice()}</p>
+     <button>Proceed to checkout</button>
+    </div>
+   ) : <p>Empty cart</p>
+   }
 
    <Link to='/'>Back to shop</Link>
   </section>
