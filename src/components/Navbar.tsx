@@ -15,9 +15,9 @@ export default function Navbar() {
       });
       if (!response.ok) throw new Error('Failed to logout');
 
+      // If response is ok:
       // remove token from localStorage
       removeItem('token');
-
       // Set user state to undefined and navigate to signup page
       setUser(undefined);
       navigate('/signup');

@@ -31,9 +31,8 @@ export default function ShoppingCartPage() {
 
  // Calculate total items price
  const calculateTotalPrice = () => {
-  const totalPrice = cartItems.reduce((total, item) =>
+  return cartItems.reduce((total, item) =>
    total + item.product.price * item.quantity, 0);
-  return totalPrice;
  }
 
  return (

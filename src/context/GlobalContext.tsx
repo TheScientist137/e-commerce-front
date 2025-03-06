@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { GlobalContext } from "./contexts";
 import { getItem, removeItem, setItem } from "../utils/localStorage";
 
+// Create new product types
+
 type User = {
   id: number,
   name: string,
