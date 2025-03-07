@@ -11,11 +11,7 @@ export default function CheckoutPage() {
     <div>
      <h3>Are you already a customer with us?</h3>
      <p>Please log in using your email address and your personal password.</p>
-     <form>
-      <input type="email" placeholder="Email" required />
-      <input type="password" placeholder="Password" required />
-      <button type="submit">Log in</button>
-     </form>
+      <button onClick={() => navigate('/login')}>Log in</button>
      {/* Forgot your password? functionality */}
     </div>
 
@@ -28,7 +24,7 @@ export default function CheckoutPage() {
       <li>Saving products to watchlists</li>
      </ul>
      <p>Please note: You need a valid email address to create an account!</p>
-     <button onClick={() => navigate('/login')}>Create Account</button>
+     <button onClick={() => navigate('/signup')}>Create Account</button>
     </div>
 
     <div>

@@ -6,17 +6,17 @@ import { Telescope } from "../context/GlobalContext";
 
 export default function ShopPage() {
   const { setUser } = useGlobalContext();
-  const [telescopes, setTelescopes] = useState<Telescope[]>([]); // mover a shoppage?
-
-
-  // Refactorizar codigo => services!!
+  const [telescopes, setTelescopes] = useState<Telescope[]>([]); // Lista completa de telescopios
+  const [filteredTelescopes, setFilteredTelescopes] = useState<Telescope[]>([]); // Lista filtrada
+  const brands = ['all', 'Omegon', 'Skywatcher'];
 
   // Fetch Telescopes or use localStorage data
   useEffect(() => {
     const fetchTelescopes = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/shop/telescopes',
-          { credentials: 'include' });
+        const response = await fetch('http://localhost:3000/api/shop/telescopes', {
+          credentials: 'include',
+        });
 
         if (response.status === 401) setUser(undefined); // necesario?
         if (!response.ok) throw new Error('Error fetching telescopes');
@@ -26,45 +26,67 @@ export default function ShopPage() {
 
         // Save telescopes data on globalContext
         setTelescopes(data.telescopes);
+        setFilteredTelescopes(data.telescopes); // Inicialmente, mostrar todos los telescopios
 
         // Save telescopes on localStorage
         setItem('telescopes', data.telescopes);
       } catch (error) {
         console.error(error);
       }
-    }
+    };
 
     // Verify if there is data on localStorage
-    // If there is we use that data and do not call the api
     const savedTelescopes = getItem('telescopes');
     if (savedTelescopes) {
       setTelescopes(savedTelescopes);
+      setFilteredTelescopes(savedTelescopes); 
       return;
     }
 
     // If there is no data on localStorage call the api
-    fetchTelescopes()
-  }, [setUser, setTelescopes]);
+    fetchTelescopes();
+  }, [setUser]);
 
-  // Type Telescope Filter
+  // Filter telescopes by brand
+  const filterTelescopesByBrand = (brand: string) => {
+    if (brand === "all") {
+      setFilteredTelescopes(telescopes);
+    } else {
+      const filtered = telescopes.filter(telescope => telescope.brand === brand);
+      setFilteredTelescopes(filtered);
+    }
+  };
 
   return (
     <section>
+      {/* Filter telescopes by brand */}
       <div>
-        {telescopes.map((telescope) => (
+        <h2>Telescope brands:</h2>
+        {brands.map((brand) => (
+          <button key={brand} onClick={() => filterTelescopesByBrand(brand)}>
+            {brand}
+          </button>
+        ))}
+      </div>
+
+      {/* Lista de telescopios */}
+      <div>
+        {filteredTelescopes.map((telescope) => (
           <div key={telescope.id}>
             <Link
               to={'/telescope'}
               onClick={() => setItem('selectedTelescope', telescope)}
-              >
+            >
               <h3>{telescope.name}</h3>
             </Link>
-            <p>Brand: {telescope.brand}</p>
+            <p onClick={() => filterTelescopesByBrand(telescope.brand)}>
+              Brand: {telescope.brand}
+            </p>
             <p>{telescope.description}</p>
             <p>{telescope.price} $</p>
           </div>
         ))}
       </div>
     </section>
-  )
+  );
 }
