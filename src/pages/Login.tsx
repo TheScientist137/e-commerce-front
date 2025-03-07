@@ -4,10 +4,10 @@ import { useGlobalContext } from "../hooks/useGlobalContext";
 import { setItem } from "../utils/localStorage";
 
 export default function Login() {
- const [formData, setFormData] = useState({ email: '', password: '' });
  const navigate = useNavigate();
  const { setUser } = useGlobalContext();
-
+ const [formData, setFormData] = useState({ email: '', password: '' });
+ 
  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
   setFormData(prevData => ({ ...prevData, [event.target.name]: event.target.value }));
 
@@ -38,14 +38,20 @@ export default function Login() {
  }
 
  return (
-  <form onSubmit={handleSubmit}>
-   <label htmlFor="email">Email</label>
-   <input type="email" name="email" value={formData.email} onChange={handleChange} />
+  <section>
+   <h2>TelescopEcommerce Login</h2>
+   <h3>You need to login to proceed</h3>
+   <form onSubmit={handleSubmit}>
+    <label htmlFor="email">Email</label>
+    <input type="email" name="email" value={formData.email} onChange={handleChange} />
 
-   <label htmlFor="password">Password</label>
-   <input type="password" name="password" value={formData.password} onChange={handleChange} />
+    <label htmlFor="password">Password</label>
+    <input type="password" name="password" value={formData.password} onChange={handleChange} />
 
-   <button>Login</button>
-  </form>
+    <button>Login</button>
+   </form>
+   <h3>Not yet registered?</h3>
+   <button onClick={() => navigate('/signup')}>Create a new account now</button>
+  </section>
  )
 }

@@ -16,16 +16,15 @@ export default function App() {
     <GlobalContextProvider>
       <BrowserRouter>
         <Routes>
-          {/* Authentication Routes */}
-          <Route path="signup" element={<Signup />} />
-          <Route path="login" element={<Login />} />
-
-          {/* Shop Dasboard Routes -- Crear Protected Routes */}
           <Route element={<Dashboard />}>
+            {/* Shop Routes -- Crear Protected Routes */}
             <Route index element={<ShopPage />} />
             <Route path="telescope" element={<TelescopePage />} />
             <Route path="cart" element={<ShoppingCartPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
+            {/* Authentication Routes */}
+            <Route path="signup" element={<Signup />} />
+            <Route path="login" element={<Login />} />
           </Route>
         </Routes>
       </BrowserRouter>

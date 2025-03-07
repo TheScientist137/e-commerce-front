@@ -1,10 +1,12 @@
 import { useNavigate, Link } from "react-router";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import { removeItem } from "../utils/localStorage";
+import { IoCartOutline } from "react-icons/io5";
+import { FaRegUser } from "react-icons/fa";
 
 export default function Navbar() {
-  const { setUser } = useGlobalContext();
   const navigate = useNavigate();
+  const { user, setUser, cartItems } = useGlobalContext();
 
   // move function to services
   const handleLogout = async () => {
@@ -29,9 +31,11 @@ export default function Navbar() {
   return (
     <div className="nav-container">
       <h1><Link to='/'>TelescopEcommerce</Link></h1>
-      <button>user</button>
-      <button onClick={handleLogout}>Logout</button>
-      <button><Link to='/cart'>Cart</Link></button>
+      {user ?
+        <button onClick={handleLogout}>Logout</button> :
+        <button onClick={() => navigate('/login')}><FaRegUser size={24} /></button>}
+      <button onClick={() => navigate('/cart')}><IoCartOutline size={24} /></button>
+      {cartItems.length > 0 && <span>{cartItems.length}</span>}
     </div>
   );
 }

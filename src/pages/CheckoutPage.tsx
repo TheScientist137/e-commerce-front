@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router";
+
 export default function CheckoutPage() {
+ const navigate = useNavigate();
+
  return (
   <section>
    <div>
@@ -12,21 +16,19 @@ export default function CheckoutPage() {
       <input type="password" placeholder="Password" required />
       <button type="submit">Log in</button>
      </form>
-     <a href="#">Forgot your password?</a>
+     {/* Forgot your password? functionality */}
     </div>
 
     <div>
      <h3>Are you new in our shop?</h3>
      <p>Create a new account now and enjoy the functionality of our member area.</p>
      <ul>
-      <li>Managing of your address data</li>
       <li>Composing of product reviews</li>
-      <li>Tracking your order status</li>
       <li>Listing of processed orders</li>
       <li>Saving products to watchlists</li>
      </ul>
      <p>Please note: You need a valid email address to create an account!</p>
-     <button>Create Account</button>
+     <button onClick={() => navigate('/login')}>Create Account</button>
     </div>
 
     <div>
