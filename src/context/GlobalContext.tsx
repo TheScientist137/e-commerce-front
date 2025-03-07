@@ -35,15 +35,10 @@ export type GlobalContextType = {
   setUser: (user: User | undefined) => void,
   cartItems: CartItem[],
   setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>
-  telescopes: Telescope[],
-  setTelescopes: React.Dispatch<React.SetStateAction<Telescope[]>>
 }
-
-// Chanage context structure -- refactor
 
 export const GlobalContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | undefined>(undefined);
-  const [telescopes, setTelescopes] = useState<Telescope[]>([]); // mover a shoppage?
   const [cartItems, setCartItems] = useState<CartItem[]>(() => { // Initialize cartItems state with [] or savedItems
     const savedItems = getItem('savedItems');
     return savedItems ? savedItems : [];
@@ -91,9 +86,7 @@ export const GlobalContextProvider = ({ children }: { children: React.ReactNode 
       user,
       setUser,
       cartItems,
-      setCartItems,
-      telescopes,
-      setTelescopes
+      setCartItems
     }}>
       {children}
     </GlobalContext.Provider>)

@@ -54,7 +54,7 @@ export default function ShoppingCartPage() {
       ))}
      </div>
      <p>Total: {calculateTotalPrice()}</p>
-     <button>Proceed to checkout</button>
+     <button><Link to='/checkout'>Proceed to checkout</Link></button>
     </div>
    ) : <p>Empty cart</p>
    }

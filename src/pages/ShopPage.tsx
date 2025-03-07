@@ -1,10 +1,13 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import { setItem, getItem } from "../utils/localStorage";
+import { Telescope } from "../context/GlobalContext";
 
 export default function ShopPage() {
-  const { setUser, telescopes, setTelescopes } = useGlobalContext();
+  const { setUser } = useGlobalContext();
+  const [telescopes, setTelescopes] = useState<Telescope[]>([]); // mover a shoppage?
+
 
   // Refactorizar codigo => services!!
 
