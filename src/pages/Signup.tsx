@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
+import { signup } from "../services/authService";
 
 export default function Signup() {
  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
@@ -12,15 +13,8 @@ export default function Signup() {
   event.preventDefault();
 
   try {
-   const response = await fetch('http://localhost:3000/api/auth/signup', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData)
-   });
-
-   if (!response.ok) throw new Error('Failed on signup');
-
-   const result = await response.json();
+   const {name, email, password} = formData;
+   const result = await signup(name, email, password);
    console.log(result);
    navigate('/login');
    

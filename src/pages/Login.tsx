@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import { setItem } from "../utils/localStorage";
+import { login } from "../services/authService";
 
 export default function Login() {
  const navigate = useNavigate();
@@ -15,17 +16,9 @@ export default function Login() {
   event.preventDefault();
 
   try {
-   const response = await fetch('http://localhost:3000/api/auth/login', {
-    method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData)
-   });
-
-   if (!response.ok) throw new Error('Failed on login');
-
-   const result = await response.json();
+   const result = await login(formData.email, formData.password);
    console.log(result.message);
+   
    //Set token on localStorage after succesfull login
    setItem('token', result.token);
 

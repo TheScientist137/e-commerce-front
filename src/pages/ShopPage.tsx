@@ -10,6 +10,8 @@ export default function ShopPage() {
   const [filteredTelescopes, setFilteredTelescopes] = useState<Telescope[]>([]); // Lista filtrada
   const brands = ['all', 'Omegon', 'Skywatcher'];
 
+  // Fetch all products instead only telescopes (add more product tyes)
+
   // Fetch Telescopes or use localStorage data
   useEffect(() => {
     const fetchTelescopes = async () => {
