@@ -1,34 +1,10 @@
 import { useEffect, useState } from "react";
 import { GlobalContext } from "./contexts";
 import { getItem, removeItem, setItem } from "../utils/localStorage";
+import {User, CartItem} from '../types/types';
 
 // Create new product types
 
-type User = {
-  id: number,
-  name: string,
-  email: string
-}
-
-export type Telescope = {
-  id: number,
-  name: string,
-  description: string,
-  price: number,
-  brand: string,
-  telescopeType: TelescopeType,
-}
-
-export type TelescopeType = {
-  id: number,
-  type: string,
-  description: string
-}
-
-export type CartItem = {
-  product: Telescope,
-  quantity: number
-}
 
 export type GlobalContextType = {
   user: User | undefined,

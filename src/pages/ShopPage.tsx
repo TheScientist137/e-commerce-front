@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import { setItem, getItem } from "../utils/localStorage";
-import { Telescope } from "../context/GlobalContext";
 import { fetchTelescopes } from "../services/shopService";
+import { Telescope } from "../types/types";
 
 export default function ShopPage() {
   const { setUser } = useGlobalContext();
@@ -11,8 +11,9 @@ export default function ShopPage() {
   const [filteredTelescopes, setFilteredTelescopes] = useState<Telescope[]>([]); // Lista filtrada
   const brands = ['all', 'Omegon', 'Skywatcher'];
 
-  // Fetch all products instead only telescopes (add more product types)
+  // Recommended articles for beginners
 
+  // Fetch all products instead only telescopes (add more product types)
   // Fetch Telescopes or use localStorage data
   useEffect(() => {
     const fetchTelescopesData = async () => {
@@ -20,12 +21,12 @@ export default function ShopPage() {
         const data = await fetchTelescopes();
         // Save telescopes data on globalContext
         setTelescopes(data);
-        setFilteredTelescopes(data); // Inicialmente, mostrar todos los telescopios
+        setFilteredTelescopes(data); // Improve
 
         // Save telescopes on localStorage
         setItem('telescopes', data);
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching telescopes:', error);
       }
     };
 
@@ -41,7 +42,7 @@ export default function ShopPage() {
     fetchTelescopesData();
   }, [setUser]);
 
-  // Filter telescopes by brand
+  // Filter telescopes by brand function
   const filterTelescopesByBrand = (brand: string) => {
     if (brand === "all") {
       setFilteredTelescopes(telescopes);

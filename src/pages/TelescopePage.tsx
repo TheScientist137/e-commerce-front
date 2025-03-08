@@ -1,7 +1,7 @@
 import { Link } from "react-router"
 import { useGlobalContext } from "../hooks/useGlobalContext";
-import { Telescope } from "../context/GlobalContext";
 import { getItem } from "../utils/localStorage";
+import { Telescope } from "../types/types";
 
 export default function TelescopePage() {
   const { setCartItems } = useGlobalContext();
