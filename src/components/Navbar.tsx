@@ -9,11 +9,11 @@ export default function Navbar() {
   const navigate = useNavigate();
   const { user, setUser, cartItems } = useGlobalContext();
 
-  // move function to services
   const handleLogout = async () => {
     try {
       // Call the logout service
-      await logout();
+      const result = await logout();
+      console.log(result);
 
       // Remove token from localStorage
       removeItem('token');

@@ -8,17 +8,17 @@ export default function Login() {
  const navigate = useNavigate();
  const { setUser } = useGlobalContext();
  const [formData, setFormData] = useState({ email: '', password: '' });
- 
+
  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
   setFormData(prevData => ({ ...prevData, [event.target.name]: event.target.value }));
 
  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
-
   try {
-   const result = await login(formData.email, formData.password);
+   const { email, password } = formData;
+   const result = await login(email, password);
    console.log(result.message);
-   
+
    //Set token on localStorage after succesfull login
    setItem('token', result.token);
 

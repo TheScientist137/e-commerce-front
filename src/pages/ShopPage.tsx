@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import { setItem, getItem } from "../utils/localStorage";
 import { Telescope } from "../context/GlobalContext";
+import { fetchTelescopes } from "../services/shopService";
 
 export default function ShopPage() {
   const { setUser } = useGlobalContext();
@@ -10,28 +11,19 @@ export default function ShopPage() {
   const [filteredTelescopes, setFilteredTelescopes] = useState<Telescope[]>([]); // Lista filtrada
   const brands = ['all', 'Omegon', 'Skywatcher'];
 
-  // Fetch all products instead only telescopes (add more product tyes)
+  // Fetch all products instead only telescopes (add more product types)
 
   // Fetch Telescopes or use localStorage data
   useEffect(() => {
-    const fetchTelescopes = async () => {
+    const fetchTelescopesData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/shop/telescopes', {
-          credentials: 'include',
-        });
-
-        if (response.status === 401) setUser(undefined); // necesario?
-        if (!response.ok) throw new Error('Error fetching telescopes');
-
-        const data = await response.json();
-        console.log(data.message);
-
+        const data = await fetchTelescopes();
         // Save telescopes data on globalContext
-        setTelescopes(data.telescopes);
-        setFilteredTelescopes(data.telescopes); // Inicialmente, mostrar todos los telescopios
+        setTelescopes(data);
+        setFilteredTelescopes(data); // Inicialmente, mostrar todos los telescopios
 
         // Save telescopes on localStorage
-        setItem('telescopes', data.telescopes);
+        setItem('telescopes', data);
       } catch (error) {
         console.error(error);
       }
@@ -46,7 +38,7 @@ export default function ShopPage() {
     }
 
     // If there is no data on localStorage call the api
-    fetchTelescopes();
+    fetchTelescopesData();
   }, [setUser]);
 
   // Filter telescopes by brand
