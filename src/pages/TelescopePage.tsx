@@ -3,12 +3,14 @@ import { useGlobalContext } from "../hooks/useGlobalContext";
 import { getItem } from "../utils/localStorage";
 import { Telescope } from "../types/types";
 
+// Change to ProductPage (mounts and telescopes products)
 export default function TelescopePage() {
   const { setCartItems } = useGlobalContext();
 
   // Get selected telescope from localStorage
   const telescope = getItem('selectedTelescope');
 
+  // Change this function to accept different products (not only telescopes)
   // Add a telescope to the shopping cart or
   // increment quantity if the item already exists in the shopping cart
   const addToCart = (telescope: Telescope) => {
@@ -16,7 +18,7 @@ export default function TelescopePage() {
 
     setCartItems((prevState) => {
       const existingItem = prevState.find(item => item.product.id === telescope.id);
-      // If existigItem exists return a new array with the quantity of that item incremented
+      // If existingItem exists return a new array with the quantity of that item incremented
       if (existingItem) {
         return prevState.map(item =>
           item.product.id === telescope.id

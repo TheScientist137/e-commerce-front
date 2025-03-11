@@ -16,6 +16,7 @@ export default function Signup() {
    const {name, email, password} = formData;
    const result = await signup(name, email, password);
    console.log(result);
+   // Navigate to login after a succesfull signup ?? or just login automatically
    navigate('/login');
    
   } catch (error) {

@@ -26,6 +26,8 @@ export default function Navbar() {
     }
   };
 
+  // manage logout/login dynamic buttons with user
+
   return (
     <div className="nav-container">
       <h1><Link to='/'>TelescopEcommerce</Link></h1>

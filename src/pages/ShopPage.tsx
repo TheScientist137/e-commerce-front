@@ -13,7 +13,10 @@ export default function ShopPage() {
 
   // Recommended articles for beginners
 
-  // Fetch all products instead only telescopes (add more product types)
+  // Create a TelescopesPage => add filters
+  // Create a MountsPage => add filters
+
+  // Fetch all products instead only telescopes (add mounts)
   // Fetch Telescopes or use localStorage data
   useEffect(() => {
     const fetchTelescopesData = async () => {
@@ -42,7 +45,7 @@ export default function ShopPage() {
     fetchTelescopesData();
   }, [setUser]);
 
-  // Filter telescopes by brand function
+  // Filter telescopes by brand function => IMPROVE
   const filterTelescopesByBrand = (brand: string) => {
     if (brand === "all") {
       setFilteredTelescopes(telescopes);
