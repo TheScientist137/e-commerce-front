@@ -1,4 +1,4 @@
-import { Telescope } from "../context/GlobalContext";
+import { Telescope } from "../types/types";
 
 // Fetch telescopes
 export const fetchTelescopes = async (): Promise<Telescope[]> => {
@@ -10,3 +10,5 @@ export const fetchTelescopes = async (): Promise<Telescope[]> => {
  const data = await response.json();
  return data.telescopes;
 };
+
+// Fetch mounts
