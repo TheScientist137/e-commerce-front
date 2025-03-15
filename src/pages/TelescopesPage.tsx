@@ -46,7 +46,7 @@ export default function TelescopesPage() {
     fetchTelescopesData();
   }, [setUser]);
 
-  // Filter telescopes by brand function => IMPROVE
+  // Filter telescopes by brand function => IMPROVE to filter products byu brand
   const filterTelescopesByBrand = (brand: string) => {
     if (brand === "all") {
       setFilteredTelescopes(telescopes);
@@ -58,7 +58,7 @@ export default function TelescopesPage() {
 
   return (
     <section>
-      {/* Filter telescopes by brand */}
+      {/* Filter telescopes by brand => Change to product filter */}
       <div>
         <h2>Telescope brands:</h2>
         {brands.map((brand) => (

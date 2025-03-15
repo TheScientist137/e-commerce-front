@@ -10,8 +10,8 @@ export default function ProductPage() {
  const telescope = getItem('selectedTelescope');
 
  // Change this function to accept different products (not only telescopes)
- // Add a telescope to the shopping cart or
- // increment quantity if the item already exists in the shopping cart
+ // Add a product to the shopping cart or
+ // increment quantity if the product already exists in the shopping cart
  const addToCart = (telescope: Telescope) => {
   if (!telescope) return;
 

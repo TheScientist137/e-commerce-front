@@ -23,6 +23,8 @@ export type TelescopeType = {
 
 // Mount types
 
+// Mounting Type types
+
 // Cart types
 export type CartItem = {
  product: Telescope,
