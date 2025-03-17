@@ -4,9 +4,9 @@ export default function ShopPage() {
   return (
     <section>
       <div>
-      <NavLink to='/telescopes' >telescopes</NavLink>
+        <NavLink to="/telescopes">telescopes</NavLink>
+        <NavLink to="/mounts">mounts</NavLink>
       </div>
-      <NavLink to='/mounts' >mounts</NavLink>
     </section>
-  )
+  );
 }

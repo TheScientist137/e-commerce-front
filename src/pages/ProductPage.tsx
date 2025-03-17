@@ -6,7 +6,7 @@ import { Telescope } from "../types/types";
 export default function ProductPage() {
  const { setCartItems } = useGlobalContext();
 
- // Get selected telescope from localStorage
+ // Change to get selected products
  const telescope = getItem('selectedTelescope');
 
  // Change this function to accept different products (not only telescopes)
