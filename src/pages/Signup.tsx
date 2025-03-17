@@ -13,12 +13,13 @@ export default function Signup() {
   event.preventDefault();
 
   try {
-   const {name, email, password} = formData;
+   const { name, email, password } = formData;
    const result = await signup(name, email, password);
    console.log(result);
+   
    // Navigate to login after a succesfull signup ?? or just login automatically
    navigate('/login');
-   
+
   } catch (error) {
    console.error(error);
   }
