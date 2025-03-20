@@ -1,7 +1,7 @@
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import { Link } from "react-router";
 import { getItem } from "../utils/localStorage";
-import { Telescope } from "../types/types";
+import { Telescope, Mount } from "../types/types";
 
 export default function ProductPage() {
  const { setCartItems } = useGlobalContext();
@@ -37,6 +37,7 @@ export default function ProductPage() {
    {telescope ? (
     <div>
      <h3>{telescope.name}</h3>
+     <img src={telescope.image} alt="image" />
      <p>{telescope.brand}</p>
      <p>{telescope.description}</p>
      <p>{telescope.price}</p>

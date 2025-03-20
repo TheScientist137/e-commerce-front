@@ -19,7 +19,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<Dashboard />}>
-            {/* Shop Routes -- Crear Protected Routes */}
+            {/* Shop Routes -- Crear Protected Route */}
             <Route index element={<ShopPage />} />
             <Route path="telescopes" element={<TelescopesPage />} />
             <Route path="mounts" element={<MountsPage />} />

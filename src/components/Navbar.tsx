@@ -1,4 +1,4 @@
-import { useNavigate, Link } from "react-router";
+import { useNavigate, Link, NavLink } from "react-router";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import { removeItem } from "../utils/localStorage";
 import { logout } from "../services/authService";
@@ -36,6 +36,11 @@ export default function Navbar() {
         <button onClick={() => navigate('/login')}><FaRegUser size={24} /></button>}
       <button onClick={() => navigate('/cart')}><IoCartOutline size={24} /></button>
       {cartItems.length > 0 && <span>{cartItems.length}</span>}
+
+      <div>
+        <NavLink to='/telescopes' >telescopes</NavLink>
+        <NavLink to='/mounts' >mounts</NavLink>
+      </div>
     </div>
   );
 }

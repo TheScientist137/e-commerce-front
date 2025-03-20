@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
-import { useGlobalContext } from "../hooks/useGlobalContext";
+// import { useGlobalContext } from "../hooks/useGlobalContext";
 import { setItem, getItem } from "../utils/localStorage";
 import { fetchTelescopes } from "../services/shopService";
 import { Telescope } from "../types/types";
 
 // Change to ProductPage (mounts and telescopes products)
 export default function TelescopesPage() {
-  const { setUser } = useGlobalContext();
+   // const { setUser } = useGlobalContext();
   const [telescopes, setTelescopes] = useState<Telescope[]>([]); // Lista completa de telescopios
   const [filteredTelescopes, setFilteredTelescopes] = useState<Telescope[]>([]); // Lista filtrada
   const brands = ['all', 'Omegon', 'Skywatcher']; // bring it from api
@@ -44,7 +44,7 @@ export default function TelescopesPage() {
 
     // If there is no data on localStorage call the api
     fetchTelescopesData();
-  }, [setUser]);
+  }, []);
 
   // Filter telescopes by brand function => IMPROVE to filter products byu brand
   const filterTelescopesByBrand = (brand: string) => {
@@ -58,6 +58,10 @@ export default function TelescopesPage() {
 
   return (
     <section>
+      {/* Filtros para telescopios */}
+      <h3>Optical design</h3>
+      <h3>Mounting type</h3>
+
       {/* Filter telescopes by brand => Change to product filter */}
       <div>
         <h2>Telescope brands:</h2>
@@ -68,7 +72,7 @@ export default function TelescopesPage() {
         ))}
       </div>
 
-      {/* Lista de telescopios */}
+      {/* Lista de telescopios -- Crear un componente separado y reutilizable para monturas */}
       <div>
         {filteredTelescopes.map((telescope) => (
           <div key={telescope.id}>

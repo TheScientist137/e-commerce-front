@@ -1,12 +1,10 @@
-import { NavLink } from "react-router";
-
 export default function ShopPage() {
   return (
     <section>
-      <div>
-      <NavLink to='/telescopes' >telescopes</NavLink>
-      </div>
-      <NavLink to='/mounts' >mounts</NavLink>
+      {/* Optical Design */}
+      {/* Mounting Type */}
+      {/* Top Brands */}
+      {/* ¿Add an image for background? */}
     </section>
   )
 }
