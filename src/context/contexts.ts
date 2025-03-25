@@ -1,4 +1,5 @@
 import { createContext } from "react";
-import { GlobalContextType } from "./GlobalContext";
+import { AuthContextType, ShopContextType } from "../types/types";
 
-export const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const ShopContext = createContext<ShopContextType | undefined>(undefined);

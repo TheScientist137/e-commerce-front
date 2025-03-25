@@ -7,25 +7,25 @@ export default function ProductPage() {
  const { setCartItems } = useGlobalContext();
 
  // Change to get selected products
- const telescope = getItem('selectedTelescope');
+ const selectedProduct: Telescope | Mount = getItem('selectedProduct');
+ console.log(selectedProduct.image);
 
- // Change this function to accept different products (not only telescopes)
  // Add a product to the shopping cart or
  // increment quantity if the product already exists in the shopping cart
- const addToCart = (telescope: Telescope) => {
-  if (!telescope) return;
+ const addToCart = (product: Telescope | Mount) => {
+  if (!product) return;
 
   setCartItems((prevState) => {
-   const existingItem = prevState.find(item => item.product.id === telescope.id);
+   const existingItem = prevState.find(item => item.product.id === product.id);
    // If existingItem exists return a new array with the quantity of that item incremented
    if (existingItem) {
     return prevState.map(item =>
-     item.product.id === telescope.id
+     item.product.id === product.id
       ? { ...item, quantity: item.quantity + 1 }
       : item
-    ); // Otherwise return a new array with the new item
+    ); // Otherwise return a new array with the prevState and the new item
    } else {
-    return [...prevState, { product: telescope, quantity: 1 }];
+    return [...prevState, { product: product, quantity: 1 }];
    }
   });
  }
@@ -34,17 +34,17 @@ export default function ProductPage() {
   <section>
    <Link to='/'>Back shop</Link>
 
-   {telescope ? (
+   {selectedProduct ? (
     <div>
-     <h3>{telescope.name}</h3>
-     <img src={telescope.image} alt="image" />
-     <p>{telescope.brand}</p>
-     <p>{telescope.description}</p>
-     <p>{telescope.price}</p>
+     <h3>{selectedProduct.name}</h3>
+     <img src={selectedProduct.image} alt="image" />
+     <p>{selectedProduct.brand}</p>
+     <p>{selectedProduct.description}</p>
+     <p>{selectedProduct.price}</p>
     </div>
    ) : (<p>Telescope not found</p>)}
 
-   <button onClick={() => addToCart(telescope)}>
+   <button onClick={() => addToCart(selectedProduct)}>
     <Link to='/cart'>Add to cart</Link>
    </button>
   </section>

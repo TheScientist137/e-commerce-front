@@ -38,8 +38,10 @@ export default function Navbar() {
       {cartItems.length > 0 && <span>{cartItems.length}</span>}
 
       <div>
-        <NavLink to='/telescopes' >telescopes</NavLink>
-        <NavLink to='/mounts' >mounts</NavLink>
+        <NavLink to='/telescopes'>telescopes </NavLink>
+      </div>
+      <div>
+        <NavLink to='/mounts'>mounts</NavLink>
       </div>
     </div>
   );

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useGlobalContext } from "../hooks/useGlobalContext";
+import { useAuthContext } from "../hooks/useContext";
 import { setItem } from "../utils/localStorage";
 import { login } from "../services/authService";
 
 export default function Login() {
  const navigate = useNavigate();
- const { setUser } = useGlobalContext();
+ const { setUser } = useAuthContext();
  const [formData, setFormData] = useState({ email: '', password: '' });
 
  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -24,7 +24,7 @@ export default function Login() {
 
    // Set user name (comprobar si hace falta)
    setUser(result.user);
-   navigate('/telescopes');
+   navigate('/');
   } catch (error) {
    console.error(error)
   }

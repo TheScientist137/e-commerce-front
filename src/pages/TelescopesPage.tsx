@@ -5,27 +5,19 @@ import { setItem, getItem } from "../utils/localStorage";
 import { fetchTelescopes } from "../services/shopService";
 import { Telescope } from "../types/types";
 
-// Change to ProductPage (mounts and telescopes products)
 export default function TelescopesPage() {
    // const { setUser } = useGlobalContext();
   const [telescopes, setTelescopes] = useState<Telescope[]>([]); // Lista completa de telescopios
   const [filteredTelescopes, setFilteredTelescopes] = useState<Telescope[]>([]); // Lista filtrada
   const brands = ['all', 'Omegon', 'Skywatcher']; // bring it from api
 
-  // Recommended articles for beginners
-
-  // Create a TelescopesPage => add filters
-  // Create a MountsPage => add filters
-
-  // Fetch all products instead only telescopes (add mounts)
   // Fetch Telescopes or use localStorage data
   useEffect(() => {
     const fetchTelescopesData = async () => {
       try {
         const data = await fetchTelescopes();
-        // Save telescopes data on globalContext
         setTelescopes(data);
-        setFilteredTelescopes(data); // Improve
+        setFilteredTelescopes(data);
 
         // Save telescopes on localStorage
         setItem('telescopes', data);
@@ -39,6 +31,7 @@ export default function TelescopesPage() {
     if (savedTelescopes) {
       setTelescopes(savedTelescopes);
       setFilteredTelescopes(savedTelescopes);
+      console.log(savedTelescopes);
       return;
     }
 
@@ -46,7 +39,7 @@ export default function TelescopesPage() {
     fetchTelescopesData();
   }, []);
 
-  // Filter telescopes by brand function => IMPROVE to filter products byu brand
+  // Filter telescopes by brand function => IMPROVE to filter products by brand
   const filterTelescopesByBrand = (brand: string) => {
     if (brand === "all") {
       setFilteredTelescopes(telescopes);
@@ -58,9 +51,9 @@ export default function TelescopesPage() {
 
   return (
     <section>
-      {/* Filtros para telescopios */}
+      {/* Filter telescopes by type and optical design */}
+      <h3>Type</h3>
       <h3>Optical design</h3>
-      <h3>Mounting type</h3>
 
       {/* Filter telescopes by brand => Change to product filter */}
       <div>
@@ -78,7 +71,7 @@ export default function TelescopesPage() {
           <div key={telescope.id}>
             <Link
               to={'/product'}
-              onClick={() => setItem('selectedTelescope', telescope)}
+              onClick={() => setItem('selectedProduct', telescope)}
             >
               <h3>{telescope.name}</h3>
             </Link>

@@ -14,7 +14,7 @@ export const fetchTelescopes = async (): Promise<Telescope[]> => {
 
 // Fetch mounts
 export const fetchMounts = async (): Promise<Mount[]> => {
- const response = await fetch('http://localhost:3000/api/shop/telescopes', {
+ const response = await fetch('http://localhost:3000/api/shop/mounts', {
   credentials: 'include'
  });
 
