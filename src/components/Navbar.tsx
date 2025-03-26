@@ -1,5 +1,5 @@
 import { useNavigate, Link, NavLink } from "react-router";
-import { useGlobalContext } from "../hooks/useGlobalContext";
+import { useAuthContext, useShopContext } from "../hooks/useContext";
 import { removeItem } from "../utils/localStorage";
 import { logout } from "../services/authService";
 import { IoCartOutline } from "react-icons/io5";
@@ -7,8 +7,10 @@ import { FaRegUser } from "react-icons/fa";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const { user, setUser, cartItems } = useGlobalContext();
+  const { cartItems } = useShopContext();
+  const { user } = useAuthContext();
 
+  // mover logout logic a auth context
   const handleLogout = async () => {
     try {
       // Call the logout service
@@ -19,7 +21,7 @@ export default function Navbar() {
       removeItem('token');
 
       // Clear user state and navigate to signup page
-      setUser(undefined);
+      setUser(null);
       navigate('/signup');
     } catch (error) {
       console.error('Logout failed:', error);

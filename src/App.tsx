@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router";
-import { GlobalContextProvider } from "./context/GlobalContext";
+import { ShopContextProvider } from "./context/ShopContext";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ShopPage from "./pages/ShopPage";
@@ -15,7 +15,7 @@ import CheckoutPage from "./pages/CheckoutPage";
 
 export default function App() {
   return (
-    <GlobalContextProvider>
+    <ShopContextProvider>
       <BrowserRouter>
         <Routes>
           <Route element={<Dashboard />}>
@@ -32,7 +32,7 @@ export default function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </GlobalContextProvider>
+    </ShopContextProvider>
   )
 }
 

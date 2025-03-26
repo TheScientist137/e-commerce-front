@@ -6,7 +6,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
  const [user, setUser] = useState<User | null>(null)
 
  return (
-  <AuthContext.Provider value={{ user, setUser }}>
+  <AuthContext.Provider value={{ user }}>
    {children}
   </AuthContext.Provider>
  )

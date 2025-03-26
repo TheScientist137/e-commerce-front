@@ -1,8 +1,8 @@
-import { useGlobalContext } from "../hooks/useGlobalContext"
+import { useShopContext } from "../hooks/useContext"
 import { Link } from "react-router";
 
 export default function ShoppingCartPage() {
- const { cartItems, setCartItems } = useGlobalContext();
+ const { cartItems, setCartItems } = useShopContext();
 
  // Remove an item/items from the shopping cart
  const removeItem = (id: number) => {

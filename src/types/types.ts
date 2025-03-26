@@ -52,15 +52,13 @@ export type CartItem = {
  quantity: number
 }
 
-// AuthContext types
-
 // ShopContext types
 export type ShopContextType = {
  cartItems: CartItem[],
  setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>
 }
 
+// AuthContext types
 export type AuthContextType = {
  user: User | null;
- setUser: (user: User | null) => void,
 }

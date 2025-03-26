@@ -1,10 +1,10 @@
-import { useGlobalContext } from "../hooks/useGlobalContext";
+import { useShopContext } from "../hooks/useContext";
 import { Link } from "react-router";
 import { getItem } from "../utils/localStorage";
 import { Telescope, Mount } from "../types/types";
 
 export default function ProductPage() {
- const { setCartItems } = useGlobalContext();
+ const { setCartItems } = useShopContext();
 
  // Change to get selected products
  const selectedProduct: Telescope | Mount = getItem('selectedProduct');
