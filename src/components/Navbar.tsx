@@ -1,27 +1,21 @@
 import { useNavigate, Link, NavLink } from "react-router";
 import { useAuthContext, useShopContext } from "../hooks/useContext";
-import { removeItem } from "../utils/localStorage";
-import { logout } from "../services/authService";
+import { logoutService } from "../services/authService";
 import { IoCartOutline } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const { cartItems } = useShopContext();
-  const { user } = useAuthContext();
+  const { user, logout } = useAuthContext();
 
   // mover logout logic a auth context
   const handleLogout = async () => {
     try {
       // Call the logout service
-      const result = await logout();
+      const result = await logoutService();
       console.log(result);
-
-      // Remove token from localStorage
-      removeItem('token');
-
-      // Clear user state and navigate to signup page
-      setUser(null);
+      logout();
       navigate('/signup');
     } catch (error) {
       console.error('Logout failed:', error);
@@ -33,7 +27,7 @@ export default function Navbar() {
   return (
     <div className="nav-container">
       <h1><Link to='/'>TelescopEcommerce</Link></h1>
-      {user ?
+      {user !== null  ?
         <button onClick={handleLogout}>Logout</button> :
         <button onClick={() => navigate('/login')}><FaRegUser size={24} /></button>}
       <button onClick={() => navigate('/cart')}><IoCartOutline size={24} /></button>

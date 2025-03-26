@@ -2,7 +2,8 @@
 export type User = {
  id: number,
  name: string,
- email: string
+ email: string,
+ role: 'user' | 'admin'
 }
 
 // Telescope types
@@ -60,5 +61,9 @@ export type ShopContextType = {
 
 // AuthContext types
 export type AuthContextType = {
- user: User | null;
+ user: User | null,
+ isAdmin: boolean | null,
+ login: (token: string, userData: User) => void,
+ logout: () => void,
+ checkAuth: () => Promise<void>
 }

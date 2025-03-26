@@ -1,30 +1,25 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuthContext } from "../hooks/useContext";
-import { setItem } from "../utils/localStorage";
-import { login } from "../services/authService";
+import { loginService } from "../services/authService";
 
 export default function Login() {
  const navigate = useNavigate();
- const { setUser } = useAuthContext();
+ const { login } = useAuthContext();
  const [formData, setFormData] = useState({ email: '', password: '' });
 
  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-  setFormData(prevData => ({ ...prevData, [event.target.name]: event.target.value }));
+  setFormData(prevData => ({ ...prevData, [event.target.name]: event.target.value })); // cambiar
 
  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
   try {
    const { email, password } = formData;
-   const result = await login(email, password);
-   console.log(result.message);
+   const result = await loginService(email, password);
+   console.log(result);
+   login(result.token, result.user);
 
-   //Set token on localStorage after succesfull login
-   setItem('token', result.token);
-
-   // Set user name (comprobar si hace falta)
-   setUser(result.user);
-   navigate('/');
+   navigate('/'); // Navigate to home page after succesfull
   } catch (error) {
    console.error(error)
   }

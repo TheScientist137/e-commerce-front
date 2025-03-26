@@ -17,10 +17,7 @@ export const ShopContextProvider = ({ children }: { children: React.ReactNode })
 
 
   return (
-    <ShopContext.Provider value={{
-      cartItems,
-      setCartItems
-    }}>
+    <ShopContext.Provider value={{ cartItems, setCartItems }}>
       {children}
     </ShopContext.Provider>)
 }

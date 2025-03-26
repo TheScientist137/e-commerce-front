@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
-import { signup } from "../services/authService";
+import { signupService } from "../services/authService";
 
 export default function Signup() {
  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
  const navigate = useNavigate();
 
  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-  setFormData(prevData => ({ ...prevData, [event.target.name]: event.target.value }));
+  setFormData(prevData => ({ ...prevData, [event.target.name]: event.target.value })); // cambiar
 
  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
 
   try {
    const { name, email, password } = formData;
-   const result = await signup(name, email, password);
+   const result = await signupService(name, email, password);
    console.log(result);
    
    // Navigate to login after a succesfull signup ?? or just login automatically

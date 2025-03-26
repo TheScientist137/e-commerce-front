@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router";
 import { ShopContextProvider } from "./context/ShopContext";
+import { AuthProvider } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ShopPage from "./pages/ShopPage";
@@ -15,24 +16,26 @@ import CheckoutPage from "./pages/CheckoutPage";
 
 export default function App() {
   return (
-    <ShopContextProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<Dashboard />}>
-            {/* Shop Routes -- Crear Protected Route */}
-            <Route index element={<ShopPage />} />
-            <Route path="telescopes" element={<TelescopesPage />} />
-            <Route path="mounts" element={<MountsPage />} />
-            <Route path="product" element={<ProductPage />} />
-            <Route path="cart" element={<ShoppingCartPage />} />
-            <Route path="checkout" element={<CheckoutPage />} />
-            {/* Authentication Routes */}
-            <Route path="signup" element={<Signup />} />
-            <Route path="login" element={<Login />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </ShopContextProvider>
+    <AuthProvider>
+      <ShopContextProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<Dashboard />}>
+              {/* Shop Routes -- Crear Protected Route */}
+              <Route index element={<ShopPage />} />
+              <Route path="telescopes" element={<TelescopesPage />} />
+              <Route path="mounts" element={<MountsPage />} />
+              <Route path="product" element={<ProductPage />} />
+              <Route path="cart" element={<ShoppingCartPage />} />
+              <Route path="checkout" element={<CheckoutPage />} />
+              {/* Authentication Routes */}
+              <Route path="signup" element={<Signup />} />
+              <Route path="login" element={<Login />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </ShopContextProvider>
+    </AuthProvider>
   )
 }
 

@@ -1,5 +1,5 @@
 // Signup
-export const signup = async (name: string, email: string, password: string) => {
+export const signupService = async (name: string, email: string, password: string) => {
  const response = await fetch('http://localhost:3000/api/auth/signup', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
@@ -11,7 +11,7 @@ export const signup = async (name: string, email: string, password: string) => {
 };
 
 // Login
-export const login = async (email: string, password: string) => {
+export const loginService = async (email: string, password: string) => {
  const response = await fetch('http://localhost:3000/api/auth/login', {
   method: 'POST',
   credentials: 'include',
@@ -24,7 +24,7 @@ export const login = async (email: string, password: string) => {
 };
 
 // Logout
-export const logout = async () => {
+export const logoutService = async () => {
  const response = await fetch('http://localhost:3000/api/auth/logout', {
   method: 'POST',
   credentials: 'include',
