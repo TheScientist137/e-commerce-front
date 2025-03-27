@@ -10,7 +10,8 @@ import ProductPage from "./pages/ProductPage";
 import ShoppingCartPage from "./pages/ShoppingCartPage";
 import Dashboard from "./components/Dashboard";
 import CheckoutPage from "./pages/CheckoutPage";
-// import ProtectedRoute from "./components/ProtectedRoute";
+import AdminPanelPage from "./pages/AdminPanelPage"
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 
 // Update router!!!! => react-router v7 --  see documentation
 
@@ -31,6 +32,13 @@ export default function App() {
               {/* Authentication Routes */}
               <Route path="signup" element={<Signup />} />
               <Route path="login" element={<Login />} />
+              {/* Admin Route */}
+              <Route path="admin" element={
+                <ProtectedAdminRoute>
+                  <AdminPanelPage />
+                </ProtectedAdminRoute>
+              }>
+              </Route>
             </Route>
           </Routes>
         </BrowserRouter>

@@ -7,31 +7,29 @@ import { FaRegUser } from "react-icons/fa";
 export default function Navbar() {
   const navigate = useNavigate();
   const { cartItems } = useShopContext();
-  const { user, logout } = useAuthContext();
+  const { user, logout, isAdmin } = useAuthContext();
 
   // mover logout logic a auth context
   const handleLogout = async () => {
     try {
-      // Call the logout service
-      const result = await logoutService();
-      console.log(result);
+      await logoutService();
       logout();
-      navigate('/signup');
+      navigate('/');
     } catch (error) {
       console.error('Logout failed:', error);
     }
   };
 
-  // manage logout/login dynamic buttons with user
-
   return (
     <div className="nav-container">
       <h1><Link to='/'>TelescopEcommerce</Link></h1>
-      {user !== null  ?
+      {user !== null ?
         <button onClick={handleLogout}>Logout</button> :
         <button onClick={() => navigate('/login')}><FaRegUser size={24} /></button>}
       <button onClick={() => navigate('/cart')}><IoCartOutline size={24} /></button>
       {cartItems.length > 0 && <span>{cartItems.length}</span>}
+
+      {isAdmin ? <button onClick={() => navigate('/admin')}>Admin Panel</button> : null}
 
       <div>
         <NavLink to='/telescopes'>telescopes </NavLink>
