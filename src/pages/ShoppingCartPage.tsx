@@ -1,5 +1,5 @@
-import { useShopContext } from "../hooks/useContext"
 import { Link } from "react-router";
+import { useShopContext } from "../hooks/useContext"
 
 export default function ShoppingCartPage() {
  const { cartItems, setCartItems } = useShopContext();
@@ -19,7 +19,7 @@ export default function ShoppingCartPage() {
   });
  }
 
- // Decrement the quantity of an item
+ // Decrement the quantity of an item (improve function)
  const decrementQuantity = (id: number) => {
   setCartItems((prevItems) => {
    return prevItems.map((item) => item.product.id === id && item.quantity > 1 ?
@@ -29,7 +29,7 @@ export default function ShoppingCartPage() {
   });
  }
 
- // Calculate total items price
+ // Calculate total items price (improve function)
  const calculateTotalPrice = () => {
   return cartItems.reduce((total, item) =>
    total + item.product.price * item.quantity, 0);

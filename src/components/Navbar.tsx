@@ -9,7 +9,7 @@ export default function Navbar() {
   const { cartItems } = useShopContext();
   const { user, logout, isAdmin } = useAuthContext();
 
-  // mover logout logic a auth context
+  // mover logout logic a auth context ???
   const handleLogout = async () => {
     try {
       await logoutService();
@@ -26,6 +26,7 @@ export default function Navbar() {
       {user !== null ?
         <button onClick={handleLogout}>Logout</button> :
         <button onClick={() => navigate('/login')}><FaRegUser size={24} /></button>}
+
       <button onClick={() => navigate('/cart')}><IoCartOutline size={24} /></button>
       {cartItems.length > 0 && <span>{cartItems.length}</span>}
 

@@ -8,15 +8,16 @@ export default function Login() {
  const { login } = useAuthContext();
  const [formData, setFormData] = useState({ email: '', password: '' });
 
- const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+ const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   setFormData(prevData => ({ ...prevData, [event.target.name]: event.target.value })); // cambiar
+ }
 
  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
   try {
    const { email, password } = formData;
    const result = await loginService(email, password);
-   console.log(result);
+   console.log(result.message);
    login(result.token, result.user);
 
    navigate('/'); // Navigate to home page after succesfull

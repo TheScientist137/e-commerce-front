@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { AuthContext } from "./contexts";
 import { User } from "../types/types";
 import { getItem, removeItem, setItem } from "../utils/localStorage";
-import { logoutService } from "../services/authService";
+import { logoutService, checkAuthService } from "../services/authService";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
  const [user, setUser] = useState<User | null>(null);
  const isAdmin = user && user.role === 'admin';
 
- // Pensar si mantener estas funciones en el contexto
+ // Pensar si mantener estas dos funciones en el contexto
  const login = (token: string, userData: User) => {
   setItem('token', token); // Save token on localStorage
   setUser(userData); // Updates user info
@@ -21,16 +21,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
  const checkAuth = async () => {
   const token = getItem('token');
+
   if (!token) return;
 
   try {
-   const response = await fetch('http://localhost:3000/api/auth/user', {
-    headers: { Authorization: `Bearer ${token}` }
-   });
-
-   if (!response.ok) throw new Error('Not authenticated');
-   const userData = await response.json();
-   setUser(userData);
+   const userData = await checkAuthService(token);
+   setUser(userData.result);
+   console.log(userData.message, userData.result);
   } catch (error) {
    console.error(error);
    logoutService(); // comprobar uso

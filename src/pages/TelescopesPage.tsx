@@ -6,7 +6,7 @@ import { fetchTelescopes } from "../services/shopService";
 import { Telescope } from "../types/types";
 
 export default function TelescopesPage() {
-   // const { setUser } = useGlobalContext();
+  // const { setUser } = useGlobalContext();
   const [telescopes, setTelescopes] = useState<Telescope[]>([]); // Lista completa de telescopios
   const [filteredTelescopes, setFilteredTelescopes] = useState<Telescope[]>([]); // Lista filtrada
   const brands = ['all', 'Omegon', 'Skywatcher']; // bring it from api
@@ -78,6 +78,8 @@ export default function TelescopesPage() {
             <p onClick={() => filterTelescopesByBrand(telescope.brand)}>
               Brand: {telescope.brand}
             </p>
+            <p>Type: {telescope.telescope_type}</p>
+            <p>Optical design: {telescope.optical_design_type}</p>
             <p>{telescope.description}</p>
             <p>{telescope.price} $</p>
           </div>
