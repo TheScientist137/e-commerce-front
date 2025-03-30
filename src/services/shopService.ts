@@ -1,7 +1,7 @@
 import { Telescope, Mount } from "../types/types";
 
 // Fetch telescopes
-export const fetchTelescopes = async (): Promise<Telescope[]> => {
+export const getTelescopesService = async (): Promise<Telescope[]> => {
  const response = await fetch('http://localhost:3000/api/shop/telescopes', {
   credentials: 'include'
  });

@@ -13,7 +13,7 @@ export default function Navbar() {
   const handleLogout = async () => {
     try {
       await logoutService();
-      logout();
+      logout(); // Remove token and clear user info
       navigate('/');
     } catch (error) {
       console.error('Logout failed:', error);

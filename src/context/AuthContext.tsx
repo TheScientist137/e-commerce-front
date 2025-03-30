@@ -6,16 +6,16 @@ import { logoutService, checkAuthService } from "../services/authService";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
  const [user, setUser] = useState<User | null>(null);
- const isAdmin = user && user.role === 'admin';
+ const isAdmin = user && user.role === 'admin'; // boolean
 
- // Pensar si mantener estas dos funciones en el contexto
+ // Pensar si mantener estas dos funciones en el contexto ?????????
  const login = (token: string, userData: User) => {
   setItem('token', token); // Save token on localStorage
   setUser(userData); // Updates user info
  }
 
  const logout = () => {
-  removeItem('token'); // Remove token form localStorage
+  removeItem('token'); // Remove token from localStorage
   setUser(null); // Clean user info
  }
 
@@ -30,7 +30,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
    console.log(userData.message, userData.result);
   } catch (error) {
    console.error(error);
-   logoutService(); // comprobar uso
+   await logoutService(); // comprobar uso
+   removeItem('token');
   }
  }
 

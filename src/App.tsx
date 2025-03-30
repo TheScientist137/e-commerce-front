@@ -11,7 +11,6 @@ import ShoppingCartPage from "./pages/ShoppingCartPage";
 import Dashboard from "./components/Dashboard";
 import CheckoutPage from "./pages/CheckoutPage";
 import AdminPanelPage from "./pages/AdminPanelPage"
-import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 
 // Update router!!!! => react-router v7 --  see documentation
 
@@ -33,11 +32,7 @@ export default function App() {
               <Route path="signup" element={<Signup />} />
               <Route path="login" element={<Login />} />
               {/* Admin Route */}
-              <Route path="admin" element={
-                <ProtectedAdminRoute>
-                  <AdminPanelPage />
-                </ProtectedAdminRoute>
-              }>
+              <Route path="admin" element={<AdminPanelPage />}>
               </Route>
             </Route>
           </Routes>

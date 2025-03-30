@@ -4,6 +4,7 @@ import { getItem, setItem } from "../utils/localStorage";
 import { Telescope, Mount, Cart } from '../types/types';
 
 export const ShopContextProvider = ({ children }: { children: React.ReactNode }) => {
+  const [telescopes, setTelescopes] = useState<Telescope[]>([]);
   const [cartItems, setCartItems] = useState<Cart>([]);
 
   // Mejorar y entender esta funcion !!!!!!!!!!!!!!!!!!!!!!!!!! 
@@ -38,7 +39,7 @@ export const ShopContextProvider = ({ children }: { children: React.ReactNode })
   }, [cartItems]);
 
   return (
-    <ShopContext.Provider value={{ cartItems, setCartItems, addToCart }}>
+    <ShopContext.Provider value={{ telescopes, setTelescopes, cartItems, setCartItems, addToCart }}>
       {children}
     </ShopContext.Provider>)
 }

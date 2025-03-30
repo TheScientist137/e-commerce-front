@@ -37,6 +37,7 @@ export const logoutService = async () => {
 // Checkauth service
 export const checkAuthService = async (token: string) => {
  const response = await fetch('http://localhost:3000/api/auth/user', {
+  credentials: 'include',
   headers: { Authorization: `Bearer ${token}` }
  });
 

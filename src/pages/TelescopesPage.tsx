@@ -1,26 +1,24 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
-// import { useGlobalContext } from "../hooks/useGlobalContext";
+import { useShopContext } from '../hooks/useContext';
 import { setItem, getItem } from "../utils/localStorage";
-import { fetchTelescopes } from "../services/shopService";
+import { getTelescopesService } from "../services/shopService";
 import { Telescope } from "../types/types";
 
 export default function TelescopesPage() {
-  // const { setUser } = useGlobalContext();
-  const [telescopes, setTelescopes] = useState<Telescope[]>([]); // Lista completa de telescopios
-  const [filteredTelescopes, setFilteredTelescopes] = useState<Telescope[]>([]); // Lista filtrada
-  const brands = ['all', 'Omegon', 'Skywatcher']; // bring it from api
+  const { telescopes, setTelescopes } = useShopContext();
+  const [filteredTelescopes, setFilteredTelescopes] = useState<Telescope[]>([]);
+  const brands = ['all', 'Omegon', 'Skywatcher'];
 
   // Fetch Telescopes or use localStorage data
   useEffect(() => {
     const fetchTelescopesData = async () => {
       try {
-        const data = await fetchTelescopes();
+        const data = await getTelescopesService();
         setTelescopes(data);
         setFilteredTelescopes(data);
 
-        // Save telescopes on localStorage
-        setItem('telescopes', data);
+        setItem('telescopes', data); // Save telescopes on localStorage
       } catch (error) {
         console.error('Error fetching telescopes:', error);
       }
@@ -37,7 +35,7 @@ export default function TelescopesPage() {
 
     // If there is no data on localStorage call the api
     fetchTelescopesData();
-  }, []);
+  }, [setTelescopes]);
 
   // Filter telescopes by brand function => IMPROVE to filter products by brand
   const filterTelescopesByBrand = (brand: string) => {

@@ -15,8 +15,19 @@ export type Telescope = {
  brand: string,
  image: string,
  telescope_type: string,
- telescope_type_description: string,
- optical_design_type: string
+ telescope_type_description: string,    // Campo adicional para el JOIN
+ optical_design_type: string,
+ optical_design_description: string, // Campo adicional para el JOIN
+}
+
+export type NewTelescope = {
+ name: string,
+ description: string,
+ price: number,
+ brand: string,
+ image: string,
+ telescope_type_id: number,
+ optical_design_id: number
 }
 
 // Mount types
@@ -27,7 +38,7 @@ export type Mount = {
  price: number,
  brand: string,
  image: string,
- mount_type: string,
+ mount_type_id: string,
  mount_type_description: string
 }
 
@@ -41,6 +52,8 @@ export type Cart = CartItem[]
 
 // Context types
 export type ShopContextType = {
+ telescopes: Telescope[],
+ setTelescopes: React.Dispatch<React.SetStateAction<Telescope[]>>,
  cartItems: Cart,
  setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>,
  addToCart: (product: Telescope | Mount) => void
