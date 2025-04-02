@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { AuthContext } from "./contexts";
-import { User } from "../types/types";
-import { getItem, removeItem, setItem } from "../utils/localStorage";
-import { logoutService, checkAuthService } from "../services/authService";
+import { AuthContext } from "./contexts.ts";
+import { User } from "../types/types.ts";
+import { getItem, removeItem, setItem } from "../utils/localStorage.ts";
+import { logoutService, checkAuthService } from "../services/authService.ts";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
  const [user, setUser] = useState<User | null>(null);
@@ -21,7 +21,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
  const checkAuth = async () => {
   const token = getItem('token');
-
   if (!token) return;
 
   try {
@@ -45,8 +44,3 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   </AuthContext.Provider>
  )
 }
-
-
-
-
-

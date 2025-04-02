@@ -38,8 +38,17 @@ export type Mount = {
  price: number,
  brand: string,
  image: string,
- mount_type_id: string,
+ mount_type: string,
  mount_type_description: string
+}
+
+export type NewMount = {
+ name: string,
+ description: string,
+ price: number,
+ brand: string,
+ image: string,
+ mount_type_id: number
 }
 
 // Cart types
@@ -53,7 +62,11 @@ export type Cart = CartItem[]
 // Context types
 export type ShopContextType = {
  telescopes: Telescope[],
+ mounts: Mount[],
+ filteredTelescopes: Telescope[],
+ filterTelescopesByBrand: (brand: string) => void,
  setTelescopes: React.Dispatch<React.SetStateAction<Telescope[]>>,
+ setMounts: React.Dispatch<React.SetStateAction<Mount[]>>,
  cartItems: Cart,
  setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>,
  addToCart: (product: Telescope | Mount) => void

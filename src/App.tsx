@@ -12,8 +12,6 @@ import Dashboard from "./components/Dashboard";
 import CheckoutPage from "./pages/CheckoutPage";
 import AdminPanelPage from "./pages/AdminPanelPage"
 
-// Update router!!!! => react-router v7 --  see documentation
-
 export default function App() {
   return (
     <AuthProvider>

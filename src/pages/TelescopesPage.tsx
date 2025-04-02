@@ -1,51 +1,10 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { useShopContext } from '../hooks/useContext';
-import { setItem, getItem } from "../utils/localStorage";
-import { getTelescopesService } from "../services/shopService";
-import { Telescope } from "../types/types";
+import { setItem } from "../utils/localStorage";
 
 export default function TelescopesPage() {
-  const { telescopes, setTelescopes } = useShopContext();
-  const [filteredTelescopes, setFilteredTelescopes] = useState<Telescope[]>([]);
+  const { filteredTelescopes, filterTelescopesByBrand } = useShopContext();
   const brands = ['all', 'Omegon', 'Skywatcher'];
-
-  // Fetch Telescopes or use localStorage data
-  useEffect(() => {
-    const fetchTelescopesData = async () => {
-      try {
-        const data = await getTelescopesService();
-        setTelescopes(data);
-        setFilteredTelescopes(data);
-
-        setItem('telescopes', data); // Save telescopes on localStorage
-      } catch (error) {
-        console.error('Error fetching telescopes:', error);
-      }
-    };
-
-    // Verify if there is data on localStorage
-    const savedTelescopes = getItem('telescopes');
-    if (savedTelescopes) {
-      setTelescopes(savedTelescopes);
-      setFilteredTelescopes(savedTelescopes);
-      console.log(savedTelescopes);
-      return;
-    }
-
-    // If there is no data on localStorage call the api
-    fetchTelescopesData();
-  }, [setTelescopes]);
-
-  // Filter telescopes by brand function => IMPROVE to filter products by brand
-  const filterTelescopesByBrand = (brand: string) => {
-    if (brand === "all") {
-      setFilteredTelescopes(telescopes);
-    } else {
-      const filtered = telescopes.filter(telescope => telescope.brand === brand);
-      setFilteredTelescopes(filtered);
-    }
-  };
 
   return (
     <section>

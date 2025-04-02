@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { AuthContextType, ShopContextType } from "../types/types";
+import { AuthContextType, ShopContextType } from "../types/types.ts";
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const ShopContext = createContext<ShopContextType | undefined>(undefined);
