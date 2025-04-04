@@ -8,6 +8,7 @@ export type User = {
 
 // Product types
 export type BaseProduct = {
+ id: number,
  name: 'string',
  description: 'string',
  price: number,
@@ -37,6 +38,11 @@ export type Product = BaseProduct & {
  mount?: Mount
 }
 
+export type CartItem = {
+ product: Product,
+ quantity: number
+}
+
 export type AuthContextType = {
  user: User | null,
  isAdmin: boolean | null,
@@ -47,5 +53,5 @@ export type AuthContextType = {
 
 export type ShopContextType = {
  products: Product[],
- cartItems: []
+ cartItems: CartItem[]
 }

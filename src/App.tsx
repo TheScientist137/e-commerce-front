@@ -1,16 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router";
 import { ShopContextProvider } from "./context/ShopContext";
 import { AuthProvider } from "./context/AuthContext";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import ShopPage from "./pages/ShopPage";
-import TelescopesPage from "./pages/TelescopesPage";
-import MountsPage from "./pages/MountsPage";
-import ProductPage from "./pages/ProductPage";
-import ShoppingCartPage from "./pages/ShoppingCartPage";
-import Dashboard from "./components/Dashboard";
-import CheckoutPage from "./pages/CheckoutPage";
-import AdminPanelPage from "./pages/AdminPanelPage"
+import Dashboard from "./components/Dashboard.tsx";
+import LoginPage from "./pages/LoginPage.tsx";
+import SignupPage from "./pages/SignupPage.tsx";
+import ShopPage from "./pages/ShopPage.tsx";
+import SelectedProductPage from './pages/SelectedProductPage.tsx';
+import ShoppingCartPage from "./pages/ShoppingCartPage.tsx";
+import CheckoutPage from "./pages/CheckoutPage.tsx";
+import AdminPanelPage from "./pages/AdminPanelPage.tsx"
 
 export default function App() {
   return (
@@ -21,14 +19,12 @@ export default function App() {
             <Route element={<Dashboard />}>
               {/* Shop Routes */}
               <Route index element={<ShopPage />} />
-              <Route path="telescopes" element={<TelescopesPage />} />
-              <Route path="mounts" element={<MountsPage />} />
-              <Route path="product" element={<ProductPage />} />
+              <Route path="product" element={<SelectedProductPage />} />
               <Route path="cart" element={<ShoppingCartPage />} />
               <Route path="checkout" element={<CheckoutPage />} />
               {/* Authentication Routes */}
-              <Route path="signup" element={<Signup />} />
-              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<SignupPage />} />
+              <Route path="login" element={<LoginPage />} />
               {/* Admin Route -- Create and implement ProtectedRoute */}
               <Route path="admin" element={<AdminPanelPage />}>
               </Route>
