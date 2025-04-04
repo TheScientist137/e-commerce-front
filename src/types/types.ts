@@ -6,70 +6,35 @@ export type User = {
  role: 'user' | 'admin'
 }
 
-// Telescope types
+// Product types
+export type BaseProduct = {
+ name: 'string',
+ description: 'string',
+ price: number,
+ brand: string,
+ image: string,
+ product_type: 'telescope' | 'mount',
+ created_at: string,
+ updated_at: string,
+}
+
 export type Telescope = {
- id: number,
- name: string,
- description: string,
- price: number,
- brand: string,
- image: string,
+ product_id: number,
  telescope_type: string,
- telescope_type_description: string,    // Campo adicional para el JOIN
- optical_design_type: string,
- optical_design_description: string, // Campo adicional para el JOIN
+ telescope_type_description: string,
+ optical_design: string,
+ optical_design_description: string
 }
 
-export type NewTelescope = {
- name: string,
- description: string,
- price: number,
- brand: string,
- image: string,
- telescope_type_id: number,
- optical_design_id: number
-}
-
-// Mount types
 export type Mount = {
- id: number,
- name: string,
- description: string,
- price: number,
- brand: string,
- image: string,
+ product_id: number,
  mount_type: string,
  mount_type_description: string
 }
 
-export type NewMount = {
- name: string,
- description: string,
- price: number,
- brand: string,
- image: string,
- mount_type_id: number
-}
-
-// Cart types
-export type CartItem = {
- product: Telescope | Mount,
- quantity: number
-}
-
-export type Cart = CartItem[]
-
-// Context types
-export type ShopContextType = {
- telescopes: Telescope[],
- mounts: Mount[],
- filteredTelescopes: Telescope[],
- filterTelescopesByBrand: (brand: string) => void,
- setTelescopes: React.Dispatch<React.SetStateAction<Telescope[]>>,
- setMounts: React.Dispatch<React.SetStateAction<Mount[]>>,
- cartItems: Cart,
- setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>,
- addToCart: (product: Telescope | Mount) => void
+export type Product = BaseProduct & {
+ telescope?: Telescope,
+ mount?: Mount
 }
 
 export type AuthContextType = {
@@ -78,4 +43,9 @@ export type AuthContextType = {
  login: (token: string, userData: User) => void,
  logout: () => void,
  checkAuth: () => Promise<void>
+}
+
+export type ShopContextType = {
+ products: Product[],
+ cartItems: []
 }

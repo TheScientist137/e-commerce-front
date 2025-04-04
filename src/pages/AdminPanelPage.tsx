@@ -10,7 +10,6 @@ import {
   deleteTelescopeService
 } from '../services/adminService';
 
-// Comprobar el uso de ProtectedRoute para mejorar el rendering !!!!!!!!!!
 export default function AdminPanel() {
   const token = getItem('token');
   const { isAdmin } = useAuthContext();

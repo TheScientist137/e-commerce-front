@@ -29,7 +29,7 @@ export default function App() {
               {/* Authentication Routes */}
               <Route path="signup" element={<Signup />} />
               <Route path="login" element={<Login />} />
-              {/* Admin Route */}
+              {/* Admin Route -- Create and implement ProtectedRoute */}
               <Route path="admin" element={<AdminPanelPage />}>
               </Route>
             </Route>
