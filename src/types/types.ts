@@ -53,5 +53,6 @@ export type AuthContextType = {
 
 export type ShopContextType = {
  products: Product[],
- cartItems: CartItem[]
+ cartItems: CartItem[],
+ setProducts: React.Dispatch<React.SetStateAction<Product[]>>
 }

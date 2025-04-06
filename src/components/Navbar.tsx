@@ -32,12 +32,6 @@ export default function Navbar() {
 
       {isAdmin ? <button onClick={() => navigate('/admin')}>Admin Panel</button> : null}
 
-      <div>
-        <NavLink to='/telescopes'>telescopes </NavLink>
-      </div>
-      <div>
-        <NavLink to='/mounts'>mounts</NavLink>
-      </div>
     </div>
   );
 }

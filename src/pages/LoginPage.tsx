@@ -17,10 +17,8 @@ export default function Login() {
   try {
    const { email, password } = formData;
    const result = await loginService(email, password);
-   console.log(result.message);
    login(result.token, result.user);
-
-   navigate('/'); // Navigate to home page after succesfull
+   navigate('/'); // Navigate to main page after succesfull login
   } catch (error) {
    console.error(error)
   }
