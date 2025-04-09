@@ -6,7 +6,7 @@ export default function AdminPanelPage() {
 
   const handleCreateProduct = async (formData) => {
     try {
-      
+
     } catch (error) {
       console.error('Error creating new product', error);
     }
@@ -26,17 +26,18 @@ export default function AdminPanelPage() {
       <button>Add a new product</button>
 
       <table>
-        <thead></thead>
-        <tr>
-          <th>ID</th>
-          <th>Product Type</th>
-          <th>Name</th>
-          <th>Brand</th>
-          <th>Price</th>
-          <th>Created At</th>
-          <th>Updated At</th>
-          <th>Actions</th>
-        </tr>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Product Type</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
         <tbody>
           {products.map((product) => (
             <tr key={product.id}>
