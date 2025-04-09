@@ -6,6 +6,7 @@ import { Product, CartItem } from '../types/types.ts';
 
 export const ShopContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const fetchProducts = async () => {
@@ -20,25 +21,27 @@ export const ShopContextProvider = ({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     const savedProducts = getItem('products');
-    // // Check localStorage for savedProducts
-    // // If no data on localStorage fetch from API
+    // Check localStorage for savedProducts
     if (savedProducts) {
       setProducts(savedProducts);
       //setFilteredTelescopes(savedTelescopes);
     } else {
+      // If no data on localStorage fetch from API
       fetchProducts();
     }
 
     // Load cart items from localStorage 
-    const savedItems = getItem('savedItems');
-    if (savedItems) setCartItems(savedItems);
+    const savedCartItems = getItem('savedItems');
+    if (savedCartItems) setCartItems(savedCartItems);
   }, []);
 
   return (
     <ShopContext.Provider value={{
       products,
-      setProducts,
+      filteredProducts,
       cartItems,
+      setProducts,
+      setFilteredProducts
     }}>
       {children}
     </ShopContext.Provider>)

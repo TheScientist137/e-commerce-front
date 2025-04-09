@@ -38,11 +38,24 @@ export type Product = BaseProduct & {
  mount?: Mount
 }
 
+export type ProductFormValues = {
+ name: string,
+ description: string,
+ price: number,
+ brand: string,
+ image: string,
+ product_type: 'telescope' | 'mount',
+ telescope_type?: string,
+ optical_design?: string,
+ mount_type?: string
+}
+
 export type CartItem = {
  product: Product,
  quantity: number
 }
 
+// Context types
 export type AuthContextType = {
  user: User | null,
  isAdmin: boolean | null,
@@ -53,6 +66,8 @@ export type AuthContextType = {
 
 export type ShopContextType = {
  products: Product[],
+ filteredProducts: Product[],
  cartItems: CartItem[],
- setProducts: React.Dispatch<React.SetStateAction<Product[]>>
+ setProducts: React.Dispatch<React.SetStateAction<Product[]>>,
+ setFilteredProducts: React.Dispatch<React.SetStateAction<Product[]>>
 }
