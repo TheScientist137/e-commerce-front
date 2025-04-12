@@ -7,16 +7,16 @@ export type User = {
 }
 
 // Product types
-export type BaseProduct = {
+export type Product = {
  id: number,
- name: 'string',
- description: 'string',
- price: number,
+ name: string,
+ description: string,
  brand: string,
+ price: number,
  image: string,
  product_type: 'telescope' | 'mount',
  created_at: string,
- updated_at: string,
+ updated_at: string
 }
 
 export type Telescope = {
@@ -33,21 +33,16 @@ export type Mount = {
  mount_type_description: string
 }
 
-export type Product = BaseProduct & {
- telescope?: Telescope,
- mount?: Mount
-}
-
-export type ProductFormValues = {
+export type ProductForm = {
  name: string,
  description: string,
- price: number,
  brand: string,
+ price: number,
  image: string,
  product_type: 'telescope' | 'mount',
- telescope_type?: string,
- optical_design?: string,
- mount_type?: string
+ telescope_type_id: number,
+ optical_design_id: number,
+ mount_type_id: number
 }
 
 export type CartItem = {

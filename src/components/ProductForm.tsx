@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Product, ProductFormValues } from "../types/types";
 
 export default function ProductForm() {
@@ -9,13 +9,17 @@ export default function ProductForm() {
   brand: '',
   image: '',
   product_type: 'telescope',
-  telescope_type: undefined,
-  optical_design: undefined,
-  mount_type: undefined
+  telescope_type: 1,
+  optical_design: 1,
+  mount_type: 1
  });
 
+ const handleSubmit = (e: FormEvent) => {
+  e.preventDefault();
+ }
+
  return (
-  <form action="">
+  <form onSubmit={handleSubmit}>
    <div>
     <label htmlFor="product_type">Product Type:</label>
     <select
@@ -94,8 +98,8 @@ export default function ProductForm() {
        value={formData.telescope_type}
        required
       >
-       <option value="Refractor">Refractor</option>
-       <option value="Reflector">Reflector</option>
+       <option value={1}>Refractor</option>
+       <option value={2}>Reflector</option>
       </select>
      </div>
 
@@ -107,10 +111,10 @@ export default function ProductForm() {
        value={formData.optical_design}
        required
       >
-       <option value="Achromat">Achromat</option>
-       <option value="Apochromat">Apochromat</option>
-       <option value="Newton">Newton</option>
-       <option value="Catadioptric">Catadioptric</option>
+       <option value={1}>Achromat</option>
+       <option value={2}>Apochromat</option>
+       <option value={3}>Newton</option>
+       <option value={4}>Catadioptric</option>
       </select>
      </div>
     </>
@@ -122,11 +126,12 @@ export default function ProductForm() {
        id="mount_type"
        name="mount_type"
        value={formData.mount_type}
+       required
       >
-       <option value="Alt-azimuth">Alt-azimuth</option>
-       <option value="Alt-azimuth with GoTo">Alt-azimuth with GoTo</option>
-       <option value="Equatorial">Equatorial</option>
-       <option value="Equatorial with GoTo">Equatorial with GoTo</option>
+       <option value={1}>Alt-azimuth</option>
+       <option value={2}>Alt-azimuth with GoTo</option>
+       <option value={3}>Equatorial</option>
+       <option value={4}>Equatorial with GoTo</option>
       </select>
      </div>
     </>
