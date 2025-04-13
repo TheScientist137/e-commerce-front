@@ -1,5 +1,5 @@
 // User types
-export type User = {
+export type UserType = {
  id: number,
  name: string,
  email: string,
@@ -7,7 +7,7 @@ export type User = {
 }
 
 // Product types
-export type Product = {
+export type ProductType = {
  id: number,
  name: string,
  description: string,
@@ -19,7 +19,7 @@ export type Product = {
  updated_at: string
 }
 
-export type Telescope = {
+export type TelescopeType = {
  product_id: number,
  telescope_type: string,
  telescope_type_description: string,
@@ -27,13 +27,13 @@ export type Telescope = {
  optical_design_description: string
 }
 
-export type Mount = {
+export type MountType = {
  product_id: number,
  mount_type: string,
  mount_type_description: string
 }
 
-export type ProductForm = {
+export type ProductFormType = {
  name: string,
  description: string,
  brand: string,
@@ -45,24 +45,25 @@ export type ProductForm = {
  mount_type_id: number
 }
 
-export type CartItem = {
- product: Product,
+export type CartItemType = {
+ product: ProductType,
  quantity: number
 }
 
 // Context types
 export type AuthContextType = {
- user: User | null,
+ user: UserType | null,
  isAdmin: boolean | null,
- login: (token: string, userData: User) => void,
+ login: (token: string, userData: UserType) => void,
  logout: () => void,
  checkAuth: () => Promise<void>
 }
 
 export type ShopContextType = {
- products: Product[],
- filteredProducts: Product[],
- cartItems: CartItem[],
- setProducts: React.Dispatch<React.SetStateAction<Product[]>>,
- setFilteredProducts: React.Dispatch<React.SetStateAction<Product[]>>
+ products: ProductType[],
+ filteredProducts: ProductType[],
+ cartItems: CartItemType[],
+ setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>,
+ setFilteredProducts: React.Dispatch<React.SetStateAction<ProductType[]>>,
+ fetchProducts: () => Promise<void>
 }

@@ -1,38 +1,23 @@
-import { FormEvent, useState } from "react";
-import { Product, ProductFormValues } from "../types/types";
+import { ProductFormType } from "../types/types.ts";
 
-export default function ProductForm() {
- const [formData, setFormData] = useState<ProductFormValues>({
-  name: '',
-  description: '',
-  price: 0,
-  brand: '',
-  image: '',
-  product_type: 'telescope',
-  telescope_type: 1,
-  optical_design: 1,
-  mount_type: 1
- });
+type ProductFormProps = {
+ formData: ProductFormType,
+ editingProductId: number | null,
+ onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void,
+ onSubmit: (event: React.FormEvent) => void,
+ onCancelEdit: () => void
+}
 
- const handleSubmit = (e: FormEvent) => {
-  e.preventDefault();
- }
+export default function ProductForm({
+ formData,
+ editingProductId,
+ onChange,
+ onSubmit,
+ onCancelEdit
+}: ProductFormProps) {
 
  return (
-  <form onSubmit={handleSubmit}>
-   <div>
-    <label htmlFor="product_type">Product Type:</label>
-    <select
-     id="product_type"
-     name="product_type"
-     value={formData.product_type}
-     required
-    >
-     <option value="telescope">Telescope</option>
-     <option value="mount">Mount</option>
-    </select>
-   </div>
-
+  <form onSubmit={onSubmit}>
    <div>
     <label htmlFor="name">Name</label>
     <input
@@ -40,17 +25,18 @@ export default function ProductForm() {
      id="name"
      name="name"
      value={formData.name}
+     onChange={onChange}
      required
     />
    </div>
 
    <div>
     <label htmlFor="description">Description</label>
-    <input
-     type="text"
+    <textarea
      id="description"
      name="description"
      value={formData.description}
+     onChange={onChange}
      required
     />
    </div>
@@ -62,6 +48,7 @@ export default function ProductForm() {
      id="brand"
      name="brand"
      value={formData.brand}
+     onChange={onChange}
      required
     />
    </div>
@@ -73,6 +60,7 @@ export default function ProductForm() {
      id="price"
      name="price"
      value={formData.price}
+     onChange={onChange}
      required
     />
    </div>
@@ -84,8 +72,23 @@ export default function ProductForm() {
      id="image"
      name="image"
      value={formData.image}
+     onChange={onChange}
      required
     />
+   </div>
+
+   <div>
+    <label htmlFor="product_type">Product Type:</label>
+    <select
+     id="product_type"
+     name="product_type"
+     value={formData.product_type}
+     onChange={onChange}
+     required
+    >
+     <option value="telescope">Telescope</option>
+     <option value="mount">Mount</option>
+    </select>
    </div>
 
    {formData.product_type === 'telescope' ? (
@@ -95,7 +98,8 @@ export default function ProductForm() {
       <select
        id=""
        name="telescope_type"
-       value={formData.telescope_type}
+       value={formData.telescope_type_id}
+       onChange={onChange}
        required
       >
        <option value={1}>Refractor</option>
@@ -108,7 +112,8 @@ export default function ProductForm() {
       <select
        id="optical_design"
        name="optical_design"
-       value={formData.optical_design}
+       value={formData.optical_design_id}
+       onChange={onChange}
        required
       >
        <option value={1}>Achromat</option>
@@ -125,7 +130,8 @@ export default function ProductForm() {
       <select
        id="mount_type"
        name="mount_type"
-       value={formData.mount_type}
+       value={formData.mount_type_id}
+       onChange={onChange}
        required
       >
        <option value={1}>Alt-azimuth</option>
@@ -136,7 +142,9 @@ export default function ProductForm() {
      </div>
     </>
    )}
-  </form>
 
+   <button type="submit">{editingProductId ? 'UPDATE' : 'ADD'}</button>
+   {editingProductId && <button type="button" onClick={() => onCancelEdit()}>CANCEL</button>}
+  </form>
  )
 }

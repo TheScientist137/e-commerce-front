@@ -41,7 +41,8 @@ export const ShopContextProvider = ({ children }: { children: React.ReactNode })
       filteredProducts,
       cartItems,
       setProducts,
-      setFilteredProducts
+      setFilteredProducts,
+      fetchProducts
     }}>
       {children}
     </ShopContext.Provider>)

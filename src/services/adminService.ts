@@ -1,6 +1,5 @@
 import { ProductForm } from "../types/types.ts";
 
-// Probar primero sin token!!!!
 export const addProductService = async (newProduct: ProductForm, token: string) => {
  const response = await fetch('http://localhost:3000/api/admin/products', {
   method: 'POST',
@@ -11,7 +10,43 @@ export const addProductService = async (newProduct: ProductForm, token: string) 
   },
   body: JSON.stringify(newProduct)
  });
+ if (!response.ok) {
+  throw new Error('Failed to add new product');
+ }
+ const result = await response.json();
+ return result;
+}
 
- if (!response.ok) throw new Error('Failed to add new product');
- return await response.json();
+export const updateProductService = async (id: number, token: string, updatedProduct: ProductForm) => {
+ const response = await fetch(`http://localhost:3000/api/admin/products/${id}`, {
+  method: 'PUT',
+  credentials: 'include',
+  headers: {
+   'Content-Type': 'application/json',
+   'Authorization': `Bearer ${token}`
+  },
+  body: JSON.stringify(updatedProduct)
+ });
+ if (!response.ok) {
+  throw new Error('Failed to update product');
+ }
+ const result = await response.json();
+ return result;
+}
+
+export const deleteProductService = async (id: number, token: string, productType: { product_type: string }) => {
+ const response = await fetch(`http://localhost:3000/api/admin/products/${id}`, {
+  method: 'DELETE',
+  credentials: 'include',
+  headers: {
+   'Content-Type': 'application/json',
+   'Authorization': `Bearer ${token}`
+  },
+  body: JSON.stringify(productType)
+ });
+ if (!response.ok) {
+  throw new Error('Failed to delete product');
+ }
+ const result = await response.json();
+ return result;
 }
