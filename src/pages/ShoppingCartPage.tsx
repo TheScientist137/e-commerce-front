@@ -2,37 +2,17 @@ import { Link } from "react-router";
 import { useShopContext } from "../hooks/useContext"
 
 export default function ShoppingCartPage() {
- const { cartItems, setCartItems } = useShopContext();
+ const { cartItems, removeFromCart, updateQuantity } = useShopContext();
 
- // Remove an item/items from the shopping cart
- const removeItem = (id: number) => {
-  setCartItems((prevItems) => prevItems.filter(item => item.product.id !== id));
- }
-
- // Increment the quantity of an item
- const incrementQuantity = (id: number) => {
-  setCartItems((prevItems) => {
-   return prevItems.map((item) => item.product.id === id ?
-    { ...item, quantity: item.quantity + 1 } :
-    item
-   );
-  });
- }
-
- // Decrement the quantity of an item (improve function)
- const decrementQuantity = (id: number) => {
-  setCartItems((prevItems) => {
-   return prevItems.map((item) => item.product.id === id && item.quantity > 1 ?
-    { ...item, quantity: item.quantity - 1 } :
-    item
-   );
-  });
- }
-
- // Calculate total items price (improve function)
+ // Calculate total items price
  const calculateTotalPrice = () => {
   return cartItems.reduce((total, item) =>
    total + item.product.price * item.quantity, 0);
+ }
+
+ // Format price with 2 decimal places
+ const formatPrice = (price: number) => {
+  return price.toFixed(2);
  }
 
  return (
@@ -45,11 +25,11 @@ export default function ShoppingCartPage() {
         {/* Item Image */}
         <p>{item.product.name}</p>
         <p>{item.product.brand}</p>
-        <button onClick={() => decrementQuantity(item.product.id)}>-</button>
+        <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)}>-</button>
         <span>{item.quantity}</span>
-        <button onClick={() => incrementQuantity(item.product.id)}>+</button>
-        <button onClick={() => removeItem(item.product.id)}>DELETE</button>
-        <p>{item.product.price * item.quantity} $</p>
+        <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)}>+</button>
+        <button onClick={() => removeFromCart(item.product.id)}>DELETE</button>
+        <p>{formatPrice(item.product.price * item.quantity)} $</p>
        </div>
       ))}
      </div>

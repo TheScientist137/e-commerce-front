@@ -17,7 +17,10 @@ export type ShopContextType = {
   setFilteredProducts: React.Dispatch<React.SetStateAction<ProductType[] | TelescopeType[] | MountType[]>>,
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>,
   fetchProducts: () => Promise<void>,
-  filterProducts: (category: string, type: string, opticalDesign?: string) => void
+  filterProducts: (category: string, type: string, opticalDesign?: string) => void,
+  addToCart: (product: ProductType) => void,
+  removeFromCart: (productId: number) => void,
+  updateQuantity: (productId: number, quantity: number) => void
 }
 
 export const ShopContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -28,6 +31,21 @@ export const ShopContextProvider = ({ children }: { children: React.ReactNode })
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedType, setSelectedType] = useState<string>('all');
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+
+  // Initialize cart from localStorage
+  useEffect(() => {
+    const savedCartItems = getItem('cartItems');
+    if (savedCartItems && Array.isArray(savedCartItems)) {
+      setCartItems(savedCartItems);
+    }
+  }, []);
+
+  // Save cart items to localStorage whenever they change
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      setItem('cartItems', cartItems);
+    }
+  }, [cartItems]);
 
   // Save products, telescopes and mounts on localStorage?????
   const fetchProducts = async () => {
@@ -49,6 +67,7 @@ export const ShopContextProvider = ({ children }: { children: React.ReactNode })
     }
   };
 
+  // Filter products by category, type and optical design
   const filterProducts = (category: string, type: string, opticalDesign?: string) => {
     setSelectedCategory(category);
     setSelectedType(type); // work on it later
@@ -77,6 +96,38 @@ export const ShopContextProvider = ({ children }: { children: React.ReactNode })
     }
   }
 
+  // Add product to cart
+  const addToCart = (product: ProductType) => {
+    const existingItem = cartItems.find((item) => item.product.id === product.id);
+    if (existingItem) {
+      setCartItems((prevItems) => prevItems.map((item) =>
+        item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item));
+    } else {
+      setCartItems((prevItems) => [...prevItems, { product, quantity: 1 }]);
+    }
+  }
+
+  // Remove product from cart
+  const removeFromCart = (productId: number) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.product.id !== productId));
+  }
+
+  // Update product quantity
+  const updateQuantity = (productId: number, quantity: number) => {
+    if (quantity < 1) {
+      removeFromCart(productId);
+      return;
+    }
+
+    setCartItems((prevItems) =>
+      prevItems.map(item =>
+        item.product.id === productId
+          ? { ...item, quantity }
+          : item
+      )
+    );
+  }
+
   useEffect(() => {
     const savedProducts = getItem('products');
     const savedTelescopes = getItem('telescopes');
@@ -92,10 +143,9 @@ export const ShopContextProvider = ({ children }: { children: React.ReactNode })
       fetchProducts();
     }
 
-    // Load cart items from localStorage 
-    const savedCartItems = getItem('savedItems');
-    if (savedCartItems) setCartItems(savedCartItems);
   }, []);
+
+  console.log('Cart items:', cartItems);
 
   return (
     <ShopContext.Provider value={{
@@ -111,7 +161,10 @@ export const ShopContextProvider = ({ children }: { children: React.ReactNode })
       mounts,
       setTelescopes,
       setMounts,
-      filterProducts
+      filterProducts,
+      addToCart,
+      removeFromCart,
+      updateQuantity
     }}>
       {children}
     </ShopContext.Provider>)

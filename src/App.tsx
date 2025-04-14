@@ -20,7 +20,7 @@ export default function App() {
             <Route element={<Dashboard />}>
               {/* Shop Routes */}
               <Route index element={<ShopPage />} />
-              <Route path="product" element={<SelectedProductPage />} />
+              <Route path="product/:id" element={<SelectedProductPage />} />
               <Route path="cart" element={<ShoppingCartPage />} />
               <Route path="checkout" element={<CheckoutPage />} />
 

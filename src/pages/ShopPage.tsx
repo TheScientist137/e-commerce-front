@@ -1,4 +1,5 @@
 import { useShopContext } from "../hooks/useContext";
+import { Link } from "react-router";
 
 export default function ShopPage() {
   const { filteredProducts, selectedCategory, filterProducts, telescopes, mounts } = useShopContext();
@@ -50,9 +51,10 @@ export default function ShopPage() {
       <div>
         {filteredProducts.map((product) => (
           <div key={product.id}>
-            <h3>{product.name}</h3>
-            <p>{product.brand}</p>
-            <p>{product.price} $</p>
+              <h3>{product.name}</h3>
+              <p>{product.brand}</p>
+              <p>{product.price} $</p>
+          <Link to={`/product/${product.id}`}>View details</Link>
           </div>
         ))}
       </div>

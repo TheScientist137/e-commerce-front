@@ -21,6 +21,7 @@ export type ProductType = {
 
 export type TelescopeType = {
  id: number,
+ product_type: 'telescope'
  name: string,
  description: string,
  brand: string,
@@ -30,11 +31,11 @@ export type TelescopeType = {
  telescope_type_description: string,
  optical_design_type: string,
  optical_design_description: string,
- product_type: 'telescope'
 }
 
 export type MountType = {
  id: number,
+ product_type: 'mount'
  name: string,
  description: string,
  brand: string,
@@ -42,7 +43,6 @@ export type MountType = {
  image: string,
  mount_type: string,
  mount_type_description: string,
- product_type: 'mount'
 }
 
 export type ProductFormType = {
