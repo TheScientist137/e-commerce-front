@@ -28,7 +28,7 @@ export type TelescopeType = {
  image: string,
  telescope_type: string,
  telescope_type_description: string,
- optical_design: string,
+ optical_design_type: string,
  optical_design_description: string,
  product_type: 'telescope'
 }

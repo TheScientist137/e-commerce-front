@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useShopContext } from "../hooks/useContext.ts"
 import { addProductService, updateProductService, deleteProductService } from "../services/adminService.ts";
 import { getItem } from "../utils/localStorage.ts";
@@ -11,6 +11,7 @@ export default function AdminPanelPage() {
   // We need to handle the erros and improve user experience
   const { products, fetchProducts } = useShopContext();
   const [filteredProducts, setFilteredProducts] = useState<ProductType[]>(products);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [editingProductId, setEditingProductId] = useState<number | null>(null);
   const [showModalForm, setShowModalForm] = useState<boolean>(false);
   const [formData, setFormData] = useState<ProductFormType>({
@@ -24,10 +25,6 @@ export default function AdminPanelPage() {
     optical_design_id: 1,
     mount_type_id: 1
   });
-
-  // Filter Products on table
-  const telescopes = products.filter((product) => product.product_type === 'telescope');
-  const mounts = products.filter((product) => product.product_type === 'mount');
 
   // HANDLERS
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -60,7 +57,6 @@ export default function AdminPanelPage() {
       return;
     }
     setEditingProductId(id);
-    // Set default vaules for telescope/mount specific fields
     const defaultFormData = {
       name: product.name,
       description: product.description,
@@ -104,7 +100,6 @@ export default function AdminPanelPage() {
       }
       await deleteProductService(id, token, { product_type });
       await fetchProducts(); // Refresh table with updated data
-      console.log('Product deleted succesfully');
       alert('Product deleted succesfully');
     } catch (error) {
       console.error('Error deleting product', error);
@@ -121,22 +116,32 @@ export default function AdminPanelPage() {
       }
       // Edit product ot add product
       if (editingProductId) {
-        const updatedProduct = await updateProductService(editingProductId, token, formData);
-        await fetchProducts(); // Refresh table with updated data
-        console.log('Product updated succesfully', updatedProduct);
+        await updateProductService(editingProductId, token, formData);
         alert('Product updated succesfully');
       } else {
-        const addedProduct = await addProductService(formData, token);
-        await fetchProducts(); // Refresh table with updated data
-        console.log('Product added succesfully', addedProduct);
+        await addProductService(formData, token);
         alert('Product added succesfully');
-        setEditingProductId(null);
       }
+      await fetchProducts(); // Refresh table with updated data
+      setShowModalForm(false);
+      setEditingProductId(null);
     } catch (error) {
       console.error('Error adding new product', error);
       alert('Error adding product');
     }
   }
+
+  // Filter products based on selected category when user clicks on button
+  // update the filteredProducts state
+  useEffect(() => {
+    if (selectedCategory === 'all') {
+      setFilteredProducts(products);
+    } else if (selectedCategory === 'telescopes') {
+      setFilteredProducts(products.filter(product => product.product_type === 'telescope'));
+    } else if (selectedCategory === 'mounts') {
+      setFilteredProducts(products.filter(product => product.product_type === 'mount'));
+    }
+  }, [selectedCategory, products]);
 
   if (products.length === 0) return <p>No products found</p>;
   return (
@@ -144,9 +149,9 @@ export default function AdminPanelPage() {
       <h2>Admin Panel</h2>
 
       <div>
-        <button onClick={() => setFilteredProducts(products)}>All</button>
-        <button onClick={() => setFilteredProducts(telescopes)}>Telescopes</button>
-        <button onClick={() => setFilteredProducts(mounts)}>Mounts</button>
+        <button onClick={() => setSelectedCategory('all')}>All</button>
+        <button onClick={() => setSelectedCategory('telescopes')}>Telescopes</button>
+        <button onClick={() => setSelectedCategory('mounts')}>Mounts</button>
       </div>
 
       <button onClick={handleAdd}>Add a new product</button>

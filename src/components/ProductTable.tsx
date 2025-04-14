@@ -30,8 +30,8 @@ export default function ProductsTable({products, onEdit, onDelete}: ProductTable
         <td>{product.name}</td>
         <td>{product.brand}</td>
         <td>{product.price}</td>
-        <td>{product.created_at}</td>
-        <td>{product.updated_at}</td>
+        <td>{new Date(product.created_at).toLocaleDateString()}</td>
+        <td>{new Date(product.updated_at).toLocaleDateString()}</td>
         <td>
           <button onClick={() => onEdit(product.id)}>Edit</button>
           <button onClick={() => onDelete(product.id, product.product_type)}>Delete</button>

@@ -1,21 +1,54 @@
-import { useState } from "react";
 import { useShopContext } from "../hooks/useContext";
-import { MountType, ProductType, TelescopeType } from "../types/types";
 
 export default function ShopPage() {
-  const { products, telescopes, mounts } = useShopContext();
-  const [selectedCategory, setSelectedCategory] = useState<ProductType[] | TelescopeType[] | MountType[]>(products);
+  const { filteredProducts, selectedCategory, filterProducts, telescopes, mounts } = useShopContext();
+
+  // Get telescope and mount types
+  const telescopeTypes = telescopes.map((telescope) => telescope.telescope_type);
+  const mountTypes = mounts.map((mount) => mount.mount_type);
+  // Get optical design types
+  const opticalDesignTypes = telescopes.map((telescope) => telescope.optical_design_type);
+  // Eliminate duplicate values (specific types)
+  const uniqueTelescopeTypes = [...new Set(telescopeTypes)];
+  const uniqueMountTypes = [...new Set(mountTypes)];
+  const uniqueOpticalDesignTypes = [...new Set(opticalDesignTypes)];
+
 
   return (
     <section>
       <div>
-        <button onClick={() => setSelectedCategory(products)}>All</button>
-        <button onClick={() => setSelectedCategory(telescopes)}>Telescopes</button>
-        <button onClick={() => setSelectedCategory(mounts)}>Mounts</button>
+        <button onClick={() => filterProducts('all', 'all', 'all')}>All Products</button>
+        <button onClick={() => filterProducts('telescopes', 'all', 'all')}>Telescopes</button>
+        <button onClick={() => filterProducts('mounts', 'all', 'all')}>Mounts</button>
       </div>
 
+      {selectedCategory === 'telescopes' && (
+        <div>
+          <div>
+            {uniqueTelescopeTypes.map((type) => (
+              <button key={type} onClick={() => filterProducts('telescopes', type)}>{type}</button>
+            ))}
+          </div>
+          <div>
+            {uniqueOpticalDesignTypes.map((design) => (
+              <button key={design} onClick={() => filterProducts('telescopes', 'all', design)}>{design}</button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {selectedCategory === 'mounts' && (
+        <div>
+          <div>
+            {uniqueMountTypes.map((type) => (
+              <button key={type} onClick={() => filterProducts('mounts', type)}>{type}</button>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div>
-        {selectedCategory.map((product) => (
+        {filteredProducts.map((product) => (
           <div key={product.id}>
             <h3>{product.name}</h3>
             <p>{product.brand}</p>
