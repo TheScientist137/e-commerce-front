@@ -7,6 +7,7 @@ type ProductTableProps = {
 }
 
 export default function ProductsTable({products, onEdit, onDelete}: ProductTableProps) {
+
  return (
   <table>
   <thead>

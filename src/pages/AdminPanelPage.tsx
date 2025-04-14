@@ -4,12 +4,15 @@ import { addProductService, updateProductService, deleteProductService } from ".
 import { getItem } from "../utils/localStorage.ts";
 import ProductForm from "../components/ProductForm.tsx";
 import ProductTable from "../components/ProductTable.tsx";
-import { ProductFormType } from "../types/types.ts";
+import ModalForm from "../components/ModalForm.tsx";
+import { ProductFormType, ProductType } from "../types/types.ts";
 
 export default function AdminPanelPage() {
   // We need to handle the erros and improve user experience
   const { products, fetchProducts } = useShopContext();
-  const [editingProductId, setEditingProductId] = useState<number | null>(null)
+  const [filteredProducts, setFilteredProducts] = useState<ProductType[]>(products);
+  const [editingProductId, setEditingProductId] = useState<number | null>(null);
+  const [showModalForm, setShowModalForm] = useState<boolean>(false);
   const [formData, setFormData] = useState<ProductFormType>({
     name: '',
     description: '',
@@ -22,9 +25,11 @@ export default function AdminPanelPage() {
     mount_type_id: 1
   });
 
-  //const telescopes = products.filter((product) => product.product_type === 'telescope');
-  //console.log(telescopes);
+  // Filter Products on table
+  const telescopes = products.filter((product) => product.product_type === 'telescope');
+  const mounts = products.filter((product) => product.product_type === 'mount');
 
+  // HANDLERS
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -32,8 +37,23 @@ export default function AdminPanelPage() {
     }));
   }
 
-  // Set form with specific product data for edit
+  const handleAdd = () => {
+    setFormData({
+      name: '',
+      description: '',
+      brand: '',
+      price: 0,
+      image: '',
+      product_type: 'telescope',
+      telescope_type_id: 1,
+      optical_design_id: 1,
+      mount_type_id: 1
+    })
+    setShowModalForm(true);
+  }
+
   const handleEdit = (id: number) => {
+    // Set form with specific product data for edit
     const product = products.find((product) => product.id === id);
     if (!product) {
       alert('Product not found');
@@ -53,6 +73,7 @@ export default function AdminPanelPage() {
       mount_type_id: 1
     };
     setFormData(defaultFormData);
+    setShowModalForm(true)
   }
 
   const handleCancelEdit = () => {
@@ -69,6 +90,7 @@ export default function AdminPanelPage() {
       mount_type_id: 1
     });
     setEditingProductId(null);
+    setShowModalForm(false);
   }
 
   const handleDelete = async (id: number, product_type: string) => {
@@ -122,27 +144,32 @@ export default function AdminPanelPage() {
       <h2>Admin Panel</h2>
 
       <div>
-        <button>All</button>
-        <button>Telescopes</button>
-        <button>Mounts</button>
+        <button onClick={() => setFilteredProducts(products)}>All</button>
+        <button onClick={() => setFilteredProducts(telescopes)}>Telescopes</button>
+        <button onClick={() => setFilteredProducts(mounts)}>Mounts</button>
       </div>
 
-      <button>Add a new product</button>
+      <button onClick={handleAdd}>Add a new product</button>
 
       <ProductTable
-        products={products}
+        products={filteredProducts}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
-      <ProductForm
-        formData={formData}
-        editingProductId={editingProductId}
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-        onCancelEdit={handleCancelEdit}
-      />
+      <ModalForm
+        showModalForm={showModalForm}
+        title={editingProductId ? 'Update Product' : 'Add Product'}
+        onClose={handleCancelEdit}
+      >
 
-
+        <ProductForm
+          formData={formData}
+          editingProductId={editingProductId}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          onCancelEdit={handleCancelEdit}
+        />
+      </ModalForm>
     </section>
   )
 } 

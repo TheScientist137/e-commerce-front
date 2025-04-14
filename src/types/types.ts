@@ -20,17 +20,29 @@ export type ProductType = {
 }
 
 export type TelescopeType = {
- product_id: number,
+ id: number,
+ name: string,
+ description: string,
+ brand: string,
+ price: number,
+ image: string,
  telescope_type: string,
  telescope_type_description: string,
  optical_design: string,
- optical_design_description: string
+ optical_design_description: string,
+ product_type: 'telescope'
 }
 
 export type MountType = {
- product_id: number,
+ id: number,
+ name: string,
+ description: string,
+ brand: string,
+ price: number,
+ image: string,
  mount_type: string,
- mount_type_description: string
+ mount_type_description: string,
+ product_type: 'mount'
 }
 
 export type ProductFormType = {
@@ -51,19 +63,4 @@ export type CartItemType = {
 }
 
 // Context types
-export type AuthContextType = {
- user: UserType | null,
- isAdmin: boolean | null,
- login: (token: string, userData: UserType) => void,
- logout: () => void,
- checkAuth: () => Promise<void>
-}
 
-export type ShopContextType = {
- products: ProductType[],
- filteredProducts: ProductType[],
- cartItems: CartItemType[],
- setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>,
- setFilteredProducts: React.Dispatch<React.SetStateAction<ProductType[]>>,
- fetchProducts: () => Promise<void>
-}

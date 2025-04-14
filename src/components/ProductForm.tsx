@@ -96,8 +96,8 @@ export default function ProductForm({
      <div>
       <label htmlFor="telescope_type">Telescope Type</label>
       <select
-       id=""
-       name="telescope_type"
+       id="telescope_type"
+       name="telescope_type_id"
        value={formData.telescope_type_id}
        onChange={onChange}
        required
@@ -111,7 +111,7 @@ export default function ProductForm({
       <label htmlFor="optical_design">Optical Design</label>
       <select
        id="optical_design"
-       name="optical_design"
+       name="optical_design_id"
        value={formData.optical_design_id}
        onChange={onChange}
        required
@@ -129,7 +129,7 @@ export default function ProductForm({
       <label htmlFor="mount_type">Mount Type</label>
       <select
        id="mount_type"
-       name="mount_type"
+       name="mount_type_id"
        value={formData.mount_type_id}
        onChange={onChange}
        required

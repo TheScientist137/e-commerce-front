@@ -1,6 +1,6 @@
-import { ProductForm } from "../types/types.ts";
+import { ProductFormType } from "../types/types.ts";
 
-export const addProductService = async (newProduct: ProductForm, token: string) => {
+export const addProductService = async (newProduct: ProductFormType, token: string) => {
  const response = await fetch('http://localhost:3000/api/admin/products', {
   method: 'POST',
   credentials: 'include',
@@ -17,7 +17,7 @@ export const addProductService = async (newProduct: ProductForm, token: string) 
  return result;
 }
 
-export const updateProductService = async (id: number, token: string, updatedProduct: ProductForm) => {
+export const updateProductService = async (id: number, token: string, updatedProduct: ProductFormType) => {
  const response = await fetch(`http://localhost:3000/api/admin/products/${id}`, {
   method: 'PUT',
   credentials: 'include',

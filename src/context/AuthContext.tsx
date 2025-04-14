@@ -1,15 +1,23 @@
 import { useEffect, useState } from "react";
 import { AuthContext } from "./contexts.ts";
-import { User } from "../types/types.ts";
+import { UserType } from "../types/types.ts";
 import { getItem, removeItem, setItem } from "../utils/localStorage.ts";
 import { logoutService, checkAuthService } from "../services/authService.ts";
 
+export type AuthContextType = {
+    user: UserType | null,
+    isAdmin: boolean | null,
+    login: (token: string, userData: UserType) => void,
+    logout: () => void,
+    checkAuth: () => Promise<void>
+   }
+
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
- const [user, setUser] = useState<User | null>(null);
+ const [user, setUser] = useState<UserType | null>(null);
  const isAdmin = user && user.role === 'admin'; // boolean
 
  // Pensar si mantener estas dos funciones en el contexto ?????????
- const login = (token: string, userData: User) => {
+ const login = (token: string, userData: UserType) => {
   setItem('token', token); // Save token on localStorage
   setUser(userData); // Updates user info
  }

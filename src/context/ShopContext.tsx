@@ -1,30 +1,48 @@
 import { useEffect, useState } from "react";
 import { ShopContext } from "./contexts.ts";
-import { getProductsService } from "../services/shopService.ts";
+import { getProductsService, getTelescopesService, getMountsService } from "../services/shopService.ts";
 import { getItem, setItem } from "../utils/localStorage.ts";
-import { Product, CartItem } from '../types/types.ts';
+import { ProductType, CartItemType, TelescopeType, MountType } from '../types/types.ts';
+
+export type ShopContextType = {
+  products: ProductType[],
+  telescopes: TelescopeType[],
+  mounts: MountType[],
+  cartItems: CartItemType[],
+  setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>,
+  fetchProducts: () => Promise<void>,
+  setTelescopes: React.Dispatch<React.SetStateAction<TelescopeType[]>>,
+  setMounts: React.Dispatch<React.SetStateAction<MountType[]>>
+ }
 
 export const ShopContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
+  const [telescopes, setTelescopes] = useState<TelescopeType[]>([]);
+  const [mounts, setMounts] = useState<MountType[]>([]);
+  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
 
+  // Save products, telescopes and mounts on localStorage?????
   const fetchProducts = async () => {
     try {
       const productsData = await getProductsService();
       setProducts(productsData);
       setItem('products', productsData); // Save telescopes on localStorage
+      const telescopesData = await getTelescopesService();
+      setTelescopes(telescopesData);
+      setItem('telescopes', telescopesData);
+      const mountsData = await getMountsService();
+      setMounts(mountsData);
+      setItem('mounts', mountsData);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
   };
 
   useEffect(() => {
-    const savedProducts = getItem('products');
     // Check localStorage for savedProducts
+    const savedProducts = getItem('products');
     if (savedProducts) {
       setProducts(savedProducts);
-      //setFilteredTelescopes(savedTelescopes);
     } else {
       // If no data on localStorage fetch from API
       fetchProducts();
@@ -38,11 +56,13 @@ export const ShopContextProvider = ({ children }: { children: React.ReactNode })
   return (
     <ShopContext.Provider value={{
       products,
-      filteredProducts,
       cartItems,
       setProducts,
-      setFilteredProducts,
-      fetchProducts
+      fetchProducts,
+      telescopes,
+      mounts,
+      setTelescopes,
+      setMounts
     }}>
       {children}
     </ShopContext.Provider>)
