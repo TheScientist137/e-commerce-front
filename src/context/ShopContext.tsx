@@ -23,9 +23,7 @@ export type ShopContextType = {
   setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
   setTelescopes: React.Dispatch<React.SetStateAction<TelescopeType[]>>;
   setMounts: React.Dispatch<React.SetStateAction<MountType[]>>;
-  setFilteredProducts: React.Dispatch<
-    React.SetStateAction<ProductType[] | TelescopeType[] | MountType[]>
-  >;
+  setFilteredProducts: React.Dispatch<React.SetStateAction<ProductType[] | TelescopeType[] | MountType[]>>;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
   fetchProducts: () => Promise<void>;
   filterProducts: (
@@ -49,7 +47,7 @@ export const ShopContextProvider = ({
   const [filteredProducts, setFilteredProducts] = useState<
     ProductType[] | TelescopeType[] | MountType[]
   >([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState<string>("products");
   const [selectedType, setSelectedType] = useState<string>("all");
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
 
@@ -89,6 +87,8 @@ export const ShopContextProvider = ({
     }
   };
 
+  // MEJORAR
+  // crear funcion para filtrar por categoria y otra para filtrar por tipo y optical design?
   // Filter products by category, type and optical design
   const filterProducts = (
     category: string,
@@ -98,7 +98,7 @@ export const ShopContextProvider = ({
     setSelectedCategory(category);
     setSelectedType(type); // work on it later
 
-    if (category === "all") {
+    if (category === "products") {
       setFilteredProducts(products);
       return;
     }

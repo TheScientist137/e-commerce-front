@@ -32,10 +32,14 @@ export default function AdminPanelPage() {
   });
 
   // HANDLERS
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
     setFormData((prevData) => ({
       ...prevData,
-      [event.target.name]: event.target.type === 'number' ? Number(event.target.value) : event.target.value
+      [event.target.name]: event.target.type === 'number' ?
+        Number(event.target.value) :
+        event.target.value
     }));
   }
 
@@ -203,7 +207,7 @@ export default function AdminPanelPage() {
           onEdit={handleEdit}
           onDelete={handleDelete}
         />
-      ): <p>No Products</p>}
+      ) : <p>No Products</p>}
       <ModalForm
         showModalForm={showModalForm}
         title={editingProductId ? 'Update Product' : 'Add Product'}
