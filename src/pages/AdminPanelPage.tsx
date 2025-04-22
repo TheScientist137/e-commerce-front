@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
 import { useShopContext } from "../hooks/useContext.ts"
-import { addProductService, updateProductService, deleteProductService } from "../services/adminService.ts";
-import { getItem } from "../utils/localStorage.ts";
+import {
+  addProductService,
+  updateProductService,
+  deleteProductService,
+} from "../services/adminService.ts";
+import { getItem, removeItem } from "../utils/localStorage.ts";
 import ProductForm from "../components/ProductForm.tsx";
 import ProductTable from "../components/ProductTable.tsx";
 import ModalForm from "../components/ModalForm.tsx";
@@ -14,6 +18,7 @@ export default function AdminPanelPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [editingProductId, setEditingProductId] = useState<number | null>(null);
   const [showModalForm, setShowModalForm] = useState<boolean>(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [formData, setFormData] = useState<ProductFormType>({
     name: '',
     description: '',
@@ -32,6 +37,13 @@ export default function AdminPanelPage() {
       ...prevData,
       [event.target.name]: event.target.type === 'number' ? Number(event.target.value) : event.target.value
     }));
+  }
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target;
+    if (files && files[0]) {
+      setImageFile(files[0]);
+    }
   }
 
   const handleAdd = () => {
@@ -62,7 +74,7 @@ export default function AdminPanelPage() {
       description: product.description,
       brand: product.brand,
       price: product.price,
-      image: product.image,
+      image: product.image || '',
       product_type: product.product_type,
       telescope_type_id: 1,
       optical_design_id: 1,
@@ -89,16 +101,22 @@ export default function AdminPanelPage() {
     setShowModalForm(false);
   }
 
-  const handleDelete = async (id: number, product_type: string) => {
+  const handleDelete = async (id: number, productType: string, image_public_id: string) => {
     if (!window.confirm('Are you sure you want to delete this product?')) {
       return;
     }
     try {
-      const token = getItem('token');
+      const token: string | null = getItem('token');
       if (!token) {
         throw new Error('No authentication token found');
       }
-      await deleteProductService(id, token, { product_type });
+      await deleteProductService(id, token, {
+        productType,
+        image_public_id
+      });
+
+      removeItem('products');
+      removeItem('')
       await fetchProducts(); // Refresh table with updated data
       alert('Product deleted succesfully');
     } catch (error) {
@@ -110,21 +128,43 @@ export default function AdminPanelPage() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const token = getItem('token');
+      const token: string | null = getItem('token');
       if (!token) {
         throw new Error('No authentication token found');
       }
-      // Edit product ot add product
+      if (!imageFile) {
+        throw new Error('Image is required');
+      }
+
+      // Create FormData and add image data
+      const formDataToSend = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key !== 'image') {
+          formDataToSend.append(key, String(value));
+        }
+      });
+      if (imageFile) {
+        formDataToSend.append('image', imageFile);
+      }
+
+      // If editing edit product else add product
       if (editingProductId) {
-        await updateProductService(editingProductId, token, formData);
+        const product = products.find((product) => product.id === editingProductId);
+        if (product) {
+          formDataToSend.append('image_public_id', product.image_public_id);
+        }
+
+        await updateProductService(editingProductId, token, formDataToSend);
         alert('Product updated succesfully');
       } else {
-        await addProductService(formData, token);
+        await addProductService(formDataToSend, token);
         alert('Product added succesfully');
       }
       await fetchProducts(); // Refresh table with updated data
+
       setShowModalForm(false);
       setEditingProductId(null);
+      setImageFile(null);
     } catch (error) {
       console.error('Error adding new product', error);
       alert('Error adding product');
@@ -143,7 +183,8 @@ export default function AdminPanelPage() {
     }
   }, [selectedCategory, products]);
 
-  if (products.length === 0) return <p>No products found</p>;
+  // Mejorar despues; 
+  // if (products.length === 0) return <p>No products found</p>;
   return (
     <section>
       <h2>Admin Panel</h2>
@@ -156,11 +197,13 @@ export default function AdminPanelPage() {
 
       <button onClick={handleAdd}>Add a new product</button>
 
-      <ProductTable
-        products={filteredProducts}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      {products.length !== 0 ? (
+        <ProductTable
+          products={filteredProducts}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+      ): <p>No Products</p>}
       <ModalForm
         showModalForm={showModalForm}
         title={editingProductId ? 'Update Product' : 'Add Product'}
@@ -171,6 +214,7 @@ export default function AdminPanelPage() {
           formData={formData}
           editingProductId={editingProductId}
           onChange={handleChange}
+          onImageChange={handleImageChange}
           onSubmit={handleSubmit}
           onCancelEdit={handleCancelEdit}
         />

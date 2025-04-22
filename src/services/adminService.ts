@@ -1,14 +1,11 @@
-import { ProductFormType } from "../types/types.ts";
-
-export const addProductService = async (newProduct: ProductFormType, token: string) => {
+export const addProductService = async (newProduct: FormData, token: string) => {
  const response = await fetch('http://localhost:3000/api/admin/products', {
   method: 'POST',
   credentials: 'include',
   headers: {
-   'Content-Type': 'application/json',
    'Authorization': `Bearer ${token}`
   },
-  body: JSON.stringify(newProduct)
+  body: newProduct
  });
  if (!response.ok) {
   throw new Error('Failed to add new product');
@@ -17,15 +14,14 @@ export const addProductService = async (newProduct: ProductFormType, token: stri
  return result;
 }
 
-export const updateProductService = async (id: number, token: string, updatedProduct: ProductFormType) => {
+export const updateProductService = async (id: number, token: string, updatedProduct: FormData) => {
  const response = await fetch(`http://localhost:3000/api/admin/products/${id}`, {
   method: 'PUT',
   credentials: 'include',
   headers: {
-   'Content-Type': 'application/json',
    'Authorization': `Bearer ${token}`
   },
-  body: JSON.stringify(updatedProduct)
+  body: updatedProduct
  });
  if (!response.ok) {
   throw new Error('Failed to update product');
@@ -34,7 +30,14 @@ export const updateProductService = async (id: number, token: string, updatedPro
  return result;
 }
 
-export const deleteProductService = async (id: number, token: string, productType: { product_type: string }) => {
+export const deleteProductService = async (
+ id: number,
+ token: string,
+ data: {
+  productType: string,
+  image_public_id: string
+ }
+) => {
  const response = await fetch(`http://localhost:3000/api/admin/products/${id}`, {
   method: 'DELETE',
   credentials: 'include',
@@ -42,7 +45,10 @@ export const deleteProductService = async (id: number, token: string, productTyp
    'Content-Type': 'application/json',
    'Authorization': `Bearer ${token}`
   },
-  body: JSON.stringify(productType)
+  body: JSON.stringify({
+   productType: data.productType,
+   image_public_id: data.image_public_id
+  })
  });
  if (!response.ok) {
   throw new Error('Failed to delete product');

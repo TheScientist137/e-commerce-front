@@ -14,6 +14,7 @@ export type ProductType = {
  brand: string,
  price: number,
  image: string,
+ image_public_id: string,
  product_type: 'telescope' | 'mount',
  created_at: string,
  updated_at: string

@@ -4,6 +4,7 @@ type ProductFormProps = {
  formData: ProductFormType,
  editingProductId: number | null,
  onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void,
+ onImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
  onSubmit: (event: React.FormEvent) => void,
  onCancelEdit: () => void
 }
@@ -12,6 +13,7 @@ export default function ProductForm({
  formData,
  editingProductId,
  onChange,
+ onImageChange,
  onSubmit,
  onCancelEdit
 }: ProductFormProps) {
@@ -68,11 +70,11 @@ export default function ProductForm({
    <div>
     <label htmlFor="image">Image</label>
     <input
-     type="text"
+     type="file"
+     accept="image/*"
      id="image"
      name="image"
-     value={formData.image}
-     onChange={onChange}
+     onChange={onImageChange}
      required
     />
    </div>
