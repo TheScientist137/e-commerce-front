@@ -4,6 +4,7 @@ import {
   getProductsService,
   getTelescopesService,
   getMountsService,
+  getProductTypesService
 } from "../services/shopService.ts";
 import { getItem, removeItem, setItem } from "../utils/localStorage.ts";
 import {
@@ -11,30 +12,33 @@ import {
   CartItemType,
   TelescopeType,
   MountType,
+  ProductsTypesType
 } from "../types/types.ts";
 
 export type ShopContextType = {
-  products: ProductType[];
-  telescopes: TelescopeType[];
-  mounts: MountType[];
-  cartItems: CartItemType[];
-  filteredProducts: ProductType[] | TelescopeType[] | MountType[];
-  selectedCategory: string;
-  setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
-  setTelescopes: React.Dispatch<React.SetStateAction<TelescopeType[]>>;
-  setMounts: React.Dispatch<React.SetStateAction<MountType[]>>;
-  setFilteredProducts: React.Dispatch<React.SetStateAction<ProductType[] | TelescopeType[] | MountType[]>>;
-  setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
-  fetchProducts: () => Promise<void>;
+  products: ProductType[],
+  telescopes: TelescopeType[],
+  mounts: MountType[],
+  cartItems: CartItemType[],
+  filteredProducts: ProductType[] | TelescopeType[] | MountType[],
+  selectedCategory: string,
+  productsTypes: ProductsTypesType,
+  fetchProducts: () => Promise<void>,
   filterProducts: (
     category: string,
     type: string,
     opticalDesign?: string,
   ) => void;
-  addToCart: (product: ProductType) => void;
-  removeFromCart: (productId: number) => void;
-  updateQuantity: (productId: number, quantity: number) => void;
+  addToCart: (product: ProductType) => void,
+  removeFromCart: (productId: number) => void,
+  updateQuantity: (productId: number, quantity: number) => void,
 };
+
+const initialProductsTypes: ProductsTypesType = {
+  telescopeTypes: [],
+  opticalDesigns: [],
+  mountTypes: []
+}
 
 export const ShopContextProvider = ({
   children,
@@ -47,22 +51,24 @@ export const ShopContextProvider = ({
   const [filteredProducts, setFilteredProducts] = useState<
     ProductType[] | TelescopeType[] | MountType[]
   >([]);
+  const [productsTypes, setProductsTypes] = useState<ProductsTypesType>(initialProductsTypes);
   const [selectedCategory, setSelectedCategory] = useState<string>("products");
-  const [selectedType, setSelectedType] = useState<string>("all");
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
 
-  // Save products, telescopes and mounts on localStorage?????
   const fetchProducts = async () => {
     try {
       const productsData = await getProductsService();
       const telescopesData = await getTelescopesService();
       const mountsData = await getMountsService();
+      const typesData = await getProductTypesService();
 
       setProducts(productsData);
       setTelescopes(telescopesData);
       setMounts(mountsData);
+      setProductsTypes(typesData);
       setFilteredProducts(productsData);
 
+      // Improve => (retrieve empty array???)
       if (productsData.length > 0) {
         setItem('products', productsData);
       } else {
@@ -73,12 +79,12 @@ export const ShopContextProvider = ({
       } else {
         removeItem("telescopes");
       }
-
       if (mountsData.length > 0) {
         setItem("mounts", mountsData);
       } else {
         removeItem("mounts");
       }
+      setItem('types', typesData);
     } catch (error) {
       console.error("Error fetching products:", error);
       removeItem('products');
@@ -96,8 +102,6 @@ export const ShopContextProvider = ({
     opticalDesign?: string,
   ) => {
     setSelectedCategory(category);
-    setSelectedType(type); // work on it later
-
     if (category === "products") {
       setFilteredProducts(products);
       return;
@@ -171,10 +175,13 @@ export const ShopContextProvider = ({
     const savedProducts: ProductType[] | null = getItem("products");
     const savedTelescopes: TelescopeType[] | null = getItem("telescopes");
     const savedMounts: MountType[] | null = getItem("mounts");
+    const savedTypes: ProductsTypesType | null = getItem('types');
+
     if (savedProducts && savedTelescopes && savedMounts) {
       setProducts(savedProducts);
       setTelescopes(savedTelescopes);
-      setMounts(savedMounts);
+      // Comprobar si debe de ir aqui
+      setProductsTypes(savedTypes);
       setFilteredProducts(savedProducts);
     } else {
       fetchProducts();
@@ -200,17 +207,13 @@ export const ShopContextProvider = ({
     <ShopContext.Provider
       value={{
         products,
+        telescopes,
+        mounts,
+        productsTypes,
         filteredProducts,
         selectedCategory,
         cartItems,
-        setProducts,
-        setFilteredProducts,
-        setSelectedCategory,
         fetchProducts,
-        telescopes,
-        mounts,
-        setTelescopes,
-        setMounts,
         filterProducts,
         addToCart,
         removeFromCart,

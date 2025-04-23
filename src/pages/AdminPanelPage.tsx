@@ -118,9 +118,7 @@ export default function AdminPanelPage() {
         productType,
         image_public_id
       });
-
       removeItem('products');
-      removeItem('')
       await fetchProducts(); // Refresh table with updated data
       alert('Product deleted succesfully');
     } catch (error) {

@@ -20,32 +20,31 @@ export type ProductType = {
  updated_at: string
 }
 
-export type TelescopeType = {
- id: number,
- product_type: 'telescope'
- name: string,
- description: string,
- brand: string,
- price: number,
- image: string,
+export type TelescopeType = ProductType &{
  telescope_type: string,
  telescope_type_description: string,
  optical_design_type: string,
  optical_design_description: string,
 }
 
-export type MountType = {
- id: number,
- product_type: 'mount'
- name: string,
- description: string,
- brand: string,
- price: number,
- image: string,
+export type MountType = ProductType & {
  mount_type: string,
  mount_type_description: string,
 }
 
+export type ProductCategoryType = {
+ id: number,
+ type: string,
+ description: string
+}
+
+export type ProductsTypesType = {
+ telescopeTypes: ProductCategoryType[],
+ opticalDesigns: ProductCategoryType[],
+ mountTypes: ProductCategoryType[]
+}
+
+// Comprobar si sigue haciendo falta?? => Refactor
 export type ProductFormType = {
  name: string,
  description: string,

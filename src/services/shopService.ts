@@ -1,6 +1,6 @@
 import { MountType, ProductType, TelescopeType } from "../types/types.ts";
 
-// Arreglar problema con localStorage y mejorar funciones de servicios!!!!!!!!!!
+// MEJORAR SERVICIOS !!!!!!!!
 
 export const getProductsService = async (): Promise<ProductType[]> => {
   const response = await fetch("http://localhost:3000/api/shop/products", {
@@ -28,3 +28,12 @@ export const getMountsService = async (): Promise<MountType[]> => {
   console.log(data.message);
   return data.mounts || [];
 };
+
+export const getProductTypesService = async () => {
+  const response = await fetch('http://localhost:3000/api/shop/products/types', {
+    credentials: 'include',
+  });
+  const data = await response.json();
+  console.log(data.message);
+  return data.types;
+}

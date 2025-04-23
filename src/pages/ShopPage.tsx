@@ -2,22 +2,15 @@ import { useShopContext } from "../hooks/useContext";
 import { Link } from "react-router";
 
 export default function ShopPage() {
-  const { filteredProducts, selectedCategory, filterProducts, telescopes, mounts } = useShopContext();
+  const {
+    filteredProducts,
+    selectedCategory,
+    filterProducts,
+    telescopes,
+    mounts,
+    productsTypes } = useShopContext();
 
-  // MEJORAR LÓGICA
-  // Get telescope and mount types
-  const telescopeTypes = telescopes.map((telescope) => telescope.telescope_type);
-  const mountTypes = mounts.map((mount) => mount.mount_type);
-  // Get optical design types
-  const opticalDesignTypes = telescopes.map((telescope) => telescope.optical_design_type);
-  console.log(opticalDesignTypes);
-  // Eliminate duplicate values (specific types)
-  const uniqueTelescopeTypes = [...new Set(telescopeTypes)];
-  const uniqueMountTypes = [...new Set(mountTypes)];
-  const uniqueOpticalDesignTypes = [...new Set(opticalDesignTypes)];
-  console.log(uniqueOpticalDesignTypes);
-
-
+  console.log(productsTypes);
   return (
     <section>
       <div>
@@ -29,13 +22,13 @@ export default function ShopPage() {
       {selectedCategory === 'telescopes' && (
         <div>
           <div>
-            {uniqueTelescopeTypes.map((type) => (
-              <button key={type} onClick={() => filterProducts('telescopes', type)}>{type}</button>
+            {productsTypes.telescopeTypes.map((type) => (
+              <button key={type.id}>{type.type}</button>
             ))}
           </div>
           <div>
-            {uniqueOpticalDesignTypes.map((design) => (
-              <button key={design} onClick={() => filterProducts('telescopes', 'all', design)}>{design}</button>
+            {productsTypes.opticalDesigns.map((design) => (
+              <button key={design.id}>{design.type}</button>
             ))}
           </div>
         </div>
@@ -44,8 +37,8 @@ export default function ShopPage() {
       {selectedCategory === 'mounts' && (
         <div>
           <div>
-            {uniqueMountTypes.map((type) => (
-              <button key={type} onClick={() => filterProducts('mounts', type)}>{type}</button>
+            {productsTypes.mountTypes.map((type) => (
+              <button key={type.id}>{type.type}</button>
             ))}
           </div>
         </div>
