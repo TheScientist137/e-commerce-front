@@ -26,7 +26,7 @@ export type ShopContextType = {
   fetchProducts: () => Promise<void>,
   filterProducts: (
     category: string,
-    type: string,
+    type?: string,
     opticalDesign?: string,
   ) => void;
   addToCart: (product: ProductType) => void,
@@ -98,35 +98,32 @@ export const ShopContextProvider = ({
   // Filter products by category, type and optical design
   const filterProducts = (
     category: string,
-    type: string,
+    type?: string,
     opticalDesign?: string,
   ) => {
+    // Set Selected Product Category
     setSelectedCategory(category);
+
     if (category === "products") {
       setFilteredProducts(products);
       return;
     }
     if (category === "telescopes") {
-      if (type === "all" && opticalDesign === "all") {
+      if (type === 'all types' && opticalDesign === 'all optical designs') {
         setFilteredProducts(telescopes);
-      } else if (type !== "all") {
-        const filteredTelescopes = telescopes.filter(
-          (telescope) => telescope.telescope_type === type,
-        );
+      } else if (type !== 'all types') {
+        const filteredTelescopes = telescopes.filter((telescope) => telescope.telescope_type === type);
         setFilteredProducts(filteredTelescopes);
-      } else if (opticalDesign !== "all") {
-        const filteredTelescopes = telescopes.filter(
-          (telescope) => telescope.optical_design_type === opticalDesign,
-        );
+      } else if (opticalDesign !== 'all optical designs') {
+        const filteredTelescopes = telescopes.filter((telescope) => telescope.optical_design_type === opticalDesign);
         setFilteredProducts(filteredTelescopes);
       }
-    } else if (category === "mounts") {
-      if (type === "all") {
+    }
+    if (category === 'mounts') {
+      if (type === 'all types') {
         setFilteredProducts(mounts);
       } else {
-        const filteredMounts = mounts.filter(
-          (mount) => mount.mount_type === type,
-        );
+        const filteredMounts = mounts.filter((mount) => mount.mount_type === type);
         setFilteredProducts(filteredMounts);
       }
     }

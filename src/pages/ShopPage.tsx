@@ -10,25 +10,28 @@ export default function ShopPage() {
     mounts,
     productsTypes } = useShopContext();
 
-  console.log(productsTypes);
   return (
     <section>
       <div>
-        <button onClick={() => filterProducts('products', 'all types')}>All Products</button>
-        <button onClick={() => filterProducts('telescopes', 'all', 'all')}>Telescopes</button>
-        <button onClick={() => filterProducts('mounts', 'all', 'all')}>Mounts</button>
+        <button onClick={() => filterProducts('products')}>All Products</button>
+        <button onClick={() => filterProducts('telescopes', 'all types', 'all optical designs')}>Telescopes</button>
+        <button onClick={() => filterProducts('mounts', 'all types')}>Mounts</button>
       </div>
 
       {selectedCategory === 'telescopes' && (
         <div>
           <div>
             {productsTypes.telescopeTypes.map((type) => (
-              <button key={type.id}>{type.type}</button>
+              <button key={type.id} onClick={() => filterProducts('telescopes', type.type)}>
+                {type.type}
+              </button>
             ))}
           </div>
           <div>
             {productsTypes.opticalDesigns.map((design) => (
-              <button key={design.id}>{design.type}</button>
+              <button key={design.id} onClick={() => filterProducts('telescopes', 'all types', design.type)}>
+                {design.type}
+              </button>
             ))}
           </div>
         </div>
@@ -38,7 +41,9 @@ export default function ShopPage() {
         <div>
           <div>
             {productsTypes.mountTypes.map((type) => (
-              <button key={type.id}>{type.type}</button>
+              <button key={type.id} onClick={() => filterProducts('mounts', type.type)}>
+                {type.type}
+              </button>
             ))}
           </div>
         </div>
