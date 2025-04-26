@@ -20,7 +20,7 @@ export type ProductType = {
  updated_at: string
 }
 
-export type TelescopeType = ProductType &{
+export type TelescopeType = ProductType & {
  telescope_type: string,
  telescope_type_description: string,
  optical_design_type: string,
@@ -45,6 +45,7 @@ export type ProductsTypesType = {
 }
 
 // Comprobar si sigue haciendo falta?? => Refactor
+// Mejorar codigo donde usamos el tipo
 export type ProductFormType = {
  name: string,
  description: string,

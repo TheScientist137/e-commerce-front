@@ -186,7 +186,7 @@ export default function AdminPanelPage() {
   }, [selectedCategory, products]);
 
   // Mejorar despues; 
-  // if (products.length === 0) return <p>No products found</p>;
+  if (products.length === 0) return <p>No products found</p>;
   return (
     <section>
       <h2>Admin Panel</h2>

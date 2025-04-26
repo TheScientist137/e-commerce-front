@@ -94,7 +94,6 @@ export const ShopContextProvider = ({
   };
 
   // MEJORAR
-  // crear funcion para filtrar por categoria y otra para filtrar por tipo y optical design?
   // Filter products by category, type and optical design
   const filterProducts = (
     category: string,
@@ -118,6 +117,7 @@ export const ShopContextProvider = ({
         const filteredTelescopes = telescopes.filter((telescope) => telescope.optical_design_type === opticalDesign);
         setFilteredProducts(filteredTelescopes);
       }
+      return;
     }
     if (category === 'mounts') {
       if (type === 'all types') {
@@ -129,7 +129,7 @@ export const ShopContextProvider = ({
     }
   };
 
-  // Add product to cart
+  // Add product to cart (IMPROVE !!!)
   const addToCart = (product: ProductType) => {
     const existingItem = cartItems.find(
       (item) => item.product.id === product.id,
@@ -168,16 +168,16 @@ export const ShopContextProvider = ({
   };
 
   useEffect(() => {
-    // Initialize products, telescopes and mounts from localStorage
+    // Initialize products, telescopes, mounts and specifications from localStorage
     const savedProducts: ProductType[] | null = getItem("products");
     const savedTelescopes: TelescopeType[] | null = getItem("telescopes");
     const savedMounts: MountType[] | null = getItem("mounts");
     const savedTypes: ProductsTypesType | null = getItem('types');
 
-    if (savedProducts && savedTelescopes && savedMounts) {
+    if (savedProducts && savedTelescopes && savedMounts && savedTypes) {
       setProducts(savedProducts);
       setTelescopes(savedTelescopes);
-      // Comprobar si debe de ir aqui
+      setMounts(savedMounts);
       setProductsTypes(savedTypes);
       setFilteredProducts(savedProducts);
     } else {
@@ -188,17 +188,18 @@ export const ShopContextProvider = ({
     const savedCartItems = getItem("cartItems");
     if (savedCartItems && Array.isArray(savedCartItems)) {
       setCartItems(savedCartItems);
-    }
+    } 
   }, []);
 
   // Save cart items to localStorage whenever they change
+  // Remove items from localStorage when cart is empty
   useEffect(() => {
     if (cartItems.length > 0) {
       setItem("cartItems", cartItems);
+    } else {
+      removeItem('cartItems')
     }
   }, [cartItems]);
-
-  console.log("Cart items:", cartItems);
 
   return (
     <ShopContext.Provider

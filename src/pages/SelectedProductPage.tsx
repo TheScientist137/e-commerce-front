@@ -1,52 +1,68 @@
 import { Link, useParams } from "react-router";
-import { useShopContext } from '../hooks/useContext';
+import { useEffect, useState } from "react";
+import { getProductByIdService } from "../services/shopService.ts";
+import { MountType, TelescopeType } from "../types/types.ts";
+import { useShopContext } from "../hooks/useContext.ts";
 
 export default function ProductPage() {
-  const { telescopes, mounts, addToCart } = useShopContext();
   const { id } = useParams();
+  const { addToCart } = useShopContext();
+  const [selectedProduct, setSelectedProduct] = useState<TelescopeType | MountType | null>(null)
 
-  const products = [...telescopes, ...mounts];
-  const selectedProduct = products.find(product => product.id === Number(id));
 
-  console.log(selectedProduct);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        if (!id) {
+          throw new Error('Id is missing');
+        }
+        const productData = await getProductByIdService(id);
+        setSelectedProduct(productData);
+      } catch (error) {
+        console.error('Error fetching product by id', error);
+      }
+    }
+    fetchProduct();
+  }, [id])
+
+  if (!selectedProduct) {
+    return <div>Loading product...</div>
+  }
   return (
     <section>
       <Link to='/'>Back shop</Link>
 
-      {selectedProduct ? (
-        <div>
+      <div>
+        <h3>{selectedProduct.brand}</h3>
+        <h3>{selectedProduct.name}</h3>
+        <img src={selectedProduct.image} alt="product image" />
+        <p>{selectedProduct.price}</p>
+        <button onClick={() => addToCart(selectedProduct)}>
+          <Link to='/cart'>ADD TO CART</Link>
+        </button>
+      </div>
+      <div>
+        <h3>Product Description</h3>
+        <p>{selectedProduct.description}</p>
+      </div>
+      <div>
+        <h3>Specifications</h3>
+        {selectedProduct.product_type === 'telescope' && (
           <div>
-            <h2>{selectedProduct.name}</h2>
-            <img src={selectedProduct.image} alt="image" />
-            <p>{selectedProduct.brand}</p>
-            <p>{selectedProduct.description}</p>
-            <p>{selectedProduct.price}</p>
+            <p>Telescope Type: {(selectedProduct as TelescopeType).telescope_type}</p>
+            <p>{(selectedProduct as TelescopeType).telescope_type_description}</p>
+            <p>Optical Design: {(selectedProduct as TelescopeType).optical_design_type}</p>
+            <p>{(selectedProduct as TelescopeType).optical_design_description}</p>
           </div>
-
+        )}
+        {selectedProduct.product_type === 'mount' && (
           <div>
-            <h3>Specific details</h3>
-            {selectedProduct.product_type === 'telescope' && (
-              <>
-                <p>Telescope Type: {selectedProduct.telescope_type}</p>
-                <p>Description: {selectedProduct.telescope_type_description}</p>
-                <p>Optical Design: {selectedProduct.optical_design_type}</p>
-                <p>Description: {selectedProduct.optical_design_description}</p>
-              </>
-            )}
+            <p>Mount Type: {(selectedProduct as MountType).mount_type}</p>
+            <p>{(selectedProduct as MountType).mount_type_description}</p>
+          </div>
+        )}
+      </div>
 
-            {selectedProduct.product_type === 'mount' && (
-              <>
-                <p>Mount Type: {selectedProduct.mount_type}</p>
-                <p>Description: {selectedProduct.mount_type_description}</p>
-              </>
-            )}
-          </ div>
-        </div>
-      ) : (<p>Telescope not found</p>)}
-
-      <button onClick={() => addToCart(selectedProduct)}>
-        <Link to='/cart'>Add to cart</Link>
-      </button>
     </section>
   )
 }

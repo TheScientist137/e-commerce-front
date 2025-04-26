@@ -1,4 +1,4 @@
-import { useNavigate, Link, NavLink } from "react-router";
+import { useNavigate } from "react-router";
 import { useAuthContext, useShopContext } from "../hooks/useContext";
 import { logoutService } from "../services/authService";
 import { IoCartOutline } from "react-icons/io5";
@@ -22,7 +22,6 @@ export default function Navbar() {
 
   return (
     <div className="nav-container">
-      <h1><Link to='/'>TelescopEcommerce</Link></h1>
       {user !== null ?
         <button onClick={handleLogout}>Logout</button> :
         <button onClick={() => navigate('/login')}><FaRegUser size={24} /></button>}

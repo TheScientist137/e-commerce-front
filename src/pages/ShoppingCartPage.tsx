@@ -25,6 +25,7 @@ export default function ShoppingCartPage() {
         {/* Item Image */}
         <p>{item.product.name}</p>
         <p>{item.product.brand}</p>
+        <img src={item.product.image} alt="Product Image" />
         <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)}>-</button>
         <span>{item.quantity}</span>
         <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)}>+</button>
