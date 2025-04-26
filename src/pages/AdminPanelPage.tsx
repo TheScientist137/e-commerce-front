@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useShopContext } from "../hooks/useContext.ts"
 import {
   addProductService,
@@ -9,13 +9,12 @@ import { getItem, removeItem } from "../utils/localStorage.ts";
 import ProductForm from "../components/ProductForm.tsx";
 import ProductTable from "../components/ProductTable.tsx";
 import ModalForm from "../components/ModalForm.tsx";
-import { ProductFormType, ProductType } from "../types/types.ts";
+import FilterButtons from "../components/FilterButtons.tsx";
+import { ProductFormType } from "../types/types.ts";
 
 export default function AdminPanelPage() {
   // We need to handle the erros and improve user experience
-  const { products, fetchProducts } = useShopContext();
-  const [filteredProducts, setFilteredProducts] = useState<ProductType[]>(products);
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const { products, fetchProducts, filteredProducts } = useShopContext();
   const [editingProductId, setEditingProductId] = useState<number | null>(null);
   const [showModalForm, setShowModalForm] = useState<boolean>(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -173,17 +172,6 @@ export default function AdminPanelPage() {
     }
   }
 
-  // Filter products based on selected category when user clicks on button
-  // update the filteredProducts state
-  useEffect(() => {
-    if (selectedCategory === 'all') {
-      setFilteredProducts(products);
-    } else if (selectedCategory === 'telescopes') {
-      setFilteredProducts(products.filter(product => product.product_type === 'telescope'));
-    } else if (selectedCategory === 'mounts') {
-      setFilteredProducts(products.filter(product => product.product_type === 'mount'));
-    }
-  }, [selectedCategory, products]);
 
   // Mejorar despues; 
   if (products.length === 0) return <p>No products found</p>;
@@ -191,11 +179,7 @@ export default function AdminPanelPage() {
     <section>
       <h2>Admin Panel</h2>
 
-      <div>
-        <button onClick={() => setSelectedCategory('all')}>All</button>
-        <button onClick={() => setSelectedCategory('telescopes')}>Telescopes</button>
-        <button onClick={() => setSelectedCategory('mounts')}>Mounts</button>
-      </div>
+      <FilterButtons />
 
       <button onClick={handleAdd}>Add a new product</button>
 
