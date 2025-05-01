@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useShopContext } from "../hooks/useContext.ts"
+import { useShopContext } from "../hooks/useContext.ts";
 import {
   addProductService,
   updateProductService,
@@ -8,7 +8,7 @@ import {
 import { getItem, removeItem } from "../utils/localStorage.ts";
 import ProductForm from "../components/ProductForm.tsx";
 import ProductTable from "../components/ProductTable.tsx";
-import ModalForm from "../components/ModalForm.tsx";
+import FormModal from "../components/FormModal.tsx";
 import FilterButtons from "../components/FilterButtons.tsx";
 import { ProductFormType } from "../types/types.ts";
 
@@ -19,56 +19,59 @@ export default function AdminPanelPage() {
   const [showModalForm, setShowModalForm] = useState<boolean>(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [formData, setFormData] = useState<ProductFormType>({
-    name: '',
-    description: '',
-    brand: '',
+    name: "",
+    description: "",
+    brand: "",
     price: 0,
-    image: '',
-    product_type: 'telescope',
+    image: "",
+    product_type: "telescope",
     telescope_type_id: 1,
     optical_design_id: 1,
-    mount_type_id: 1
+    mount_type_id: 1,
   });
 
   // HANDLERS
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     setFormData((prevData) => ({
       ...prevData,
-      [event.target.name]: event.target.type === 'number' ?
-        Number(event.target.value) :
-        event.target.value
+      [event.target.name]:
+        event.target.type === "number"
+          ? Number(event.target.value)
+          : event.target.value,
     }));
-  }
+  };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
     if (files && files[0]) {
       setImageFile(files[0]);
     }
-  }
+  };
 
   const handleAdd = () => {
     setFormData({
-      name: '',
-      description: '',
-      brand: '',
+      name: "",
+      description: "",
+      brand: "",
       price: 0,
-      image: '',
-      product_type: 'telescope',
+      image: "",
+      product_type: "telescope",
       telescope_type_id: 1,
       optical_design_id: 1,
-      mount_type_id: 1
-    })
+      mount_type_id: 1,
+    });
     setShowModalForm(true);
-  }
+  };
 
   const handleEdit = (id: number) => {
     // Set form with specific product data for edit
     const product = products.find((product) => product.id === id);
     if (!product) {
-      alert('Product not found');
+      alert("Product not found");
       return;
     }
     setEditingProductId(id);
@@ -77,89 +80,95 @@ export default function AdminPanelPage() {
       description: product.description,
       brand: product.brand,
       price: product.price,
-      image: product.image || '',
+      image: product.image || "",
       product_type: product.product_type,
       telescope_type_id: 1,
       optical_design_id: 1,
-      mount_type_id: 1
+      mount_type_id: 1,
     };
     setFormData(defaultFormData);
-    setShowModalForm(true)
-  }
+    setShowModalForm(true);
+  };
 
   const handleCancelEdit = () => {
     // Reset form data
     setFormData({
-      name: '',
-      description: '',
-      brand: '',
+      name: "",
+      description: "",
+      brand: "",
       price: 0,
-      image: '',
-      product_type: 'telescope',
+      image: "",
+      product_type: "telescope",
       telescope_type_id: 1,
       optical_design_id: 1,
-      mount_type_id: 1
+      mount_type_id: 1,
     });
     setEditingProductId(null);
     setShowModalForm(false);
-  }
+  };
 
-  const handleDelete = async (id: number, productType: string, image_public_id: string) => {
-    if (!window.confirm('Are you sure you want to delete this product?')) {
+  const handleDelete = async (
+    id: number,
+    productType: string,
+    image_public_id: string
+  ) => {
+    if (!window.confirm("Are you sure you want to delete this product?")) {
       return;
     }
     try {
-      const token: string | null = getItem('token');
+      const token: string | null = getItem("token");
       if (!token) {
-        throw new Error('No authentication token found');
+        throw new Error("No authentication token found");
       }
       await deleteProductService(id, token, {
         productType,
-        image_public_id
+        image_public_id,
       });
-      removeItem('products');
+      removeItem("products");
       await fetchProducts(); // Refresh table with updated data
-      alert('Product deleted succesfully');
+      alert("Product deleted succesfully");
     } catch (error) {
-      console.error('Error deleting product', error);
-      alert('Error deleting product');
+      console.error("Error deleting product", error);
+      alert("Error deleting product");
     }
-  }
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const token: string | null = getItem('token');
+      const token: string | null = getItem("token");
       if (!token) {
-        throw new Error('No authentication token found');
+        throw new Error("No authentication token found");
       }
       if (!imageFile) {
-        throw new Error('Image is required');
+        throw new Error("Image is required");
       }
 
       // Create FormData and add image data
       const formDataToSend = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
-        if (key !== 'image') {
+        if (key !== "image") {
           formDataToSend.append(key, String(value));
         }
       });
       if (imageFile) {
-        formDataToSend.append('image', imageFile);
+        formDataToSend.append("image", imageFile);
       }
 
       // If editing edit product else add product
       if (editingProductId) {
-        const product = products.find((product) => product.id === editingProductId);
+        const product = products.find(
+          (product) => product.id === editingProductId
+        );
         if (product) {
-          formDataToSend.append('image_public_id', product.image_public_id);
+          formDataToSend.append("image_public_id", product.image_public_id);
         }
 
         await updateProductService(editingProductId, token, formDataToSend);
-        alert('Product updated succesfully');
+        alert("Product updated succesfully");
       } else {
         await addProductService(formDataToSend, token);
-        alert('Product added succesfully');
+        alert("Product added succesfully");
       }
       await fetchProducts(); // Refresh table with updated data
 
@@ -167,20 +176,18 @@ export default function AdminPanelPage() {
       setEditingProductId(null);
       setImageFile(null);
     } catch (error) {
-      console.error('Error adding new product', error);
-      alert('Error adding product');
+      console.error("Error adding new product", error);
+      alert("Error adding product");
     }
-  }
+  };
 
-
-  // Mejorar despues; 
+  // Mejorar despues;
   if (products.length === 0) return <p>No products found</p>;
   return (
     <section>
       <h2>Admin Panel</h2>
 
       <FilterButtons />
-
       <button onClick={handleAdd}>Add a new product</button>
 
       {products.length !== 0 ? (
@@ -189,13 +196,15 @@ export default function AdminPanelPage() {
           onEdit={handleEdit}
           onDelete={handleDelete}
         />
-      ) : <p>No Products</p>}
-      <ModalForm
+      ) : (
+        <p>No Products</p>
+      )}
+
+      <FormModal
         showModalForm={showModalForm}
-        title={editingProductId ? 'Update Product' : 'Add Product'}
+        title={editingProductId ? "Update Product" : "Add Product"}
         onClose={handleCancelEdit}
       >
-
         <ProductForm
           formData={formData}
           editingProductId={editingProductId}
@@ -204,7 +213,7 @@ export default function AdminPanelPage() {
           onSubmit={handleSubmit}
           onCancelEdit={handleCancelEdit}
         />
-      </ModalForm>
+      </FormModal>
     </section>
-  )
-} 
+  );
+}

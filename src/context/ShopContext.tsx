@@ -4,7 +4,6 @@ import {
   getProductsService,
   getTelescopesService,
   getMountsService,
-  getProductTypesService
 } from "../services/shopService.ts";
 import { getItem, removeItem, setItem } from "../utils/localStorage.ts";
 import {
@@ -12,33 +11,37 @@ import {
   CartItemType,
   TelescopeType,
   MountType,
-  ProductsTypesType
+  ProductsTypesType,
 } from "../types/types.ts";
 
+// Move to types.ts ???
 export type ShopContextType = {
-  products: ProductType[],
-  telescopes: TelescopeType[],
-  mounts: MountType[],
-  cartItems: CartItemType[],
-  filteredProducts: ProductType[] | TelescopeType[] | MountType[],
-  selectedCategory: string,
-  productsTypes: ProductsTypesType,
-  fetchProducts: () => Promise<void>,
+  products: ProductType[];
+  telescopes: TelescopeType[];
+  mounts: MountType[];
+  cartItems: CartItemType[];
+  setCartItems: React.Dispatch<React.SetStateAction<CartItemType[]>>;
+  filteredProducts: ProductType[] | TelescopeType[] | MountType[];
+  selectedCategory: string;
+  productsTypes: ProductsTypesType;
+  fetchProducts: () => Promise<void>;
   filterProducts: (
     category: string,
     type?: string,
-    opticalDesign?: string,
+    opticalDesign?: string
   ) => void;
-  addToCart: (product: ProductType) => void,
-  removeFromCart: (productId: number) => void,
-  updateQuantity: (productId: number, quantity: number) => void,
+  addToCart: (product: ProductType) => void;
+  removeFromCart: (productId: number) => void;
+  updateQuantity: (productId: number, quantity: number) => void;
+  calculateTotalPrice: () => number;
+  formatPrice: (price: number) => string;
 };
 
 const initialProductsTypes: ProductsTypesType = {
   telescopeTypes: [],
   opticalDesigns: [],
-  mountTypes: []
-}
+  mountTypes: [],
+};
 
 export const ShopContextProvider = ({
   children,
@@ -51,7 +54,8 @@ export const ShopContextProvider = ({
   const [filteredProducts, setFilteredProducts] = useState<
     ProductType[] | TelescopeType[] | MountType[]
   >([]);
-  const [productsTypes, setProductsTypes] = useState<ProductsTypesType>(initialProductsTypes);
+  const [productsTypes, setProductsTypes] =
+    useState<ProductsTypesType>(initialProductsTypes);
   const [selectedCategory, setSelectedCategory] = useState<string>("products");
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
 
@@ -60,19 +64,18 @@ export const ShopContextProvider = ({
       const productsData = await getProductsService();
       const telescopesData = await getTelescopesService();
       const mountsData = await getMountsService();
-      const typesData = await getProductTypesService();
 
       setProducts(productsData);
       setTelescopes(telescopesData);
       setMounts(mountsData);
-      setProductsTypes(typesData);
       setFilteredProducts(productsData);
 
       // Improve => (retrieve empty array???)
+
       if (productsData.length > 0) {
-        setItem('products', productsData);
+        setItem("products", productsData);
       } else {
-        removeItem('products');
+        removeItem("products");
       }
       if (telescopesData.length > 0) {
         setItem("telescopes", telescopesData);
@@ -84,12 +87,11 @@ export const ShopContextProvider = ({
       } else {
         removeItem("mounts");
       }
-      setItem('types', typesData);
     } catch (error) {
       console.error("Error fetching products:", error);
-      removeItem('products');
-      removeItem('telescopes');
-      removeItem('mounts');
+      removeItem("products");
+      removeItem("telescopes");
+      removeItem("mounts");
     }
   };
 
@@ -98,7 +100,7 @@ export const ShopContextProvider = ({
   const filterProducts = (
     category: string,
     type?: string,
-    opticalDesign?: string,
+    opticalDesign?: string
   ) => {
     // Set Selected Product Category
     setSelectedCategory(category);
@@ -108,22 +110,28 @@ export const ShopContextProvider = ({
       return;
     }
     if (category === "telescopes") {
-      if (type === 'all types' && opticalDesign === 'all optical designs') {
+      if (type === "all types" && opticalDesign === "all optical designs") {
         setFilteredProducts(telescopes);
-      } else if (type !== 'all types') {
-        const filteredTelescopes = telescopes.filter((telescope) => telescope.telescope_type === type);
+      } else if (type !== "all types") {
+        const filteredTelescopes = telescopes.filter(
+          (telescope) => telescope.telescopeInfo.telescope_type === type
+        );
         setFilteredProducts(filteredTelescopes);
-      } else if (opticalDesign !== 'all optical designs') {
-        const filteredTelescopes = telescopes.filter((telescope) => telescope.optical_design_type === opticalDesign);
+      } else if (opticalDesign !== "all optical designs") {
+        const filteredTelescopes = telescopes.filter(
+          (telescope) => telescope.optical_design === opticalDesign
+        );
         setFilteredProducts(filteredTelescopes);
       }
       return;
     }
-    if (category === 'mounts') {
-      if (type === 'all types') {
+    if (category === "mounts") {
+      if (type === "all types") {
         setFilteredProducts(mounts);
       } else {
-        const filteredMounts = mounts.filter((mount) => mount.mount_type === type);
+        const filteredMounts = mounts.filter(
+          (mount) => mount.mount_type === type
+        );
         setFilteredProducts(filteredMounts);
       }
     }
@@ -132,15 +140,15 @@ export const ShopContextProvider = ({
   // Add product to cart (IMPROVE !!!)
   const addToCart = (product: ProductType) => {
     const existingItem = cartItems.find(
-      (item) => item.product.id === product.id,
+      (item) => item.product.id === product.id
     );
     if (existingItem) {
       setCartItems((prevItems) =>
         prevItems.map((item) =>
           item.product.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
-            : item,
-        ),
+            : item
+        )
       );
     } else {
       setCartItems((prevItems) => [...prevItems, { product, quantity: 1 }]);
@@ -150,7 +158,7 @@ export const ShopContextProvider = ({
   // Remove product from cart
   const removeFromCart = (productId: number) => {
     setCartItems((prevItems) =>
-      prevItems.filter((item) => item.product.id !== productId),
+      prevItems.filter((item) => item.product.id !== productId)
     );
   };
 
@@ -162,9 +170,22 @@ export const ShopContextProvider = ({
     }
     setCartItems((prevItems) =>
       prevItems.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item,
-      ),
+        item.product.id === productId ? { ...item, quantity } : item
+      )
     );
+  };
+
+  // Calculate total items price
+  const calculateTotalPrice = () => {
+    return cartItems.reduce(
+      (total, item) => total + item.product.price * item.quantity,
+      0
+    );
+  };
+
+  // Format price with 2 decimal places
+  const formatPrice = (price: number) => {
+    return price.toFixed(2);
   };
 
   useEffect(() => {
@@ -172,7 +193,7 @@ export const ShopContextProvider = ({
     const savedProducts: ProductType[] | null = getItem("products");
     const savedTelescopes: TelescopeType[] | null = getItem("telescopes");
     const savedMounts: MountType[] | null = getItem("mounts");
-    const savedTypes: ProductsTypesType | null = getItem('types');
+    const savedTypes: ProductsTypesType | null = getItem("types");
 
     if (savedProducts && savedTelescopes && savedMounts && savedTypes) {
       setProducts(savedProducts);
@@ -188,7 +209,7 @@ export const ShopContextProvider = ({
     const savedCartItems = getItem("cartItems");
     if (savedCartItems && Array.isArray(savedCartItems)) {
       setCartItems(savedCartItems);
-    } 
+    }
   }, []);
 
   // Save cart items to localStorage whenever they change
@@ -197,7 +218,7 @@ export const ShopContextProvider = ({
     if (cartItems.length > 0) {
       setItem("cartItems", cartItems);
     } else {
-      removeItem('cartItems')
+      removeItem("cartItems");
     }
   }, [cartItems]);
 
@@ -211,11 +232,14 @@ export const ShopContextProvider = ({
         filteredProducts,
         selectedCategory,
         cartItems,
+        setCartItems,
         fetchProducts,
         filterProducts,
         addToCart,
         removeFromCart,
         updateQuantity,
+        calculateTotalPrice,
+        formatPrice,
       }}
     >
       {children}

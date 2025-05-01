@@ -1,39 +1,48 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useShopContext } from "../hooks/useContext.ts";
+import RedirectModal from '../components/RedirectModal.tsx';
 
 export default function CheckoutPage() {
  const navigate = useNavigate();
+ const { cartItems, setCartItems, calculateTotalPrice, formatPrice } = useShopContext();
+ const [showModalRedirect, setShowModalRedirect] = useState<boolean>(false)
+
+ const handleShow = () => setShowModalRedirect(true);
+ const handleClose = () => setShowModalRedirect(false);
+ const handleRestart = () => {
+  setCartItems([]);
+  navigate('/');
+ }
 
  return (
   <section>
    <div>
-    <h2>Your data</h2>
+    <h2>Checkout</h2>
 
     <div>
-     <h3>Are you already a customer with us?</h3>
-     <p>Please log in using your email address and your personal password.</p>
-      <button onClick={() => navigate('/login')}>Log in</button>
-     {/* Forgot your password? functionality */}
-    </div>
+     <p>{cartItems.length} Item{cartItems.length > 1 && <span>s</span>}</p>
+     {cartItems.map((item) => (
+      <div key={item.product.id}>
+       {/* Product Image (small) */}
+       <img src={item.product.image} alt="Product Image" />
+       <p>{item.product.name}</p>
+       <p>Quantity: {item.quantity}</p>
+       <p>{formatPrice(item.product.price * item.quantity)} $</p>
+      </div>
+     ))}
+     <p>Total: {formatPrice(calculateTotalPrice())} $</p>
+     <button onClick={handleShow}>PAYMENT</button>
 
-    <div>
-     <h3>Are you new in our shop?</h3>
-     <p>Create a new account now and enjoy the functionality of our member area.</p>
-     <ul>
-      <li>Composing of product reviews</li>
-      <li>Listing of processed orders</li>
-      <li>Saving products to watchlists</li>
-     </ul>
-     <p>Please note: You need a valid email address to create an account!</p>
-     <button onClick={() => navigate('/signup')}>Create Account</button>
-    </div>
-
-    <div>
-     <h3>Go on without registration ...</h3>
-     <p>
-      You can also order in our shop without creating a user account. Without a user account you miss out on some
-      of the features in our customer area, such as a list of your recent orders, making product reviews, etc.
-     </p>
-     <button>Continue as Guest</button>
+     <RedirectModal showModalRedirect={showModalRedirect}>
+      <div>
+       <p>Thanks a lot for trying the Web Application! :)</p>
+       {/* Message depending of user authenticated */}
+       <p>If you want you can subscribe if you are not subscribed yet and try more features of the application like make product reviews.</p>
+       <button onClick={handleClose}>CONTINUE</button>
+       <button onClick={handleRestart}>RESTART</button>
+      </div>
+     </RedirectModal>
     </div>
    </div>
   </section>

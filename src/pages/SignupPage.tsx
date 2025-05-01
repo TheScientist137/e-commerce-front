@@ -3,43 +3,63 @@ import { NavLink, useNavigate } from "react-router";
 import { signupService } from "../services/authService";
 
 export default function Signup() {
- const [formData, setFormData] = useState({ name: '', email: '', password: '' });
- const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const navigate = useNavigate();
 
- const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-  setFormData(prevData => ({ ...prevData, [event.target.name]: event.target.value })); // cambiar
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setFormData((prevData) => ({
+      ...prevData,
+      [event.target.name]: event.target.value,
+    })); // cambiar
 
- const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      const { name, email, password } = formData;
+      const result = await signupService(name, email, password);
+      console.log(result);
+      // Navigate to login after a succesfull signup ?? or just login automatically
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  try {
-   const { name, email, password } = formData;
-   const result = await signupService(name, email, password);
-   console.log(result);
-   
-   // Navigate to login after a succesfull signup ?? or just login automatically
-   navigate('/login');
+  return (
+    <form onSubmit={handleSubmit}>
+      <label htmlFor="name">Name</label>
+      <input
+        type="text"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+      />
 
-  } catch (error) {
-   console.error(error);
-  }
- }
+      <label htmlFor="email">Email</label>
+      <input
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+      />
 
- return (
-  <form onSubmit={handleSubmit}>
-   <label htmlFor="name">Name</label>
-   <input type="text" name="name" value={formData.name} onChange={handleChange} />
+      <label htmlFor="password">Password</label>
+      <input
+        type="password"
+        name="password"
+        value={formData.password}
+        onChange={handleChange}
+      />
 
-   <label htmlFor="email">Email</label>
-   <input type="email" name="email" value={formData.email} onChange={handleChange} />
+      <button>Signup</button>
 
-   <label htmlFor="password">Password</label>
-   <input type="password" name="password" value={formData.password} onChange={handleChange} />
-
-   <button>Signup</button>
-
-   <p>Already have an account?<NavLink to='/login'>Login</NavLink></p>
-  </form>
- )
+      <p>
+        Already have an account?<NavLink to="/login">Login</NavLink>
+      </p>
+    </form>
+  );
 }
-

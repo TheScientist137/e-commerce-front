@@ -7,30 +7,31 @@ import { useShopContext } from "../hooks/useContext.ts";
 export default function ProductPage() {
   const { id } = useParams();
   const { addToCart } = useShopContext();
-  const [selectedProduct, setSelectedProduct] = useState<TelescopeType | MountType | null>(null)
-
+  const [selectedProduct, setSelectedProduct] = useState<
+    TelescopeType | MountType | null
+  >(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         if (!id) {
-          throw new Error('Id is missing');
+          throw new Error("Id is missing");
         }
         const productData = await getProductByIdService(id);
         setSelectedProduct(productData);
       } catch (error) {
-        console.error('Error fetching product by id', error);
+        console.error("Error fetching product by id", error);
       }
-    }
+    };
     fetchProduct();
-  }, [id])
+  }, [id]);
 
   if (!selectedProduct) {
-    return <div>Loading product...</div>
+    return <div>Loading product...</div>;
   }
   return (
     <section>
-      <Link to='/'>Back shop</Link>
+      <Link to="/">Back shop</Link>
 
       <div>
         <h3>{selectedProduct.brand}</h3>
@@ -38,7 +39,7 @@ export default function ProductPage() {
         <img src={selectedProduct.image} alt="product image" />
         <p>{selectedProduct.price}</p>
         <button onClick={() => addToCart(selectedProduct)}>
-          <Link to='/cart'>ADD TO CART</Link>
+          <Link to="/cart">ADD TO CART</Link>
         </button>
       </div>
       <div>
@@ -47,22 +48,31 @@ export default function ProductPage() {
       </div>
       <div>
         <h3>Specifications</h3>
-        {selectedProduct.product_type === 'telescope' && (
+        {selectedProduct.product_type === "telescope" && (
           <div>
-            <p>Telescope Type: {(selectedProduct as TelescopeType).telescope_type}</p>
-            <p>{(selectedProduct as TelescopeType).telescope_type_description}</p>
-            <p>Optical Design: {(selectedProduct as TelescopeType).optical_design_type}</p>
-            <p>{(selectedProduct as TelescopeType).optical_design_description}</p>
+            <p>
+              Telescope Type:{" "}
+              {(selectedProduct as TelescopeType).telescope_type}
+            </p>
+            <p>
+              {(selectedProduct as TelescopeType).telescope_type_description}
+            </p>
+            <p>
+              Optical Design:{" "}
+              {(selectedProduct as TelescopeType).optical_design_type}
+            </p>
+            <p>
+              {(selectedProduct as TelescopeType).optical_design_description}
+            </p>
           </div>
         )}
-        {selectedProduct.product_type === 'mount' && (
+        {selectedProduct.product_type === "mount" && (
           <div>
             <p>Mount Type: {(selectedProduct as MountType).mount_type}</p>
             <p>{(selectedProduct as MountType).mount_type_description}</p>
           </div>
         )}
       </div>
-
     </section>
-  )
+  );
 }

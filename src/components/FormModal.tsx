@@ -1,13 +1,18 @@
 import { ReactNode } from "react"
 
-type ModalFormProps = {
+type FormModalProps = {
  showModalForm: boolean,
  title: string,
  onClose: () => void,
  children: ReactNode
 }
 
-export default function ModalForm({ showModalForm, title, onClose, children }: ModalFormProps) {
+export default function FormModal({
+ showModalForm,
+ title,
+ onClose,
+ children
+}: FormModalProps) {
  return (
   <div>
    {showModalForm && (

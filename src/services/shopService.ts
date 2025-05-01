@@ -3,7 +3,7 @@ import { MountType, ProductType, TelescopeType } from "../types/types.ts";
 // MEJORAR SERVICIOS !!!!!!!!
 
 export const getProductsService = async (): Promise<ProductType[]> => {
-  const response = await fetch("http://localhost:3000/api/shop/products", {
+  const response = await fetch("http://localhost:3001/api/shop/products", {
     credentials: "include",
   });
   const data = await response.json();
@@ -12,7 +12,7 @@ export const getProductsService = async (): Promise<ProductType[]> => {
 };
 
 export const getProductByIdService = async (id: string | number): Promise<TelescopeType | MountType> => {
-  const response = await fetch(`http://localhost:3000/api/shop/products/${id}`, {
+  const response = await fetch(`http://localhost:3001/api/shop/products/${id}`, {
     credentials: 'include'
   });
   const data = await response.json();
@@ -21,7 +21,7 @@ export const getProductByIdService = async (id: string | number): Promise<Telesc
 }
 
 export const getTelescopesService = async (): Promise<TelescopeType[]> => {
-  const response = await fetch("http://localhost:3000/api/shop/telescopes", {
+  const response = await fetch("http://localhost:3001/api/shop/telescopes", {
     credentials: "include",
   });
   const data = await response.json();
@@ -30,7 +30,7 @@ export const getTelescopesService = async (): Promise<TelescopeType[]> => {
 };
 
 export const getMountsService = async (): Promise<MountType[]> => {
-  const response = await fetch("http://localhost:3000/api/shop/mounts", {
+  const response = await fetch("http://localhost:3001/api/shop/mounts", {
     credentials: "include",
   });
   const data = await response.json();
@@ -39,7 +39,7 @@ export const getMountsService = async (): Promise<MountType[]> => {
 };
 
 export const getProductTypesService = async () => {
-  const response = await fetch('http://localhost:3000/api/shop/products/types', {
+  const response = await fetch('http://localhost:3001/api/shop/products/types', {
     credentials: 'include',
   });
   const data = await response.json();
