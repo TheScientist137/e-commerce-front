@@ -15,43 +15,109 @@ export type ProductType = {
   price: number;
   image: string;
   image_public_id: string;
-  product_type: "telescope" | "mount";
+  product_type: "telescope" | "mount" | "eyepiece" | "filter";
   created_at: string;
   updated_at: string;
 };
 
-// Telescope specific info type
-export type TelescopeInfoType = {
+// Tipo para las especificaciones del telescopio
+export type TelescopeSpecsType = {
   id: number;
-  product_id: number;
-  telescope_type: string;
+  telescope_id: number;
+  type: string;
   optical_design: string;
-  mount_type: string;
   aperture: string;
-  // Añade aquí cualquier otro campo específico de telescopios que pueda faltar
-  // Por ejemplo: focal_length, weight, etc.
+  focal_length: string;
+  aperture_ratio: string;
+  resolving_capacity: string;
+  limit_value: string;
+  light_gathering_capacity: string;
+  max_useful_magnification: string;
+  mount_type: string;
+  mount_build_type: string;
+  GoTo: string;
+  total_weight: string;
+  moon_planets: string;
+  nebulae_galaxies: string;
+  nature_observation: string;
+  astrophotography: string;
+  sun: string;
+  beginners: string;
+  advanced: string;
+  observatories: string;
 };
 
-// Full telescope type
+export type MountSpecsType = {
+  id: number;
+  mount_id: number;
+  max_adding_load_capacity: string;
+  polar_axis_scale: string;
+  GoTo: string;
+  pole_finder: string;
+  total_weight: string;
+  type: string;
+  build_type: string;
+  series: string;
+  software: string;
+  database: string;
+  GPS: string;
+  autoguiding: string;
+  WIFI: string;
+};
+
+export type EyepieceSpecsType = {
+  id: number;
+  eyepiece_id: number;
+  focal_length: string;
+  apparent_field: string;
+  number_of_lenses: string;
+  coating_optical_system: string;
+  adjustable_eyepiece_cup: string;
+  filter_thread: string;
+  series: string;
+  type: string;
+  build_type: string;
+};
+
+export type FilterSpecsType = {
+  id: number;
+  filter_id: number;
+  connection: string;
+  frame: string;
+  transmission: string;
+  mount_material: string;
+  series: string;
+  type: string;
+  build_type: string;
+};
+
+// Tipo para el telescopio que extiende ProductType
 export type TelescopeType = ProductType & {
-  telescopeInfo: TelescopeInfoType;
+  specifications: TelescopeSpecsType;
+  telescopeData: {
+    optical_design: string;
+    mount_type: string;
+  };
 };
 
 export type MountType = ProductType & {
-  mount_type: string;
-  mount_type_description: string;
+  specifications: MountSpecsType;
+  mountData: {
+    mount_type: string;
+  };
 };
 
-export type ProductCategoryType = {
-  id: number;
-  type: string;
-  description: string;
+export type EyepieceType = ProductType & {
+  specifications: EyepieceSpecsType;
+  eyepieceData: {
+    eyepiece_type: string;
+  };
 };
-
-export type ProductsTypesType = {
-  telescopeTypes: ProductCategoryType[];
-  opticalDesigns: ProductCategoryType[];
-  mountTypes: ProductCategoryType[];
+export type FilterType = ProductType & {
+  specifications: FilterSpecsType;
+  filterData: {
+    filter_type: string;
+  };
 };
 
 // Comprobar si sigue haciendo falta?? => Refactor

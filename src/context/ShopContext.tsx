@@ -4,6 +4,8 @@ import {
   getProductsService,
   getTelescopesService,
   getMountsService,
+  getEyepiecesService,
+  getFiltersService
 } from "../services/shopService.ts";
 import { getItem, removeItem, setItem } from "../utils/localStorage.ts";
 import {
@@ -11,7 +13,8 @@ import {
   CartItemType,
   TelescopeType,
   MountType,
-  ProductsTypesType,
+  EyepieceType,
+  FilterType,
 } from "../types/types.ts";
 
 // Move to types.ts ???
@@ -19,28 +22,21 @@ export type ShopContextType = {
   products: ProductType[];
   telescopes: TelescopeType[];
   mounts: MountType[];
+  eyepieces: EyepieceType[];
+  filters: FilterType[];
   cartItems: CartItemType[];
   setCartItems: React.Dispatch<React.SetStateAction<CartItemType[]>>;
-  filteredProducts: ProductType[] | TelescopeType[] | MountType[];
+  filteredProducts: ProductType[] | TelescopeType[] | MountType[] | EyepieceType[] | FilterType[];
   selectedCategory: string;
-  productsTypes: ProductsTypesType;
   fetchProducts: () => Promise<void>;
-  filterProducts: (
-    category: string,
-    type?: string,
-    opticalDesign?: string
-  ) => void;
+  filterProducts: (category: string) => void;
+  filterTelescopes: (opticalDesign?: string, mountType?: string) => void;
+  filterMounts: (mountType?: string) => void;
+  filterEyepieces: (eyepieceType?: string) => void;
+  filterFilters: (filterType?: string) => void;
   addToCart: (product: ProductType) => void;
   removeFromCart: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
-  calculateTotalPrice: () => number;
-  formatPrice: (price: number) => string;
-};
-
-const initialProductsTypes: ProductsTypesType = {
-  telescopeTypes: [],
-  opticalDesigns: [],
-  mountTypes: [],
 };
 
 export const ShopContextProvider = ({
@@ -51,11 +47,11 @@ export const ShopContextProvider = ({
   const [products, setProducts] = useState<ProductType[]>([]);
   const [telescopes, setTelescopes] = useState<TelescopeType[]>([]);
   const [mounts, setMounts] = useState<MountType[]>([]);
+  const [eyepieces, setEyepieces] = useState<EyepieceType[]>([]);
+  const [filters, setFilters] = useState<FilterType[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<
-    ProductType[] | TelescopeType[] | MountType[]
+    ProductType[] | TelescopeType[] | MountType[] | EyepieceType[] | FilterType[]
   >([]);
-  const [productsTypes, setProductsTypes] =
-    useState<ProductsTypesType>(initialProductsTypes);
   const [selectedCategory, setSelectedCategory] = useState<string>("products");
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
 
@@ -64,14 +60,17 @@ export const ShopContextProvider = ({
       const productsData = await getProductsService();
       const telescopesData = await getTelescopesService();
       const mountsData = await getMountsService();
+      const eyepiecesData = await getEyepiecesService();
+      const filtersData = await getFiltersService();
 
       setProducts(productsData);
       setTelescopes(telescopesData);
       setMounts(mountsData);
+      setEyepieces(eyepiecesData);
+      setFilters(filtersData);
       setFilteredProducts(productsData);
 
-      // Improve => (retrieve empty array???)
-
+      // Improve
       if (productsData.length > 0) {
         setItem("products", productsData);
       } else {
@@ -87,6 +86,15 @@ export const ShopContextProvider = ({
       } else {
         removeItem("mounts");
       }
+      if (eyepiecesData.length > 0) {
+        setItem("eyepieces", eyepiecesData);
+      } else {
+        removeItem("eyepieces");
+      }
+      if (filtersData.length > 0) {
+        setItem("filters", filtersData);
+      }
+
     } catch (error) {
       console.error("Error fetching products:", error);
       removeItem("products");
@@ -95,47 +103,69 @@ export const ShopContextProvider = ({
     }
   };
 
-  // MEJORAR
-  // Filter products by category, type and optical design
-  const filterProducts = (
-    category: string,
-    type?: string,
-    opticalDesign?: string
-  ) => {
-    // Set Selected Product Category
-    setSelectedCategory(category);
+  const filterTelescopes = (opticalDesign?: string, mountType?: string) => {
+    if (opticalDesign) {
+      const filteredTelescopes = telescopes.filter(
+        (telescope) => telescope.telescopeData.optical_design === opticalDesign
+      );
+      setFilteredProducts(filteredTelescopes);
+    } else if (mountType) {
+      const filteredTelescopes = telescopes.filter(
+        (telescope) => telescope.telescopeData.mount_type === mountType
+      );
+      setFilteredProducts(filteredTelescopes);
+    }
+  }
 
+  const filterMounts = (mountType?: string) => {
+    if (mountType) {
+      const filteredMounts = mounts.filter(
+        (mount) => mount.mountData.mount_type === mountType
+      );
+      setFilteredProducts(filteredMounts);
+    }
+  }
+  const filterEyepieces = (eyepieceType?: string) => {
+    if (eyepieceType) {
+      const filteredEyepieces = eyepieces.filter(
+        (eyepiece) => eyepiece.eyepieceData.eyepiece_type === eyepieceType
+      );
+      setFilteredProducts(filteredEyepieces);
+    }
+  }
+
+  const filterFilters = (filterType?: string) => {
+    if (filterType) {
+      const filteredFilters = filters.filter(
+        (filter) => filter.filterData.filter_type === filterType
+      );
+      setFilteredProducts(filteredFilters);
+    }
+  }
+
+  // Mejorar
+  const filterProducts = (category: string) => {
+    // Products Filters
+    setSelectedCategory(category);
     if (category === "products") {
       setFilteredProducts(products);
-      return;
-    }
-    if (category === "telescopes") {
-      if (type === "all types" && opticalDesign === "all optical designs") {
-        setFilteredProducts(telescopes);
-      } else if (type !== "all types") {
-        const filteredTelescopes = telescopes.filter(
-          (telescope) => telescope.telescopeInfo.telescope_type === type
-        );
-        setFilteredProducts(filteredTelescopes);
-      } else if (opticalDesign !== "all optical designs") {
-        const filteredTelescopes = telescopes.filter(
-          (telescope) => telescope.optical_design === opticalDesign
-        );
-        setFilteredProducts(filteredTelescopes);
-      }
-      return;
-    }
-    if (category === "mounts") {
-      if (type === "all types") {
-        setFilteredProducts(mounts);
-      } else {
-        const filteredMounts = mounts.filter(
-          (mount) => mount.mount_type === type
-        );
-        setFilteredProducts(filteredMounts);
-      }
+      // Telescopes Filters
+    } else if (category === "telescopes") {
+      setFilteredProducts(telescopes);
+      // Mounts Filters
+    } else if (category === "mounts") {
+      setFilteredProducts(mounts);
+      // Eyepieces Filters
+    } else if (category === "eyepieces") {
+      setFilteredProducts(eyepieces);
+      // Filters Filters
+    } else if (category === "filters") {
+      setFilteredProducts(filters);
     }
   };
+
+
+
 
   // Add product to cart (IMPROVE !!!)
   const addToCart = (product: ProductType) => {
@@ -175,31 +205,21 @@ export const ShopContextProvider = ({
     );
   };
 
-  // Calculate total items price
-  const calculateTotalPrice = () => {
-    return cartItems.reduce(
-      (total, item) => total + item.product.price * item.quantity,
-      0
-    );
-  };
-
-  // Format price with 2 decimal places
-  const formatPrice = (price: number) => {
-    return price.toFixed(2);
-  };
 
   useEffect(() => {
     // Initialize products, telescopes, mounts and specifications from localStorage
     const savedProducts: ProductType[] | null = getItem("products");
     const savedTelescopes: TelescopeType[] | null = getItem("telescopes");
     const savedMounts: MountType[] | null = getItem("mounts");
-    const savedTypes: ProductsTypesType | null = getItem("types");
+    const savedEyepieces: EyepieceType[] | null = getItem("eyepieces");
+    const savedFilters: FilterType[] | null = getItem("filters");
 
-    if (savedProducts && savedTelescopes && savedMounts && savedTypes) {
+    if (savedProducts && savedTelescopes && savedMounts && savedEyepieces && savedFilters) {
       setProducts(savedProducts);
       setTelescopes(savedTelescopes);
       setMounts(savedMounts);
-      setProductsTypes(savedTypes);
+      setEyepieces(savedEyepieces);
+      setFilters(savedFilters);
       setFilteredProducts(savedProducts);
     } else {
       fetchProducts();
@@ -228,18 +248,21 @@ export const ShopContextProvider = ({
         products,
         telescopes,
         mounts,
-        productsTypes,
+        eyepieces,
+        filters,
         filteredProducts,
         selectedCategory,
         cartItems,
         setCartItems,
         fetchProducts,
         filterProducts,
+        filterTelescopes,
+        filterMounts,
+        filterEyepieces,
+        filterFilters,
         addToCart,
         removeFromCart,
         updateQuantity,
-        calculateTotalPrice,
-        formatPrice,
       }}
     >
       {children}

@@ -14,7 +14,11 @@ export const addProductService = async (newProduct: FormData, token: string) => 
  return result;
 }
 
-export const updateProductService = async (id: number, token: string, updatedProduct: FormData) => {
+export const updateProductService = async (
+    id: number, 
+    token: string, 
+    updatedProduct: FormData
+) => {
  const response = await fetch(`http://localhost:3000/api/admin/products/${id}`, {
   method: 'PUT',
   credentials: 'include',

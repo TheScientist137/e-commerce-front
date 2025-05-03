@@ -18,7 +18,7 @@ export default function ShopPage() {
             <img src={product.image} alt="image" style={{ maxWidth: '200px' }} />
             <p>{product.brand}</p>
             <p>{product.price} $</p>
-            <Link to={`/product/${product.id}`}>View details</Link>
+            <Link to={`/product/${product.product_type}/${product.id}`}>View details</Link>
           </div>
         ))}
       </div>

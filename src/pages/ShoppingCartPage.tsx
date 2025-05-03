@@ -6,9 +6,19 @@ export default function ShoppingCartPage() {
     cartItems,
     removeFromCart,
     updateQuantity,
-    calculateTotalPrice,
-    formatPrice
   } = useShopContext();
+
+  // Understand/Improve
+  // Calculate total items price
+  const calculateTotalPrice = () => {
+    return cartItems.reduce(
+      (total, item) => {
+        const itemTotal = item.product.price * item.quantity;
+        return parseFloat((total + itemTotal).toFixed(2));
+      },
+      0
+    );
+  };
 
   return (
     <section>
@@ -25,11 +35,11 @@ export default function ShoppingCartPage() {
                 <span>{item.quantity}</span>
                 <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)}>+</button>
                 <button onClick={() => removeFromCart(item.product.id)}>DELETE</button>
-                <p>{formatPrice(item.product.price * item.quantity)} $</p>
+                <p>{(item.product.price * item.quantity).toFixed(2)} $</p>
               </div>
             ))}
           </div>
-          <p>Total: {formatPrice(calculateTotalPrice())}</p>
+          <p>Total: {(calculateTotalPrice()).toFixed(2)} $</p>
           <button><Link to='/checkout'>Proceed to checkout</Link></button>
         </div>
       ) : <p>Empty cart</p>
