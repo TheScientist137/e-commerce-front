@@ -3,9 +3,7 @@ import { Link } from "react-router";
 import FilterButtons from '../components/FilterButtons.tsx';
 
 export default function ShopPage() {
-  const {
-    filteredProducts,
-  } = useShopContext();
+  const { filteredProducts } = useShopContext();
 
   return (
     <section>

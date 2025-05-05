@@ -4,85 +4,83 @@ export default function FilterButtons() {
   const {
     selectedCategory,
     filterProducts,
-    filterTelescopes,
-    filterMounts,
-    filterEyepieces,
-    filterFilters,
+    getUniqueBrands,
   } = useShopContext();
+
+  // Obtain brands based on the selected category
+  const uniqueBrands = getUniqueBrands();
 
   return (
     <div>
       <div>
-        <button onClick={() => filterProducts("telescopes")}>Telescopes</button>
-        <button onClick={() => filterProducts("mounts")}>Mounts</button>
-        <button onClick={() => filterProducts("eyepieces")}>Eyepieces</button>
-        <button onClick={() => filterProducts("filters")}>Filters</button>
+        <button onClick={() => filterProducts({ category: 'telescopes' })}>Telescopes</button>
+        <button onClick={() => filterProducts({ category: 'mounts' })}>Mounts</button>
+        <button onClick={() => filterProducts({ category: 'eyepieces' })}>Eyepieces</button>
+        <button onClick={() => filterProducts({ category: 'filters' })}>Filters</button>
       </div>
 
       {selectedCategory === "telescopes" && (
         <div>
           <div>
             <h4>OPTICAL DESIGN</h4>
-            <button onClick={() => filterTelescopes('Achromat')}>Achromat</button>
-            <button onClick={() => filterTelescopes("Apochromat")}>Apochromat</button>
-            <button onClick={() => filterTelescopes("Newton")}>Newton</button>
-            <button onClick={() => filterTelescopes("Maksutov")}>Maksutov</button>
+            <button onClick={() => filterProducts({ category: 'telescopes', opticalDesign: 'Achromat' })}>Achromat</button>
+            <button onClick={() => filterProducts({ category: 'telescopes', opticalDesign: 'Apochromat' })}>Apochromat</button>
+            <button onClick={() => filterProducts({ category: 'telescopes', opticalDesign: 'Newton' })}>Newton</button>
+            <button onClick={() => filterProducts({ category: 'telescopes', opticalDesign: 'Catadioptric' })}>Catadioptric</button>
           </div>
 
           <div>
             <h4>MOUNTING TYPE</h4>
-            <button
-              onClick={() => filterTelescopes(undefined, "Azimuthal")}>Azimuthal</button>
-            <button onClick={() => filterTelescopes(undefined, "Azimuthal_GoTo")}>Azimuthal with GoTo</button>
-            <button onClick={() => filterTelescopes(undefined, "Equatorial")}>Equatorial</button>
-            <button onClick={() => filterTelescopes(undefined, "Equatorial_GoTo")}>Equatorial with GoTo</button>
-            <button onClick={() => filterTelescopes(undefined, "Dobson")}>Dobsonian</button>
-            <button onClick={() => filterTelescopes(undefined, "no_mount")}>No mount</button>
+            <button onClick={() => filterProducts({ category: 'telescopes', telescopeMountType: 'Azimuthal' })}>Azimuthal</button>
+            <button onClick={() => filterProducts({ category: 'telescopes', telescopeMountType: 'Azimuthal_GoTo' })}>Azimuthal with GoTo</button>
+            <button onClick={() => filterProducts({ category: 'telescopes', telescopeMountType: 'Equatorial' })}>Equatorial</button>
+            <button onClick={() => filterProducts({ category: 'telescopes', telescopeMountType: 'Equatorial_GoTo' })}>Equatorial with GoTo</button>
+            <button onClick={() => filterProducts({ category: 'telescopes', telescopeMountType: 'Dobson' })}>Dobsonian</button>
+            <button onClick={() => filterProducts({ category: 'telescopes', telescopeMountType: 'no_mount' })}>No mount</button>
           </div>
         </div>
-      )
-      }
-      {
-        selectedCategory === "mounts" && (
-          <div>
-            <div>
-              <h4>MOUNTING TYPE</h4>
-              <button onClick={() => filterMounts("Azimuthal")}>Azimuthal</button>
-              <button onClick={() => filterMounts("Azimuthal_GoTo")}>Azimuthal with GoTo</button>
-              <button onClick={() => filterMounts("Equatorial")}>Equatorial</button>
-              <button onClick={() => filterMounts("Equatorial_GoTo")}>Equatorial with GoTo</button>
-            </div>
-          </div>
-        )
-      }
-      {
-        selectedCategory === "eyepieces" && (
-          <div>
-            <div>
-              <h4>TYPE OF BUILD</h4>
-              <button onClick={() => filterEyepieces("Plossl")}>Plössl</button>
-              <button onClick={() => filterEyepieces("SWA")}>SWA</button>
-              <button onClick={() => filterEyepieces("UWA")}>UWA</button>
-              <button onClick={() => filterEyepieces("XWA")}>XWA</button>
-              <button onClick={() => filterEyepieces("Zoom")}>Zoom</button>
-              <button onClick={() => filterEyepieces("Reticle")}>Reticle</button>
-            </div>
-          </div>
-        )
-      }
-      {
-        selectedCategory === "filters" && (
-          <div>
-            <div>
-              <h4>AREA OF APPLICATION</h4>
-              <button onClick={() => filterFilters("moon_filter")}>Moon filters & Polarizing filters</button>
-              <button onClick={() => filterFilters("color_filter")}>Colour filters</button>
-              <button onClick={() => filterFilters("nebulae_filter")}>Nebulae filters</button>
-              <button onClick={() => filterFilters("solar_filter")}>Sun filters</button>
-            </div>
-          </div>
-        )
-      }
+      )}
+
+      {selectedCategory === "mounts" && (
+        <div>
+          <h4>MOUNTING TYPE</h4>
+          <button onClick={() => filterProducts({ category: 'mounts', mountType: 'Azimuthal' })}>Azimuthal</button>
+          <button onClick={() => filterProducts({ category: 'mounts', mountType: 'Azimuthal_GoTo' })}>Azimuthal with GoTo</button>
+          <button onClick={() => filterProducts({ category: 'mounts', mountType: 'Equatorial' })}>Equatorial</button>
+          <button onClick={() => filterProducts({ category: 'mounts', mountType: 'Equatorial_GoTo' })}>Equatorial with GoTo</button>
+        </div>
+      )}
+
+      {selectedCategory === "eyepieces" && (
+        <div>
+          <h4>TYPE OF BUILD</h4>
+          <button onClick={() => filterProducts({ category: 'eyepieces', eyepieceType: 'Plossl' })}>Plössl</button>
+          <button onClick={() => filterProducts({ category: 'eyepieces', eyepieceType: 'SWA' })}>SWA</button>
+          <button onClick={() => filterProducts({ category: 'eyepieces', eyepieceType: 'UWA' })}>UWA</button>
+          <button onClick={() => filterProducts({ category: 'eyepieces', eyepieceType: 'XWA' })}>XWA</button>
+          <button onClick={() => filterProducts({ category: 'eyepieces', eyepieceType: 'Zoom' })}>Zoom</button>
+          <button onClick={() => filterProducts({ category: 'eyepieces', eyepieceType: 'Reticle' })}>Reticle</button>
+        </div>
+      )}
+      
+      {selectedCategory === "filters" && (
+        <div>
+          <h4>AREA OF APPLICATION</h4>
+          <button onClick={() => filterProducts({ category: 'filters', filterType: 'moon_filter' })}>Moon filters & Polarizing filters</button>
+          <button onClick={() => filterProducts({ category: 'filters', filterType: 'color_filter' })}>Colour filters</button>
+          <button onClick={() => filterProducts({ category: 'filters', filterType: 'nebulae_filter' })}>Nebulae filters</button>
+          <button onClick={() => filterProducts({ category: 'filters', filterType: 'solar_filter' })}>Sun filters</button>
+        </div>
+      )}
+
+      <div>
+        <h4>BRAND</h4>
+        {uniqueBrands.map((brand) => (
+          <button onClick={() => filterProducts({ category: selectedCategory, brand })} key={brand}>
+            {brand}
+          </button>
+        ))}
+      </div>
     </div >
   );
 }

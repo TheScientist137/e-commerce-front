@@ -6,19 +6,9 @@ export default function ShoppingCartPage() {
     cartItems,
     removeFromCart,
     updateQuantity,
+    calculateTotalPrice
   } = useShopContext();
 
-  // Understand/Improve
-  // Calculate total items price
-  const calculateTotalPrice = () => {
-    return cartItems.reduce(
-      (total, item) => {
-        const itemTotal = item.product.price * item.quantity;
-        return parseFloat((total + itemTotal).toFixed(2));
-      },
-      0
-    );
-  };
 
   return (
     <section>

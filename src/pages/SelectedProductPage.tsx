@@ -55,7 +55,7 @@ export default function ProductPage() {
         <h3>{selectedProduct.brand}</h3>
         <h3>{selectedProduct.name}</h3>
         <img src={selectedProduct.image} alt="product image" />
-        <p>{selectedProduct.price}</p>
+        <p>{selectedProduct.price} $</p>
         <button onClick={() => addToCart(selectedProduct)}>
           <Link to="/cart">ADD TO CART</Link>
         </button>

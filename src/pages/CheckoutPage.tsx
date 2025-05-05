@@ -5,7 +5,7 @@ import RedirectModal from '../components/RedirectModal.tsx';
 
 export default function CheckoutPage() {
  const navigate = useNavigate();
- const { cartItems, setCartItems, calculateTotalPrice, formatPrice } = useShopContext();
+ const { cartItems, setCartItems, calculateTotalPrice } = useShopContext();
  const [showModalRedirect, setShowModalRedirect] = useState<boolean>(false)
 
  const handleShow = () => setShowModalRedirect(true);
@@ -28,10 +28,10 @@ export default function CheckoutPage() {
        <img src={item.product.image} alt="Product Image" />
        <p>{item.product.name}</p>
        <p>Quantity: {item.quantity}</p>
-       <p>{formatPrice(item.product.price * item.quantity)} $</p>
+       <p>{(item.product.price * item.quantity).toFixed(2)} $</p>
       </div>
      ))}
-     <p>Total: {formatPrice(calculateTotalPrice())} $</p>
+     <p>Total: {(calculateTotalPrice()).toFixed(2)} $</p>
      <button onClick={handleShow}>PAYMENT</button>
 
      <RedirectModal showModalRedirect={showModalRedirect}>
