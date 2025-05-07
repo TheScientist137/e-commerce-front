@@ -17,6 +17,8 @@ import {
   FilterType,
 } from "../types/types.ts";
 
+type FilterItemsType = ProductType[] | TelescopeType[] | MountType[] | EyepieceType[] | FilterType[];
+
 // Move to types.ts ???
 export type ShopContextType = {
   products: ProductType[];
@@ -24,34 +26,19 @@ export type ShopContextType = {
   mounts: MountType[];
   eyepieces: EyepieceType[];
   filters: FilterType[];
-  filteredProducts: ProductType[] | TelescopeType[] | MountType[] | EyepieceType[] | FilterType[];
+  filteredProducts: FilterItemsType;
+  setFilteredProducts: React.Dispatch<React.SetStateAction<FilterItemsType>>;
   selectedCategory: string;
   cartItems: CartItemType[];
   setCartItems: React.Dispatch<React.SetStateAction<CartItemType[]>>;
   fetchProducts: () => Promise<void>;
-  filterProducts: ({
-    category,
-    brand,
-    opticalDesign,
-    telescopeMountType,
-    mountType,
-    eyepieceType,
-    filterType
-  }: {
-    category: string;
-    brand?: string;
-    opticalDesign?: string;
-    telescopeMountType?: string;
-    mountType?: string;
-    eyepieceType?: string;
-    filterType?: string;
-  }
-  ) => void;
+  filterProducts: (category: string) => void;
   addToCart: (product: ProductType) => void;
   removeFromCart: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
   calculateTotalPrice: () => number;
   getUniqueBrands: () => string[];
+  filterByBrand: (brand: string) => void; 
 };
 
 export const ShopContextProvider = ({
@@ -64,9 +51,7 @@ export const ShopContextProvider = ({
   const [mounts, setMounts] = useState<MountType[]>([]);
   const [eyepieces, setEyepieces] = useState<EyepieceType[]>([]);
   const [filters, setFilters] = useState<FilterType[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<
-    ProductType[] | TelescopeType[] | MountType[] | EyepieceType[] | FilterType[]
-  >([]);
+  const [filteredProducts, setFilteredProducts] = useState<FilterItemsType>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("products");
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
 
@@ -117,69 +102,15 @@ export const ShopContextProvider = ({
     }
   };
 
-  const filterProducts = ({
-    category,
-    brand,
-    opticalDesign,
-    telescopeMountType,
-    mountType,
-    eyepieceType,
-    filterType
-  }: {
-    category: string;
-    brand?: string;
-    opticalDesign?: string;
-    telescopeMountType?: string;
-    mountType?: string;
-    eyepieceType?: string;
-    filterType?: string;
-  }) => {
+  const filterProducts = (category: string) => {
     let filtered: any[] = [];
 
     // Filter products by categopry
-    if (category === 'products') {
-      filtered = products;
-    } else if (category === 'telescopes') {
-      filtered = telescopes;
-    }
-    else if (category === 'mounts') {
-      filtered = mounts;
-    }
-    else if (category === 'eyepieces') {
-      filtered = eyepieces;
-    }
-    else if (category === 'filters') {
-      filtered = filters;
-    }
-
-    // Apply brand filter if provided
-    if (brand) {
-      filtered = filtered.filter((product) => product.brand === brand);
-    }
-
-    // Apply category filters if provided
-    if (category === "telescopes") {
-      if (opticalDesign) {
-        filtered = filtered.filter(
-          (telescope) => telescope.telescopeData.optical_design === opticalDesign
-        );
-      } else if (telescopeMountType) {
-        filtered = filtered.filter(
-          (telescope) => telescope.telescopeData.mount_type === telescopeMountType
-        );
-      }
-    } else if (category === "mounts" && mountType) {
-      filtered = filtered.filter(
-        (mount) => mount.mountData.mount_type === mountType);
-    } else if (category === "eyepieces" && eyepieceType) {
-      filtered = filtered.filter(
-        (eyepiece) => eyepiece.eyepieceData.eyepiece_type === eyepieceType
-      );
-    } else if (category === "filters" && filterType) {
-      filtered = filtered.filter(
-        (filter) => filter.filterData.filter_type === filterType
-      );
-    }
+    if (category === 'products') filtered = [...products];
+    else if (category === 'telescopes') filtered = [...telescopes];
+    else if (category === 'mounts') filtered = [...mounts];
+    else if (category === 'eyepieces') filtered = [...eyepieces];
+    else if (category === 'filters') filtered = [...filters];
 
     setFilteredProducts(filtered);
     setSelectedCategory(category);
@@ -188,6 +119,7 @@ export const ShopContextProvider = ({
   // Understand/Improve
   const getUniqueBrands = () => {
     let items: any[] = [];
+    
     if (selectedCategory === "products") items = products;
     else if (selectedCategory === "telescopes") items = telescopes;
     else if (selectedCategory === "mounts") items = mounts;
@@ -196,6 +128,19 @@ export const ShopContextProvider = ({
 
     return Array.from(new Set(items.map((item) => item.brand)));
   };
+
+  const filterByBrand = (brand: string) => {
+    let items: any[] = [];
+
+    if (selectedCategory === "products") items = products;
+    else if (selectedCategory === "telescopes") items = telescopes;
+    else if (selectedCategory === "mounts") items = mounts;
+    else if (selectedCategory === "eyepieces") items = eyepieces;
+    else if (selectedCategory === "filters") items = filters;
+
+    const filtered = items.filter((item) => item.brand === brand);
+    setFilteredProducts(filtered);
+  }
 
   // Add product to cart (IMPROVE !!!)
   const addToCart = (product: ProductType) => {
@@ -294,6 +239,7 @@ export const ShopContextProvider = ({
         filteredProducts,
         selectedCategory,
         cartItems,
+        setFilteredProducts,
         setCartItems,
         fetchProducts,
         filterProducts,
@@ -302,6 +248,7 @@ export const ShopContextProvider = ({
         updateQuantity,
         calculateTotalPrice,
         getUniqueBrands,
+        filterByBrand
       }}
     >
       {children}

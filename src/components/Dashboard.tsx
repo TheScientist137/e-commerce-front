@@ -9,7 +9,7 @@ export default function Dashboard() {
   return (
     <main className="dashboard">
       <h1>
-        <Link to="/" onClick={() => filterProducts({ category: "products" })}>
+        <Link to="/" onClick={() => filterProducts('products')}>
           TelescopEcommerce
         </Link>
       </h1>
