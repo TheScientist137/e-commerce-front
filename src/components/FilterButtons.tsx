@@ -1,16 +1,11 @@
 import { useShopContext } from "../hooks/useContext.ts";
 import TelescopeFilters from "./TelescopeFilters.tsx";
+import MountFilters from "./MountFilters.tsx";
+import EyepieceFilters from "./EyepieceFilters.tsx";
+import FilterFilters from "./FilterFilters.tsx";
 
 export default function FilterProducts() {
-  const {
-    filteredProducts,
-    filterProducts,
-    filterByBrand,
-    selectedCategory,
-    getUniqueBrands
-  } = useShopContext();
-
-  const uniqueBrands = getUniqueBrands();
+  const { filterProducts, selectedCategory } = useShopContext();
 
   return (
     <div>
@@ -22,18 +17,10 @@ export default function FilterProducts() {
         <button onClick={() => filterProducts("filters")}>Filters</button>
       </div>
 
-      {uniqueBrands.length > 0 && (
-        <div>
-          <h3>Brands</h3>
-          {uniqueBrands.map((brand) => (
-            <button key={brand} onClick={() => filterByBrand(brand)}>
-              {brand}
-            </button>
-          ))}
-        </div>
-      )}
-
       {selectedCategory === 'telescopes' && <TelescopeFilters />}
+      {selectedCategory === 'mounts' && <MountFilters />}
+      {selectedCategory === 'eyepieces' && <EyepieceFilters />}
+      {selectedCategory === 'filters' && <FilterFilters />}
     </div>
   );
 }

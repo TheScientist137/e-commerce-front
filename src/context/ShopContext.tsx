@@ -8,6 +8,7 @@ import {
   getFiltersService
 } from "../services/shopService.ts";
 import { getItem, removeItem, setItem } from "../utils/localStorage.ts";
+import { getItemSessionStorage, setItemSessionStorage } from '../utils/sessionStorage.ts';
 import {
   ProductType,
   CartItemType,
@@ -18,6 +19,10 @@ import {
 } from "../types/types.ts";
 
 type FilterItemsType = ProductType[] | TelescopeType[] | MountType[] | EyepieceType[] | FilterType[];
+type TelescopeFilters = { brand: null, opticalDesign: null, mountingType: null };
+type MountFilters = { brand: null, mountingType: null };
+type EyepieceFilters = { brand: null, buildType: null };
+type FilterFilters = { brand: null, applicationArea: null };
 
 // Move to types.ts ???
 export type ShopContextType = {
@@ -27,9 +32,23 @@ export type ShopContextType = {
   eyepieces: EyepieceType[];
   filters: FilterType[];
   filteredProducts: FilterItemsType;
-  setFilteredProducts: React.Dispatch<React.SetStateAction<FilterItemsType>>;
-  selectedCategory: string;
+  selectedCategory: string | null;
+  telescopeFilters: TelescopeFilters;
+  mountFilters: MountFilters;
+  eyepieceFilters: EyepieceFilters;
+  filterFilters: FilterFilters;
   cartItems: CartItemType[];
+
+  setFilteredProducts: React.Dispatch<React.SetStateAction<FilterItemsType>>;
+  applyFiltersForTelescopes: () => void;
+  applyFiltersForMounts: () => void;
+  applyFiltersForEyepieces: () => void;
+  applyFiltersForFilters: () => void;
+  updateTelescopesFilter: (key: string, value: string | null) => void;
+  updateMountsFilter: (key: string, value: string | null) => void;
+  updateEyepiecesFilter: (key: string, value: string | null) => void;
+  updateFiltersFilter: (key: string, value: string | null) => void;
+
   setCartItems: React.Dispatch<React.SetStateAction<CartItemType[]>>;
   fetchProducts: () => Promise<void>;
   filterProducts: (category: string) => void;
@@ -37,8 +56,6 @@ export type ShopContextType = {
   removeFromCart: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
   calculateTotalPrice: () => number;
-  getUniqueBrands: () => string[];
-  filterByBrand: (brand: string) => void; 
 };
 
 export const ShopContextProvider = ({
@@ -51,9 +68,29 @@ export const ShopContextProvider = ({
   const [mounts, setMounts] = useState<MountType[]>([]);
   const [eyepieces, setEyepieces] = useState<EyepieceType[]>([]);
   const [filters, setFilters] = useState<FilterType[]>([]);
+
   const [filteredProducts, setFilteredProducts] = useState<FilterItemsType>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("products");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+
+  const [telescopeFilters, setTelescopeFilters] = useState<TelescopeFilters>({
+    brand: null,
+    opticalDesign: null,
+    mountingType: null
+  });
+  const [mountFilters, setMountFilters] = useState<MountFilters>({
+    brand: null,
+    mountingType: null
+  });
+  const [eyepieceFilters, setEyepieceFilters] = useState<EyepieceFilters>({
+    brand: null,
+    buildType: null
+  });
+  const [filterFilters, setFilterFilters] = useState<FilterFilters>({
+    brand: null,
+    applicationArea: null
+  });
 
   const fetchProducts = async () => {
     try {
@@ -70,29 +107,11 @@ export const ShopContextProvider = ({
       setFilters(filtersData);
       setFilteredProducts(productsData);
 
-      if (productsData.length > 0) {
-        setItem("products", productsData);
-      } else {
-        removeItem("products");
-      }
-      if (telescopesData.length > 0) {
-        setItem("telescopes", telescopesData);
-      } else {
-        removeItem("telescopes");
-      }
-      if (mountsData.length > 0) {
-        setItem("mounts", mountsData);
-      } else {
-        removeItem("mounts");
-      }
-      if (eyepiecesData.length > 0) {
-        setItem("eyepieces", eyepiecesData);
-      } else {
-        removeItem("eyepieces");
-      }
-      if (filtersData.length > 0) {
-        setItem("filters", filtersData);
-      }
+      productsData.length > 0 ? setItem('products', productsData) : removeItem('products');
+      telescopesData.length > 0 ? setItem('telescopes', telescopesData) : removeItem('telescopes');
+      mountsData.length > 0 ? setItem('mounts', mountsData) : removeItem('mounts');
+      eyepiecesData.length > 0 ? setItem('eyepieces', eyepiecesData) : removeItem('eyepieces');
+      filtersData.length > 0 ? setItem('filters', filtersData) : removeItem('filters');
 
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -107,40 +126,129 @@ export const ShopContextProvider = ({
 
     // Filter products by categopry
     if (category === 'products') filtered = [...products];
-    else if (category === 'telescopes') filtered = [...telescopes];
-    else if (category === 'mounts') filtered = [...mounts];
-    else if (category === 'eyepieces') filtered = [...eyepieces];
-    else if (category === 'filters') filtered = [...filters];
+    else if (category === 'telescopes') {
+      filtered = [...telescopes];
+      setTelescopeFilters({ brand: null, opticalDesign: null, mountingType: null });
+      setItemSessionStorage('telescopeFilters', { brand: null, opticalDesign: null, mountingType: null });
+    }
+    else if (category === 'mounts') {
+      filtered = [...mounts];
+      setMountFilters({ brand: null, mountingType: null });
+      setItemSessionStorage('mountFilters', { brand: null, mountingType: null })
+    }
+    else if (category === 'eyepieces') {
+      filtered = [...eyepieces];
+      setEyepieceFilters({ brand: null, buildType: null });
+      setItemSessionStorage('eyepieceFilters', { brand: null, buildType: null });
+    }
+    else if (category === 'filters') {
+      filtered = [...filters];
+      setFilterFilters({ brand: null, applicationArea: null });
+      setItemSessionStorage('filterFilters', { brand: null, applicationArea: null });
+    }
 
     setFilteredProducts(filtered);
     setSelectedCategory(category);
+    setItemSessionStorage('savedCategory', category);
   };
 
-  // Understand/Improve
-  const getUniqueBrands = () => {
-    let items: any[] = [];
-    
-    if (selectedCategory === "products") items = products;
-    else if (selectedCategory === "telescopes") items = telescopes;
-    else if (selectedCategory === "mounts") items = mounts;
-    else if (selectedCategory === "eyepieces") items = eyepieces;
-    else if (selectedCategory === "filters") items = filters;
+  const applyFiltersForTelescopes = () => {
+    let filtered: TelescopeType[] = [...telescopes];
 
-    return Array.from(new Set(items.map((item) => item.brand)));
-  };
+    if (telescopeFilters.brand) {
+      filtered = filtered.filter(
+        (telescope) => (telescope as TelescopeType).brand === telescopeFilters.brand
+      );
+    }
+    else if (telescopeFilters.opticalDesign) {
+      filtered = filtered.filter(
+        (telescope) => (telescope as TelescopeType).telescopeData.optical_design === telescopeFilters.opticalDesign
+      );
+    }
+    else if (telescopeFilters.mountingType) {
+      filtered = filtered.filter(
+        (telescope) => (telescope as TelescopeType).telescopeData.mount_type === telescopeFilters.mountingType
+      );
+    }
 
-  const filterByBrand = (brand: string) => {
-    let items: any[] = [];
-
-    if (selectedCategory === "products") items = products;
-    else if (selectedCategory === "telescopes") items = telescopes;
-    else if (selectedCategory === "mounts") items = mounts;
-    else if (selectedCategory === "eyepieces") items = eyepieces;
-    else if (selectedCategory === "filters") items = filters;
-
-    const filtered = items.filter((item) => item.brand === brand);
     setFilteredProducts(filtered);
   }
+
+  const applyFiltersForMounts = () => {
+    let filtered: MountType[] = [...mounts];
+
+    if (mountFilters.brand) {
+      filtered = filtered.filter(
+        (mount) => (mount as MountType).brand === mountFilters.brand
+      );
+    } else if (mountFilters.mountingType) {
+      filtered = filtered.filter(
+        (mount) => (mount as MountType).mountData.mount_type === mountFilters.mountingType
+      );
+    }
+
+    setFilteredProducts(filtered)
+  }
+
+  const applyFiltersForEyepieces = () => {
+    let filtered: EyepieceType[] = [...eyepieces];
+
+    if (eyepieceFilters.brand) {
+      filtered = filtered.filter(
+        (eyepiece) => (eyepiece as EyepieceType).brand === eyepieceFilters.brand
+      );
+    } else if (eyepieceFilters.buildType) {
+      filtered = filtered.filter(
+        (eyepiece) => (eyepiece as EyepieceType).eyepieceData.eyepiece_type === eyepieceFilters.buildType
+      );
+    }
+
+    setFilteredProducts(filtered)
+  }
+
+  const applyFiltersForFilters = () => {
+    let filtered: FilterType[] = [...filters];
+
+    if (filterFilters.brand) {
+      filtered = filtered.filter(
+        (filter) => (filter as FilterType).brand === filterFilters.brand
+      );
+    } else if (filterFilters.applicationArea) {
+      filtered = filtered.filter(
+        (area) => (area as FilterType).filterData.filter_type === filterFilters.applicationArea
+      );
+    }
+
+    setFilteredProducts(filtered)
+  }
+
+
+  // Update telescope filters state when filters change
+  // Save applied filters to sessionstorage when filters change
+  const updateTelescopesFilter = (key: string, value: string | null) => {
+    const updatedTelescopeFilters = { ...telescopeFilters, [key]: value };
+    setTelescopeFilters(updatedTelescopeFilters);
+    setItemSessionStorage('telescopeFilters', updatedTelescopeFilters);
+  }
+
+  const updateMountsFilter = (key: string, value: string | null) => {
+    const updatedMountFilters = { ...mountFilters, [key]: value };
+    setMountFilters(updatedMountFilters);
+    setItemSessionStorage('mountFilters', updatedMountFilters);
+  }
+
+  const updateEyepiecesFilter = (key: string, value: string | null) => {
+    const updatedEyepieces = { ...eyepieceFilters, [key]: value };
+    setEyepieceFilters(updatedEyepieces);
+    setItemSessionStorage('eyepieceFilters', updatedEyepieces);
+  }
+
+  const updateFiltersFilter = (key: string, value: string | null) => {
+    const updatedFilters = { ...filterFilters, [key]: value };
+    setFilterFilters(updatedFilters);
+    setItemSessionStorage('filterFilters', updatedFilters);
+  }
+
 
   // Add product to cart (IMPROVE !!!)
   const addToCart = (product: ProductType) => {
@@ -206,9 +314,36 @@ export const ShopContextProvider = ({
       setMounts(savedMounts);
       setEyepieces(savedEyepieces);
       setFilters(savedFilters);
-      setFilteredProducts(savedProducts);
     } else {
       fetchProducts();
+    }
+
+    // Initialize category and products filters from sessionStorage
+    const savedCategory: string | null = getItemSessionStorage('savedCategory');
+    const savedTelescopeFilters: TelescopeFilters | null = getItemSessionStorage('telescopeFilters');
+    const savedMountFilters: MountFilters | null = getItemSessionStorage('mountFilters');
+    const savedEyepieceFilters: EyepieceFilters | null = getItemSessionStorage('eyepieceFilters');
+    const savedFilterFilters: FilterFilters | null = getItemSessionStorage('filterFilters');
+
+    if (savedCategory) {
+      setSelectedCategory(savedCategory);
+
+      if (savedCategory === 'products') {
+        setFilteredProducts(savedProducts || []);
+      }
+      else if (savedCategory === 'telescopes' && savedTelescopeFilters) {
+        setTelescopeFilters(savedTelescopeFilters);
+        applyFiltersForTelescopes();
+      } else if (savedCategory === 'mounts' && savedMountFilters) {
+        setMountFilters(savedMountFilters);
+        applyFiltersForMounts();
+      } else if (savedCategory === 'eyepieces' && savedEyepieceFilters) {
+        setEyepieceFilters(savedEyepieceFilters);
+        applyFiltersForEyepieces();
+      } else if (savedCategory === 'filters' && savedFilterFilters) {
+        setFilterFilters(savedFilterFilters);
+        applyFiltersForFilters();
+      }
     }
 
     // Initialize cart from localStorage
@@ -217,6 +352,7 @@ export const ShopContextProvider = ({
       setCartItems(savedCartItems);
     }
   }, []);
+
 
   // Save cart filtered to localStorage whenever they change
   // Remove filtered from localStorage when cart is empty
@@ -237,18 +373,31 @@ export const ShopContextProvider = ({
         eyepieces,
         filters,
         filteredProducts,
+        telescopeFilters,
+        mountFilters,
+        eyepieceFilters,
+        filterFilters,
         selectedCategory,
         cartItems,
-        setFilteredProducts,
-        setCartItems,
+
         fetchProducts,
         filterProducts,
+        setFilteredProducts,
+
+        applyFiltersForTelescopes,
+        applyFiltersForMounts,
+        applyFiltersForEyepieces,
+        applyFiltersForFilters,
+        updateTelescopesFilter,
+        updateMountsFilter,
+        updateEyepiecesFilter,
+        updateFiltersFilter,
+
+        setCartItems,
         addToCart,
         removeFromCart,
         updateQuantity,
-        calculateTotalPrice,
-        getUniqueBrands,
-        filterByBrand
+        calculateTotalPrice
       }}
     >
       {children}

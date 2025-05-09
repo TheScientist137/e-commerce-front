@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   if (!token) return;
 
   try {
-   const userData = await checkAuthService(token);
+   const userData = await checkAuthService(token as string);
    setUser(userData.result);
    console.log(userData.message, userData.result);
   } catch (error) {
