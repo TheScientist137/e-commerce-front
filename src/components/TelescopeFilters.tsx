@@ -40,38 +40,74 @@ export default function TelescopeFilters() {
     <div>
       <div>
         <h4>Optical Design</h4>
-        {opticalDesigns.map((design) => (
-          <button key={design} onClick={() => updateTelescopesFilter(
-            "opticalDesign",
-            telescopeFilters.opticalDesign === null ? design : null
-          )}>
-            {design}
-          </button>
-        ))}
+        {opticalDesigns.length === 1 ? (
+          <span>
+            {/* Si solo queda uno mostrar texto en vez de botón */}
+            {opticalDesigns[0]}
+            {/* Si es el seleccionado mostrar boton para limpiar filtro*/}
+            {telescopeFilters.opticalDesign === opticalDesigns[0] && (
+              <button onClick={() => updateTelescopesFilter("opticalDesign", null)}>x</button>
+            )}
+          </span>
+        ) : (
+          opticalDesigns.map((design) => (
+            <button key={design} onClick={() => updateTelescopesFilter('opticalDesign', design)}>
+              {design}
+            </button>
+
+          ))
+        )}
       </div>
       <div>
         <h4>Mounting Type</h4>
-        {mountingTypes.map((type) => (
-          <button key={type} onClick={() => updateTelescopesFilter(
-            "mountingType",
-            telescopeFilters.mountingType === null ? type : null
-          )}>
-            {type}
-          </button>
-        ))}
+        {mountingTypes.length === 1 ? (
+          <span>
+            {mountingTypes[0]}
+            {telescopeFilters.mountingType === mountingTypes[0] && (
+              <button onClick={() => updateTelescopesFilter("mountingType", null)}>x</button>
+            )}
+          </span>
+        ) : (
+          mountingTypes.map((type) =>
+            telescopeFilters.mountingType === type ? (
+              <span key={type}>
+                {type}
+                <button onClick={() => updateTelescopesFilter("mountingType", null)}>x</button>
+              </span>
+            ) : (
+              <button key={type} onClick={() => updateTelescopesFilter("mountingType", type)}>
+                {type}
+              </button>
+            )
+          )
+        )}
       </div>
+
+      {/* Brands Filter */}
       <div>
-        <h4>BRANDS</h4>
-        {telescopeBrands.map((brand) => (
-          <button key={brand} onClick={() => updateTelescopesFilter(
-            "brand",
-            telescopeFilters.brand === null ? brand : null
-          )}>
-            {brand}
-          </button>
-        ))}
+        <h4>Brands</h4>
+        {telescopeBrands.length === 1 ? (
+          <span>
+            {telescopeBrands[0]}
+            {telescopeFilters.brand === telescopeBrands[0] && (
+              <button onClick={() => updateTelescopesFilter("brand", null)}>x</button>
+            )}
+          </span>
+        ) : (
+          telescopeBrands.map((brand) =>
+            telescopeFilters.brand === brand ? (
+              <span key={brand}>
+                {brand}
+                <button onClick={() => updateTelescopesFilter("brand", null)}>x</button>
+              </span>
+            ) : (
+              <button key={brand} onClick={() => updateTelescopesFilter("brand", brand)}>
+                {brand}
+              </button>
+            )
+          )
+        )}
       </div>
     </div>
-
   );
 }

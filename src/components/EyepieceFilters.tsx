@@ -7,7 +7,7 @@ export default function EyepieceFilters() {
     filteredProducts,
     eyepieceFilters,
     applyFiltersForEyepieces,
-    updateEyepiecesFilter
+    updateEyepiecesFilter,
   } = useShopContext();
 
   const buildTypes = Array.from(
@@ -18,11 +18,7 @@ export default function EyepieceFilters() {
     )
   );
   const eyepieceBrands = Array.from(
-    new Set(
-      filteredProducts.map(
-        (product) => (product as EyepieceType).brand
-      )
-    )
+    new Set(filteredProducts.map((product) => (product as EyepieceType).brand))
   );
 
   useEffect(() => {
@@ -33,27 +29,68 @@ export default function EyepieceFilters() {
     <div>
       <div>
         <h4>TYPE OF BUILD</h4>
-        {buildTypes.map((type) => (
-          <button key={type} onClick={() => updateEyepiecesFilter(
-            "buildType",
-            eyepieceFilters.buildType === null ? type : null
-          )}>
-            {type}
-          </button>
-        ))}
+        {buildTypes.length === 1 ? (
+          <span>
+            {buildTypes[0]}
+            {eyepieceFilters.buildType === buildTypes[0] && (
+              <button onClick={() => updateEyepiecesFilter("buildType", null)}>
+                x
+              </button>
+            )}
+          </span>
+        ) : (
+          buildTypes.map((type) =>
+            eyepieceFilters.buildType === type ? (
+              <span key={type}>
+                {type}
+                <button
+                  onClick={() => updateEyepiecesFilter("buildType", null)}
+                >
+                  x
+                </button>
+              </span>
+            ) : (
+              <button
+                key={type}
+                onClick={() => updateEyepiecesFilter("buildType", type)}
+              >
+                {type}
+              </button>
+            )
+          )
+        )}
       </div>
       <div>
         <h4>BRANDS</h4>
-        {eyepieceBrands.map((brand) => (
-          <button key={brand} onClick={() => updateEyepiecesFilter(
-            "brand",
-            eyepieceFilters.brand === null ? brand : null
-          )}>
-            {brand}
-          </button>
-        ))}
+        {eyepieceBrands.length === 1 ? (
+          <span>
+            {eyepieceBrands[0]}
+            {eyepieceFilters.brand === eyepieceBrands[0] && (
+              <button onClick={() => updateEyepiecesFilter("brand", null)}>
+                x
+              </button>
+            )}
+          </span>
+        ) : (
+          eyepieceBrands.map((brand) =>
+            eyepieceFilters.brand === brand ? (
+              <span key={brand}>
+                {brand}
+                <button onClick={() => updateEyepiecesFilter("brand", null)}>
+                  x
+                </button>
+              </span>
+            ) : (
+              <button
+                key={brand}
+                onClick={() => updateEyepiecesFilter("brand", brand)}
+              >
+                {brand}
+              </button>
+            )
+          )
+        )}
       </div>
     </div>
-
   );
-}   
+}
