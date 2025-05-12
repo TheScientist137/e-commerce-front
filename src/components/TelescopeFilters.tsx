@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useShopContext } from "../hooks/useContext";
 import { TelescopeType } from "../types/types";
 
@@ -7,30 +7,30 @@ export default function TelescopeFilters() {
     filteredProducts,
     telescopeFilters,
     updateTelescopesFilter,
-    applyFiltersForTelescopes
+    applyFiltersForTelescopes,
   } = useShopContext();
+  const [showTelescopeFilters, setShowTelescopeFilters] =
+    useState<boolean>(false);
 
   const opticalDesigns = Array.from(
     new Set(
       filteredProducts.map(
-        (product) => (product as TelescopeType).telescopeData.optical_design
-      )
-    )
+        (product) => (product as TelescopeType).telescopeData.optical_design,
+      ),
+    ),
   );
   const mountingTypes = Array.from(
     new Set(
       filteredProducts.map(
-        (product) => (product as TelescopeType).telescopeData.mount_type
-      )
-    )
+        (product) => (product as TelescopeType).telescopeData.mount_type,
+      ),
+    ),
   );
   const telescopeBrands = Array.from(
     new Set(
-      filteredProducts.map(
-        (product) => (product as TelescopeType).brand
-      )
-    )
-  )
+      filteredProducts.map((product) => (product as TelescopeType).brand),
+    ),
+  );
 
   useEffect(() => {
     applyFiltersForTelescopes();
@@ -46,15 +46,21 @@ export default function TelescopeFilters() {
             {opticalDesigns[0]}
             {/* Si es el seleccionado mostrar boton para limpiar filtro*/}
             {telescopeFilters.opticalDesign === opticalDesigns[0] && (
-              <button onClick={() => updateTelescopesFilter("opticalDesign", null)}>x</button>
+              <button
+                onClick={() => updateTelescopesFilter("opticalDesign", null)}
+              >
+                x
+              </button>
             )}
           </span>
         ) : (
           opticalDesigns.map((design) => (
-            <button key={design} onClick={() => updateTelescopesFilter('opticalDesign', design)}>
+            <button
+              key={design}
+              onClick={() => updateTelescopesFilter("opticalDesign", design)}
+            >
               {design}
             </button>
-
           ))
         )}
       </div>
@@ -64,7 +70,11 @@ export default function TelescopeFilters() {
           <span>
             {mountingTypes[0]}
             {telescopeFilters.mountingType === mountingTypes[0] && (
-              <button onClick={() => updateTelescopesFilter("mountingType", null)}>x</button>
+              <button
+                onClick={() => updateTelescopesFilter("mountingType", null)}
+              >
+                x
+              </button>
             )}
           </span>
         ) : (
@@ -72,13 +82,20 @@ export default function TelescopeFilters() {
             telescopeFilters.mountingType === type ? (
               <span key={type}>
                 {type}
-                <button onClick={() => updateTelescopesFilter("mountingType", null)}>x</button>
+                <button
+                  onClick={() => updateTelescopesFilter("mountingType", null)}
+                >
+                  x
+                </button>
               </span>
             ) : (
-              <button key={type} onClick={() => updateTelescopesFilter("mountingType", type)}>
+              <button
+                key={type}
+                onClick={() => updateTelescopesFilter("mountingType", type)}
+              >
                 {type}
               </button>
-            )
+            ),
           )
         )}
       </div>
@@ -90,7 +107,9 @@ export default function TelescopeFilters() {
           <span>
             {telescopeBrands[0]}
             {telescopeFilters.brand === telescopeBrands[0] && (
-              <button onClick={() => updateTelescopesFilter("brand", null)}>x</button>
+              <button onClick={() => updateTelescopesFilter("brand", null)}>
+                x
+              </button>
             )}
           </span>
         ) : (
@@ -98,13 +117,18 @@ export default function TelescopeFilters() {
             telescopeFilters.brand === brand ? (
               <span key={brand}>
                 {brand}
-                <button onClick={() => updateTelescopesFilter("brand", null)}>x</button>
+                <button onClick={() => updateTelescopesFilter("brand", null)}>
+                  x
+                </button>
               </span>
             ) : (
-              <button key={brand} onClick={() => updateTelescopesFilter("brand", brand)}>
+              <button
+                key={brand}
+                onClick={() => updateTelescopesFilter("brand", brand)}
+              >
                 {brand}
               </button>
-            )
+            ),
           )
         )}
       </div>
