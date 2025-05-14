@@ -20,7 +20,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="flex content-center justify-center py-2">
+    <div className="flex content-center justify-center">
       <h1 className="font-zen mr-4 text-xl">
         <Link to="/" onClick={() => filterProducts("products")}>
           TelescopEcommerce

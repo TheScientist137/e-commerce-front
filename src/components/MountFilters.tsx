@@ -26,7 +26,7 @@ export default function MountFilters() {
   }, [mountFilters]);
 
   return (
-    <div>
+    <>
       <div>
         <h4>MOUNTING TYPE</h4>
         {mountingTypes.length === 1 ? (
@@ -93,6 +93,6 @@ export default function MountFilters() {
           )
         )}
       </div>
-    </div>
+    </>
   );
 }

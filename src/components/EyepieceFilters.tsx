@@ -26,7 +26,7 @@ export default function EyepieceFilters() {
   }, [eyepieceFilters]);
 
   return (
-    <div>
+    <>
       <div>
         <h4>TYPE OF BUILD</h4>
         {buildTypes.length === 1 ? (
@@ -91,6 +91,6 @@ export default function EyepieceFilters() {
           )
         )}
       </div>
-    </div>
+    </>
   );
 }

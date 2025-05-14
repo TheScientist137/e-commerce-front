@@ -26,7 +26,7 @@ export default function FilterFilters() {
   }, [filterFilters]);
 
   return (
-    <div>
+    <>
       <div>
         <h4>AREA OF APPLICATION</h4>
         {applicationAreas.length === 1 ? (
@@ -93,6 +93,6 @@ export default function FilterFilters() {
           )
         )}
       </div>
-    </div>
+    </>
   );
 }

@@ -9,8 +9,6 @@ export default function TelescopeFilters() {
     updateTelescopesFilter,
     applyFiltersForTelescopes,
   } = useShopContext();
-  const [showTelescopeFilters, setShowTelescopeFilters] =
-    useState<boolean>(false);
 
   const opticalDesigns = Array.from(
     new Set(
@@ -37,35 +35,39 @@ export default function TelescopeFilters() {
   }, [telescopeFilters]);
 
   return (
-    <div>
-      <div>
-        <h4>Optical Design</h4>
-        {opticalDesigns.length === 1 ? (
-          <span>
-            {/* Si solo queda uno mostrar texto en vez de botón */}
-            {opticalDesigns[0]}
-            {/* Si es el seleccionado mostrar boton para limpiar filtro*/}
-            {telescopeFilters.opticalDesign === opticalDesigns[0] && (
+    <>
+      <div className="rounded-xl bg-gray-300 p-1 text-center">
+        <h4>OPTICAL DESIGNS</h4>
+        <div>
+          {opticalDesigns.length === 1 ? (
+            <span className="">
+              {/* Si solo queda uno mostrar texto en vez de botón */}
+              {opticalDesigns[0]}
+              {/* Si es el seleccionado mostrar boton para limpiar filtro*/}
+              {telescopeFilters.opticalDesign === opticalDesigns[0] && (
+                <button
+                  className=""
+                  onClick={() => updateTelescopesFilter("opticalDesign", null)}
+                >
+                  x
+                </button>
+              )}
+            </span>
+          ) : (
+            opticalDesigns.map((design) => (
               <button
-                onClick={() => updateTelescopesFilter("opticalDesign", null)}
+                className="m-1 cursor-pointer"
+                key={design}
+                onClick={() => updateTelescopesFilter("opticalDesign", design)}
               >
-                x
+                {design.toUpperCase()}
               </button>
-            )}
-          </span>
-        ) : (
-          opticalDesigns.map((design) => (
-            <button
-              key={design}
-              onClick={() => updateTelescopesFilter("opticalDesign", design)}
-            >
-              {design}
-            </button>
-          ))
-        )}
+            ))
+          )}
+        </div>
       </div>
-      <div>
-        <h4>Mounting Type</h4>
+      <div className="rounded-xl bg-gray-300 p-1 text-center">
+        <h4>MOUNTING TYPES</h4>
         {mountingTypes.length === 1 ? (
           <span>
             {mountingTypes[0]}
@@ -90,10 +92,11 @@ export default function TelescopeFilters() {
               </span>
             ) : (
               <button
+                className="m-1 cursor-pointer"
                 key={type}
                 onClick={() => updateTelescopesFilter("mountingType", type)}
               >
-                {type}
+                {type.toUpperCase()}
               </button>
             ),
           )
@@ -101,8 +104,8 @@ export default function TelescopeFilters() {
       </div>
 
       {/* Brands Filter */}
-      <div>
-        <h4>Brands</h4>
+      <div className="rounded-xl bg-gray-300 p-1 text-center">
+        <h4 className="">BRANDS</h4>
         {telescopeBrands.length === 1 ? (
           <span>
             {telescopeBrands[0]}
@@ -123,15 +126,16 @@ export default function TelescopeFilters() {
               </span>
             ) : (
               <button
+                className="m-1 cursor-pointer"
                 key={brand}
                 onClick={() => updateTelescopesFilter("brand", brand)}
               >
-                {brand}
+                {brand.toUpperCase()}
               </button>
             ),
           )
         )}
       </div>
-    </div>
+    </>
   );
 }

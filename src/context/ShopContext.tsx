@@ -52,6 +52,7 @@ export type ShopContextType = {
   cartItems: CartItemType[];
 
   setFilteredProducts: React.Dispatch<React.SetStateAction<FilterItemsType>>;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string | null>>;
   applyFiltersForTelescopes: () => void;
   applyFiltersForMounts: () => void;
   applyFiltersForEyepieces: () => void;
@@ -433,6 +434,7 @@ export const ShopContextProvider = ({
         fetchProducts,
         filterProducts,
         setFilteredProducts,
+        setSelectedCategory,
 
         applyFiltersForTelescopes,
         applyFiltersForMounts,
