@@ -16,7 +16,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
  const [user, setUser] = useState<UserType | null>(null);
  const isAdmin = user && user.role === 'admin'; // boolean
 
- // Pensar si mantener estas dos funciones en el contexto ?????????
  const login = (token: string, userData: UserType) => {
   setItem('token', token); // Save token on localStorage
   setUser(userData); // Updates user info

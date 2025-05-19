@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useShopContext } from "../hooks/useContext";
 import { TelescopeType } from "../types/types";
 
@@ -6,10 +5,10 @@ export default function TelescopeFilters() {
   const {
     filteredProducts,
     telescopeFilters,
-    updateTelescopesFilter,
-    applyFiltersForTelescopes,
+    filterTelescopesBySubCategory,
   } = useShopContext();
 
+  // Obtain dynamic subFilters from filtered telescopes
   const opticalDesigns = Array.from(
     new Set(
       filteredProducts.map(
@@ -30,10 +29,6 @@ export default function TelescopeFilters() {
     ),
   );
 
-  useEffect(() => {
-    applyFiltersForTelescopes();
-  }, [telescopeFilters]);
-
   return (
     <>
       <div className="rounded-xl bg-gray-300 p-1 text-center">
@@ -47,7 +42,7 @@ export default function TelescopeFilters() {
               {telescopeFilters.opticalDesign === opticalDesigns[0] && (
                 <button
                   className=""
-                  onClick={() => updateTelescopesFilter("opticalDesign", null)}
+                  onClick={() => filterTelescopesBySubCategory("opticalDesign", null)}
                 >
                   x
                 </button>
@@ -58,7 +53,7 @@ export default function TelescopeFilters() {
               <button
                 className="m-1 cursor-pointer"
                 key={design}
-                onClick={() => updateTelescopesFilter("opticalDesign", design)}
+                onClick={() => filterTelescopesBySubCategory("opticalDesign", design)}
               >
                 {design.toUpperCase()}
               </button>
@@ -72,34 +67,21 @@ export default function TelescopeFilters() {
           <span>
             {mountingTypes[0]}
             {telescopeFilters.mountingType === mountingTypes[0] && (
-              <button
-                onClick={() => updateTelescopesFilter("mountingType", null)}
-              >
+              <button onClick={() => filterTelescopesBySubCategory("mountingType", null)}>
                 x
               </button>
             )}
           </span>
         ) : (
-          mountingTypes.map((type) =>
-            telescopeFilters.mountingType === type ? (
-              <span key={type}>
-                {type}
-                <button
-                  onClick={() => updateTelescopesFilter("mountingType", null)}
-                >
-                  x
-                </button>
-              </span>
-            ) : (
-              <button
-                className="m-1 cursor-pointer"
-                key={type}
-                onClick={() => updateTelescopesFilter("mountingType", type)}
-              >
-                {type.toUpperCase()}
-              </button>
-            ),
-          )
+          mountingTypes.map((type) => (
+            <button
+              className="m-1 cursor-pointer"
+              key={type}
+              onClick={() => filterTelescopesBySubCategory("mountingType", type)}
+            >
+              {type.toUpperCase()}
+            </button>
+          ))
         )}
       </div>
 
@@ -110,30 +92,21 @@ export default function TelescopeFilters() {
           <span>
             {telescopeBrands[0]}
             {telescopeFilters.brand === telescopeBrands[0] && (
-              <button onClick={() => updateTelescopesFilter("brand", null)}>
+              <button onClick={() => filterTelescopesBySubCategory("brand", null)}>
                 x
               </button>
             )}
           </span>
         ) : (
-          telescopeBrands.map((brand) =>
-            telescopeFilters.brand === brand ? (
-              <span key={brand}>
-                {brand}
-                <button onClick={() => updateTelescopesFilter("brand", null)}>
-                  x
-                </button>
-              </span>
-            ) : (
-              <button
-                className="m-1 cursor-pointer"
-                key={brand}
-                onClick={() => updateTelescopesFilter("brand", brand)}
-              >
-                {brand.toUpperCase()}
-              </button>
-            ),
-          )
+          telescopeBrands.map((brand) => (
+            <button
+              className="m-1 cursor-pointer"
+              key={brand}
+              onClick={() => filterTelescopesBySubCategory("brand", brand)}
+            >
+              {brand.toUpperCase()}
+            </button>
+          ))
         )}
       </div>
     </>

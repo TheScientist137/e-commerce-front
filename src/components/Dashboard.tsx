@@ -5,10 +5,10 @@ import Footer from "./Footer";
 export default function Dashboard() {
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 bg-gray-400 p-4">
+      <header className="fixed top-0 w-full bg-gray-400 p-4">
         <Navbar />
       </header>
-      <main className="flex-grow px-4">
+      <main className="flex-grow px-4 mt-[60px]">
         <Outlet />
       </main>
       <footer className="bg-gray-400 p-4">

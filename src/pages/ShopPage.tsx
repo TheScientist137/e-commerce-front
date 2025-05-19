@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useShopContext } from "../hooks/useContext";
 import { Link } from "react-router";
-import FilterButtons from "../components/FilterButtons.tsx";
+import FilterButtons from "../components/FilterCategoryButtons.tsx";
+import FilterMenu from "../components/FilterMenu.tsx";
 import { FaArrowCircleUp } from "react-icons/fa";
 
 export default function ShopPage() {
@@ -22,8 +23,7 @@ export default function ShopPage() {
 
   return (
     <section className="">
-      <FilterButtons />
-
+      {/* PRODUCTS LIST */}
       <div className="mt-8">
         {filteredProducts.map((product) => (
           <div className="flex flex-col items-center" key={product.id}>
@@ -44,12 +44,14 @@ export default function ShopPage() {
           </div>
         ))}
       </div>
+
+      {/* SCROLL TO TOP BUTTON */}
       {showScrollToTop && (
         <button
           className="fixed right-4 bottom-4"
           onClick={() => scrollToTop()}
         >
-          <FaArrowCircleUp className="h-8 w-8 text-gray-400 cursor-pointer" />
+          <FaArrowCircleUp className="h-8 w-8 cursor-pointer text-gray-400" />
         </button>
       )}
     </section>
