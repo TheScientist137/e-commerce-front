@@ -9,7 +9,7 @@ import { getItem, removeItem } from "../utils/localStorage.ts";
 import ProductForm from "../components/ProductForm.tsx";
 import ProductTable from "../components/ProductTable.tsx";
 import FormModal from "../components/FormModal.tsx";
-import FilterButtons from "../components/FilterCategoryButtons.tsx";
+// mport FilterButtons from "../components/FilterCategoryButtons.tsx";
 import { ProductFormType } from "../types/types.ts";
 
 export default function AdminPanelPage() {

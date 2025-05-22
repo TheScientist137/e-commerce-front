@@ -1,24 +1,26 @@
-import { useState } from "react";
 import { useNavigate, Link } from "react-router";
 import { useShopContext, useAuthContext } from "../hooks/useContext";
-import FilterMenu from "./FilterMenu";
-import FilterCategoryButtons from "./FilterCategoryButtons";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaAlignJustify } from "react-icons/fa";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const { isAdmin } = useAuthContext();
-  const { filterProductsByCategory, cartItems } = useShopContext();
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const { filterProductsByCategory, cartItems, setIsMenuOpen } =
+    useShopContext();
+
+  const handleTitleClick = () => {
+    filterProductsByCategory("products");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
-    <div className="flex content-center justify-center">
-      <FilterMenu open={menuOpen} setIsOpen={setMenuOpen}>
-        <FilterCategoryButtons closeMenu={() => setMenuOpen(false)} />
-      </FilterMenu>
+    <div className="flex justify-between">
+      <button onClick={() => setIsMenuOpen(true)}>
+        <FaAlignJustify className="mr-4 h-5 w-5" />
+      </button>
 
       <h1 className="font-zen mr-4 text-lg">
-        <Link to="/" onClick={() => filterProductsByCategory("products")}>
+        <Link to="/" onClick={() => handleTitleClick()}>
           TelescopEcommerce
         </Link>
       </h1>
@@ -28,11 +30,11 @@ export default function Navbar() {
       </button>
       {cartItems.length > 0 && <span>{cartItems.length}</span>}
 
-      <div>
-        {isAdmin ? (
+      {isAdmin ? (
+        <div>
           <button onClick={() => navigate("/admin")}>Admin Panel</button>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
     </div>
   );
 }

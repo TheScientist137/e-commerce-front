@@ -27,7 +27,7 @@ type FilterItemsType =
   | MountType[]
   | EyepieceType[]
   | FilterType[];
-type TelescopeFilters = {
+export type TelescopeFilters = {
   brand: null;
   opticalDesign: null;
   mountingType: null;
@@ -50,6 +50,11 @@ export type ShopContextType = {
   eyepieceFilters: EyepieceFilters;
   filterFilters: FilterFilters;
   cartItems: CartItemType[];
+
+  isMenuOpen: boolean;
+  isFiltersMenuOpen: boolean;
+  setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsFiltersMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 
   setFilteredProducts: React.Dispatch<React.SetStateAction<FilterItemsType>>;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string | null>>;
@@ -82,6 +87,9 @@ export const ShopContextProvider = ({
   const [filteredProducts, setFilteredProducts] = useState<FilterItemsType>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isFiltersMenuOpen, setIsFiltersMenuOpen] = useState<boolean>(false);
 
   const [initialized, setInitialized] = useState<boolean>(false);
 
@@ -120,7 +128,10 @@ export const ShopContextProvider = ({
       savedEyepieces,
       savedFilters,
     } = getSavedDataFromLocalStorage();
+
     const savedCategory: string | null = getItemSessionStorage("category");
+    const savedTelescopeFilters: TelescopeFilters | null = getItemSessionStorage("telescopeFilters");
+    console.log(savedTelescopeFilters);
 
     // Filter products in base on last category visited
     // If no category or category === products, filter by all products
@@ -139,6 +150,32 @@ export const ShopContextProvider = ({
       setFilters(savedFilters);
 
       filterProductsByCategory(savedCategory || "products");
+
+      if (savedTelescopeFilters) {
+        setTelescopeFilters(savedTelescopeFilters);
+        // Aplicar filtros a los telescopios
+        let filtered = [...savedTelescopes];
+        if (savedTelescopeFilters.opticalDesign) {
+          filtered = filtered.filter(
+            (telescope) =>
+              telescope.telescopeData.optical_design ===
+              savedTelescopeFilters.opticalDesign,
+          );
+        }
+        if (savedTelescopeFilters.mountingType) {
+          filtered = filtered.filter(
+            (telescope) =>
+              telescope.telescopeData.mount_type ===
+              savedTelescopeFilters.mountingType,
+          );
+        }
+        if (savedTelescopeFilters.brand) {
+          filtered = filtered.filter(
+            (telescope) => telescope.brand === savedTelescopeFilters.brand,
+          );
+        }
+        setFilteredProducts(filtered);
+      }
     } else {
       fetchProducts();
     }
@@ -162,6 +199,19 @@ export const ShopContextProvider = ({
       removeItem("cartItems");
     }
   }, [cartItems]);
+
+  // Effect to block body scroll effect when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    // Limpieza del efecto
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMenuOpen]);
 
   const fetchProducts = async () => {
     try {
@@ -234,8 +284,9 @@ export const ShopContextProvider = ({
     subCategory: string,
     value: string | null,
   ) => {
+    const savedTelescopeFilters: TelescopeFilters | null = getItemSessionStorage("telescopeFilters") || telescopeFilters;
     const updatedTelescopeFilters = {
-      ...telescopeFilters,
+      ...savedTelescopeFilters,
       [subCategory]: value,
     };
     setTelescopeFilters(updatedTelescopeFilters);
@@ -263,7 +314,7 @@ export const ShopContextProvider = ({
     }
 
     setFilteredProducts(filtered);
-    setItemSessionStorage('subCategories', updatedTelescopeFilters);
+    setItemSessionStorage("telescopeFilters", updatedTelescopeFilters);
   };
 
   // Shopping Cart Functions
@@ -309,7 +360,7 @@ export const ShopContextProvider = ({
     }, 0);
   };
 
-  // No renderizamos nada hasta que la carga inicial termine
+  // No render anything until the initial load is finished
   if (!initialized) return null;
 
   return (
@@ -321,12 +372,20 @@ export const ShopContextProvider = ({
         eyepieces,
         filters,
         filteredProducts,
+
+        selectedCategory,
         telescopeFilters,
         mountFilters,
         eyepieceFilters,
         filterFilters,
-        selectedCategory,
+
+        isMenuOpen,
+        isFiltersMenuOpen,
+
         cartItems,
+
+        setIsMenuOpen,
+        setIsFiltersMenuOpen,
 
         setFilteredProducts,
         setCartItems,
