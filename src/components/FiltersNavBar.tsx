@@ -1,10 +1,9 @@
-import { ShopContext } from "../context/contexts";
+import { useUiStore } from "../stores/uiStore";
 import { CiGrid2H, CiGrid41 } from "react-icons/ci";
 import { FaFilter, FaSort } from "react-icons/fa";
-import { useShopContext } from "../hooks/useContext";
 
 export default function FiltersNavBar() {
-  const { setIsFiltersMenuOpen } = useShopContext();
+  const { setIsFiltersMenuOpen } = useUiStore();
 
   return (
     <div className="sticky top-[60px] my-4 flex justify-around border-2 bg-white p-1">

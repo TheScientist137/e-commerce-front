@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useShopContext } from "../hooks/useContext.ts";
+import { useProductsStore } from "../stores/productsStore.ts";
 import {
   addProductService,
   updateProductService,
   deleteProductService,
 } from "../services/adminService.ts";
-import { getItem, removeItem } from "../utils/localStorage.ts";
+import { getItemLocalStorage, removeItemLocalStorage } from "../utils/localStorage.ts";
 import ProductForm from "../components/ProductForm.tsx";
 import ProductTable from "../components/ProductTable.tsx";
 import FormModal from "../components/FormModal.tsx";
@@ -14,7 +14,7 @@ import { ProductFormType } from "../types/types.ts";
 
 export default function AdminPanelPage() {
   // We need to handle the erros and improve user experience
-  const { products, fetchProducts, filteredProducts } = useShopContext();
+  const { products, fetchProducts, filteredProducts } = useProductsStore();
   const [editingProductId, setEditingProductId] = useState<number | null>(null);
   const [showModalForm, setShowModalForm] = useState<boolean>(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -116,7 +116,7 @@ export default function AdminPanelPage() {
       return;
     }
     try {
-      const token: string | null = getItem("token");
+      const token: string | null = getItemLocalStorage("tokenLoremoveItemLocalStorage");
       if (!token) {
         throw new Error("No authentication token found");
       }
@@ -124,7 +124,7 @@ export default function AdminPanelPage() {
         productType,
         image_public_id,
       });
-      removeItem("products");
+      removeItemLocalStorage("products");
       await fetchProducts(); // Refresh table with updated data
       alert("Product deleted succesfully");
     } catch (error) {
@@ -136,7 +136,7 @@ export default function AdminPanelPage() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const token: string | null = getItem("token");
+      const token: string | null = getItemLocalStorage("tokenLoremoveItemLocalStorage");
       if (!token) {
         throw new Error("No authentication token found");
       }

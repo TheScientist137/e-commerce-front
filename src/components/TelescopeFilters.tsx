@@ -1,20 +1,21 @@
 import { useState } from "react";
-import { useShopContext } from "../hooks/useContext";
+
+import { useProductsStore } from "../stores/productsStore";
+import { useUiStore } from "../stores/uiStore";
+
 import { TelescopeType } from "../types/types";
 import { FaPlus, FaMinus, FaTimes, FaArrowRight } from "react-icons/fa";
 
 export default function TelescopeFilters() {
-  const {
-    filteredProducts,
-    telescopeFilters,
-    filterTelescopesBySubCategory,
-    setIsFiltersMenuOpen,
-  } = useShopContext();
+  const { filteredProducts, telescopeFilters, filterTelescopesBySubCategory } =
+    useProductsStore();
+  const { setIsFiltersMenuOpen } = useUiStore();
+
   const [openOpticalDesigns, setOpenOpticalDesigns] = useState<boolean>(false);
   const [openMountingTypes, setOpenMountingTypes] = useState<boolean>(false);
   const [openBrands, setOpenBrands] = useState<boolean>(false);
 
-  // Obtener opciones dinámicas según los productos filtrados
+  // Obtain dynamic options from filtered products
   const opticalDesigns = Array.from(
     new Set(
       filteredProducts.map(
@@ -36,28 +37,16 @@ export default function TelescopeFilters() {
   );
 
   const handleOpticalDesignFilter = (opticalDesign: string | null) => {
-    if (telescopeFilters.opticalDesign === opticalDesign) {
-      filterTelescopesBySubCategory("opticalDesign", null);
-    } else {
-      filterTelescopesBySubCategory("opticalDesign", opticalDesign);
-      setIsFiltersMenuOpen(false);
-    }
+    filterTelescopesBySubCategory({ ...telescopeFilters, opticalDesign });
+    setIsFiltersMenuOpen(false);
   };
-  const handleMountingTypeFilter = (mountingType: string | null) => {
-    if (telescopeFilters.mountingType === mountingType) {
-      filterTelescopesBySubCategory("mountingType", null);
-    } else {
-      filterTelescopesBySubCategory("mountingType", mountingType);
-      setIsFiltersMenuOpen(false);
-    }
+  const handleMountingTypeFilter = (mountType: string | null) => {
+    filterTelescopesBySubCategory({ ...telescopeFilters, mountType });
+    setIsFiltersMenuOpen(false);
   };
   const handleBrandFilter = (brand: string | null) => {
-    if (telescopeFilters.brand === brand) {
-      filterTelescopesBySubCategory("brand", null);
-    } else {
-      filterTelescopesBySubCategory("brand", brand);
-      setIsFiltersMenuOpen(false);
-    }
+    filterTelescopesBySubCategory({ ...telescopeFilters, brand });
+    setIsFiltersMenuOpen(false);
   };
 
   return (
@@ -80,7 +69,7 @@ export default function TelescopeFilters() {
 
         {openOpticalDesigns && (
           <div className="ml-4 py-2">
-            {telescopeFilters.opticalDesign ? (
+            {telescopeFilters.opticalDesign !== null ? (
               <div
                 className="flex items-center text-lg"
                 onClick={() => handleOpticalDesignFilter(null)}
@@ -132,12 +121,12 @@ export default function TelescopeFilters() {
 
         {openMountingTypes && (
           <div className="ml-4 py-2">
-            {telescopeFilters.mountingType ? (
+            {telescopeFilters.mountType ? (
               <div
                 className="flex items-center text-lg"
                 onClick={() => handleMountingTypeFilter(null)}
               >
-                {telescopeFilters.mountingType}
+                {telescopeFilters.mountType}
                 <span className="ml-2 text-red-700">
                   <FaTimes />
                 </span>

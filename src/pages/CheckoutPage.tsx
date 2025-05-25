@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useShopContext } from "../hooks/useContext.ts";
+import { useCartStore } from "../stores/cartStore.ts";
 import RedirectModal from '../components/RedirectModal.tsx';
 
 export default function CheckoutPage() {
  const navigate = useNavigate();
- const { cartItems, setCartItems, calculateTotalPrice } = useShopContext();
+ const {cartItems, setCartItems, calculateTotalPrice} = useCartStore();
  const [showModalRedirect, setShowModalRedirect] = useState<boolean>(false)
 
  const handleShow = () => setShowModalRedirect(true);

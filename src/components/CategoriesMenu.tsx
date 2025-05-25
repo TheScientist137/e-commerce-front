@@ -1,15 +1,21 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
+
+import { useAuthContext } from "../hooks/useContext";
+
+import { useProductsStore } from "../stores/productsStore";
+import { useUiStore } from "../stores/uiStore";
+
 import { logoutService } from "../services/authService";
-import { useAuthContext, useShopContext } from "../hooks/useContext";
+
 import { FaUserAstronaut } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
 export default function CategoriesMenu() {
-  const { user, logout } = useAuthContext();
-  const { filterProductsByCategory, isMenuOpen, setIsMenuOpen } =
-    useShopContext();
   const navigate = useNavigate();
+  const { user, logout } = useAuthContext();
+  const { filterProductsByCategory } = useProductsStore();
+  const { isMenuOpen, setIsMenuOpen } = useUiStore();
   const categories: string[] = ["TELESCOPES", "MOUNTS", "EYEPIECES", "FILTERS"];
 
   // mover logout logic a auth context ???
@@ -55,10 +61,10 @@ export default function CategoriesMenu() {
     <div className="fixed inset-0 left-0 z-50 bg-white px-2 shadow-lg">
       <div className="mb-4 flex w-full justify-between px-4 py-2">
         <button onClick={() => handleUserClick()} className="cursor-pointer">
-          <FaUserAstronaut className="text-2xl self-center" />
+          <FaUserAstronaut className="self-center text-2xl" />
         </button>
         <button className="" onClick={() => setIsMenuOpen(false)}>
-          <IoClose className="text-3xl self-center" />
+          <IoClose className="self-center text-3xl" />
         </button>
       </div>
 

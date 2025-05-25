@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router";
 import { useEffect, useState } from "react";
+import { useCartStore } from "../stores/cartStore.ts";
 import {
   getTelesocopeByIdService,
   getMountByIdService,
@@ -7,11 +8,10 @@ import {
   getFilterByIdService
 } from "../services/shopService.ts";
 import { MountType, TelescopeType, EyepieceType, FilterType } from "../types/types.ts";
-import { useShopContext } from "../hooks/useContext.ts";
 
 export default function ProductPage() {
   const { id, type } = useParams();
-  const { addToCart } = useShopContext();
+  const {addToCart} = useCartStore();
   const [selectedProduct, setSelectedProduct] = useState<
     TelescopeType | MountType | EyepieceType | FilterType | null
   >(null);

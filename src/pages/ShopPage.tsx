@@ -1,5 +1,6 @@
-import { Link, useOutletContext } from "react-router";
-import { useShopContext } from "../hooks/useContext.ts";
+import { Link } from "react-router";
+import { useProductsStore } from "../stores/productsStore.ts";
+import { useUiStore } from "../stores/uiStore.ts";
 import { FaArrowCircleUp } from "react-icons/fa";
 import FiltersNavBar from "../components/FiltersNavBar.tsx";
 
@@ -13,7 +14,8 @@ type CategoryConfigMap = {
 };
 
 export default function ShopPage() {
-  const { filteredProducts, selectedCategory, isMenuOpen } = useShopContext();
+  const { filteredProducts, selectedCategory } = useProductsStore();
+  const { isMenuOpen } = useUiStore();
 
   const CATEGORY_CONFIG: CategoryConfigMap = {
     telescopes: {

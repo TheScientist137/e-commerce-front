@@ -1,15 +1,12 @@
 import { useEffect } from "react";
-import { useShopContext } from "../hooks/useContext";
+import { useProductsStore } from "../stores/productsStore";
+import { useUiStore } from "../stores/uiStore";
 import { IoClose } from "react-icons/io5";
 import TelescopeFilters from "./TelescopeFilters";
 
 export default function FiltersMenu() {
-  const {
-    isFiltersMenuOpen,
-    setIsFiltersMenuOpen,
-    telescopeFilters,
-    selectedCategory,
-  } = useShopContext();
+  const { selectedCategory } = useProductsStore();
+  const { isFiltersMenuOpen, setIsFiltersMenuOpen } = useUiStore();
 
   // Effect to block body scroll effect when menu is open
   useEffect(() => {
@@ -26,7 +23,7 @@ export default function FiltersMenu() {
 
   if (!isFiltersMenuOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 m-4 bg-white p-4 shadow-lg overflow-y-auto">
+    <div className="fixed inset-0 z-50 m-4 overflow-y-auto bg-white p-4 shadow-lg">
       <div className="mb-4 flex w-full justify-between">
         <h3 className="text-2xl font-medium">
           {selectedCategory &&
@@ -37,8 +34,7 @@ export default function FiltersMenu() {
         </button>
       </div>
 
-
-        {selectedCategory === "telescopes" && <TelescopeFilters />}
+      {selectedCategory === "telescopes" && <TelescopeFilters />}
     </div>
   );
 }

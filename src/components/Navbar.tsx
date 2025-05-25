@@ -1,12 +1,18 @@
 import { useNavigate, Link } from "react-router";
-import { useShopContext, useAuthContext } from "../hooks/useContext";
+import { useAuthContext } from "../hooks/useContext";
+
+import { useProductsStore } from "../stores/productsStore";
+import { useCartStore } from "../stores/cartStore";
+import { useUiStore } from "../stores/uiStore";
+
 import { FaShoppingCart, FaAlignJustify } from "react-icons/fa";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const { isAdmin } = useAuthContext();
-  const { filterProductsByCategory, cartItems, setIsMenuOpen } =
-    useShopContext();
+  const { filterProductsByCategory } = useProductsStore();
+  const { cartItems } = useCartStore();
+  const { setIsMenuOpen } = useUiStore();
 
   const handleTitleClick = () => {
     filterProductsByCategory("products");

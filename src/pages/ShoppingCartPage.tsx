@@ -1,14 +1,9 @@
 import { Link } from "react-router";
-import { useShopContext } from "../hooks/useContext"
+import { useCartStore } from "../stores/cartStore";
 
 export default function ShoppingCartPage() {
-  const {
-    cartItems,
-    removeFromCart,
-    updateQuantity,
-    calculateTotalPrice
-  } = useShopContext();
-
+  const { cartItems, removeFromCart, updateQuantity, calculateTotalPrice } =
+    useCartStore();
 
   return (
     <section>
@@ -21,21 +16,38 @@ export default function ShoppingCartPage() {
                 <p>{item.product.name}</p>
                 <p>{item.product.brand}</p>
                 <img src={item.product.image} alt="Product Image" />
-                <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)}>-</button>
+                <button
+                  onClick={() =>
+                    updateQuantity(item.product.id, item.quantity - 1)
+                  }
+                >
+                  -
+                </button>
                 <span>{item.quantity}</span>
-                <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)}>+</button>
-                <button onClick={() => removeFromCart(item.product.id)}>DELETE</button>
+                <button
+                  onClick={() =>
+                    updateQuantity(item.product.id, item.quantity + 1)
+                  }
+                >
+                  +
+                </button>
+                <button onClick={() => removeFromCart(item.product.id)}>
+                  DELETE
+                </button>
                 <p>{(item.product.price * item.quantity).toFixed(2)} $</p>
               </div>
             ))}
           </div>
-          <p>Total: {(calculateTotalPrice()).toFixed(2)} $</p>
-          <button><Link to='/checkout'>Proceed to checkout</Link></button>
+          <p>Total: {calculateTotalPrice().toFixed(2)} $</p>
+          <button>
+            <Link to="/checkout">Proceed to checkout</Link>
+          </button>
         </div>
-      ) : <p>Empty cart</p>
-      }
+      ) : (
+        <p>Empty cart</p>
+      )}
 
-      <Link to='/'>Back to shop</Link>
+      <Link to="/">Back to shop</Link>
     </section>
-  )
+  );
 }

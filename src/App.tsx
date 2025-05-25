@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router";
-import { ShopContextProvider } from "./context/ShopContext.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import Dashboard from "./components/Dashboard.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
@@ -14,7 +13,6 @@ import ProtectedRoute from "./components/ProtectedRoute.tsx";
 export default function App() {
   return (
     <AuthProvider>
-      <ShopContextProvider>
         <BrowserRouter>
           <Routes>
             <Route element={<Dashboard />}>
@@ -35,7 +33,6 @@ export default function App() {
             </Route>
           </Routes>
         </BrowserRouter>
-      </ShopContextProvider>
     </AuthProvider>
   )
 }
