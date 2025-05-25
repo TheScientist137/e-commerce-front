@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router";
 
-import { useProductsStore } from "../stores/productsStore";
+import {
+  FilterItemsSubCategoryType,
+  useProductsStore,
+} from "../stores/productsStore";
 import { useCartStore } from "../stores/cartStore";
 import { useUiStore } from "../stores/uiStore";
 
@@ -24,7 +27,6 @@ import {
   EyepieceType,
   FilterType,
 } from "../types/types";
-import { TelescopeFiltersType } from "../stores/productsStore";
 
 export default function Dashboard() {
   const [initialized, setInitialized] = useState<boolean>(false);
@@ -36,7 +38,7 @@ export default function Dashboard() {
     setFilters,
     fetchProducts,
     filterProductsByCategory,
-    filterTelescopesBySubCategory,
+    filterProductsBySubCategory,
   } = useProductsStore();
   const { cartItems } = useCartStore();
   const { isMenuOpen } = useUiStore();
@@ -59,10 +61,11 @@ export default function Dashboard() {
     } = getSavedDataFromLocalStorage();
 
     const savedCategory: string | null = getItemSessionStorage("category");
-    const savedTelescopeFilters: TelescopeFiltersType | null =
-      getItemSessionStorage("telescopeFilters");
+    const savedProductFilters: FilterItemsSubCategoryType | null =
+      getItemSessionStorage("productFilters");
 
     if (
+      // Set saved products
       savedProducts &&
       savedTelescopes &&
       savedMounts &&
@@ -75,12 +78,21 @@ export default function Dashboard() {
       setEyepieces(savedEyepieces);
       setFilters(savedFilters);
 
-      // entender orden!
+      // If saved category filter products by category????????
+      // ¿Seguir utilizando categoria products y mostrar todos los productos??????'
       filterProductsByCategory(savedCategory || "products");
 
-      if (savedCategory === "telescopes" && savedTelescopeFilters) {
-        filterTelescopesBySubCategory(savedTelescopeFilters);
-        console.log(savedTelescopeFilters);
+      // Manage saved product filters
+      if (savedProductFilters) {
+        if (savedCategory === "telescopes") {
+          filterProductsBySubCategory("telescopes", savedProductFilters);
+        } else if (savedCategory === "mounts") {
+          filterProductsBySubCategory("mounts", savedProductFilters);
+        } else if (savedCategory === "eyepieces") {
+          filterProductsBySubCategory("eyepieces", savedProductFilters);
+        } else if (savedCategory === "filters") {
+          filterProductsBySubCategory("filters", savedProductFilters);
+        }
       }
     } else {
       fetchProducts();

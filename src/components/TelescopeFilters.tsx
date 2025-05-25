@@ -1,13 +1,11 @@
 import { useState } from "react";
-
+import { FaPlus, FaMinus, FaTimes, FaArrowRight } from "react-icons/fa";
 import { useProductsStore } from "../stores/productsStore";
 import { useUiStore } from "../stores/uiStore";
-
 import { TelescopeType } from "../types/types";
-import { FaPlus, FaMinus, FaTimes, FaArrowRight } from "react-icons/fa";
 
 export default function TelescopeFilters() {
-  const { filteredProducts, telescopeFilters, filterTelescopesBySubCategory } =
+  const { filteredProducts, telescopeFilters, filterProductsBySubCategory } =
     useProductsStore();
   const { setIsFiltersMenuOpen } = useUiStore();
 
@@ -37,15 +35,21 @@ export default function TelescopeFilters() {
   );
 
   const handleOpticalDesignFilter = (opticalDesign: string | null) => {
-    filterTelescopesBySubCategory({ ...telescopeFilters, opticalDesign });
+    filterProductsBySubCategory("telescopes", {
+      ...telescopeFilters,
+      opticalDesign,
+    });
     setIsFiltersMenuOpen(false);
   };
   const handleMountingTypeFilter = (mountType: string | null) => {
-    filterTelescopesBySubCategory({ ...telescopeFilters, mountType });
+    filterProductsBySubCategory("telescopes", {
+      ...telescopeFilters,
+      mountType,
+    });
     setIsFiltersMenuOpen(false);
   };
   const handleBrandFilter = (brand: string | null) => {
-    filterTelescopesBySubCategory({ ...telescopeFilters, brand });
+    filterProductsBySubCategory("telescopes", { ...telescopeFilters, brand });
     setIsFiltersMenuOpen(false);
   };
 

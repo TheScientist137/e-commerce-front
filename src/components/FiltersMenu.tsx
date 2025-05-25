@@ -3,6 +3,9 @@ import { useProductsStore } from "../stores/productsStore";
 import { useUiStore } from "../stores/uiStore";
 import { IoClose } from "react-icons/io5";
 import TelescopeFilters from "./TelescopeFilters";
+import MountFilters from "./MountFilters";
+import EyepieceFilters from "./EyepieceFilters";
+import FilterFilters from "./FilterFilters";
 
 export default function FiltersMenu() {
   const { selectedCategory } = useProductsStore();
@@ -35,6 +38,9 @@ export default function FiltersMenu() {
       </div>
 
       {selectedCategory === "telescopes" && <TelescopeFilters />}
+      {selectedCategory === "mounts" && <MountFilters />}
+      {selectedCategory === "eyepieces" && <EyepieceFilters />}
+      {selectedCategory === "filters" && <FilterFilters />}
     </div>
   );
 }

@@ -9,7 +9,7 @@ import {
 } from "../services/shopService.ts";
 
 import {
-  getItemSessionStorage,
+  removeItemSessionStorage,
   setItemSessionStorage,
 } from "../utils/sessionStorage";
 import {
@@ -25,7 +25,7 @@ import {
   FilterType,
 } from "../types/types";
 
-type FilterItemsType =
+type FilterItemsCategoryType =
   | ProductType[]
   | TelescopeType[]
   | MountType[]
@@ -37,6 +37,24 @@ export type TelescopeFiltersType = {
   mountType: string | null;
   brand: string | null;
 };
+export type MountFiltersType = {
+  mountType: string | null;
+  brand: string | null;
+};
+export type EyepieceFiltersType = {
+  buildType: string | null;
+  brand: string | null;
+};
+export type FilterFiltersType = {
+  buildType: string | null;
+  brand: string | null;
+};
+
+export type FilterItemsSubCategoryType =
+  | TelescopeFiltersType
+  | MountFiltersType
+  | EyepieceFiltersType
+  | FilterFiltersType;
 
 type ProductsStateType = {
   products: ProductType[];
@@ -44,34 +62,33 @@ type ProductsStateType = {
   mounts: MountType[];
   eyepieces: EyepieceType[];
   filters: FilterType[];
-  filteredProducts: FilterItemsType;
+  filteredProducts: FilterItemsCategoryType;
   selectedCategory: string | null;
-
   telescopeFilters: TelescopeFiltersType;
+  mountFilters: MountFiltersType;
+  eyepieceFilters: EyepieceFiltersType;
+  filterFilters: FilterFiltersType;
 
   setProducts: (products: ProductType[]) => void;
   setTelescopes: (telescopes: TelescopeType[]) => void;
   setMounts: (mounts: MountType[]) => void;
   setEyepieces: (eyepieces: EyepieceType[]) => void;
   setFilters: (filters: FilterType[]) => void;
-  setFilteredProducts: (filteredProducts: FilterItemsType) => void;
+  setFilteredProducts: (filteredProducts: FilterItemsCategoryType) => void;
   setSelectedCategory: (category: string | null) => void;
-
   setTelescopeFilters: (filters: TelescopeFiltersType) => void;
+  setMountFilters: (filters: MountFiltersType) => void;
+  setEyepieceFilters: (filters: EyepieceFiltersType) => void;
+  setFilterFilters: (filters: FilterFiltersType) => void;
 
   fetchProducts: () => Promise<void>;
+  clearProductFilters: () => void;
   filterProductsByCategory: (category: string) => void;
-  filterTelescopesBySubCategory: (
-    telescopeFilters: TelescopeFiltersType,
+  filterProductsBySubCategory: (
+    category: string,
+    updatedFilters: FilterItemsSubCategoryType,
   ) => void;
 };
-
-const initialTelescopeFilters = {
-  opticalDesign: null,
-  mountType: null,
-  brand: null,
-};
-const savedTelescopeFilters = getItemSessionStorage("telescopeFilters");
 
 export const useProductsStore = create<ProductsStateType>((set, get) => ({
   // STATE
@@ -82,7 +99,23 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
   filters: [],
   filteredProducts: [],
   selectedCategory: "",
-  telescopeFilters: initialTelescopeFilters,
+  telescopeFilters: {
+    opticalDesign: null,
+    mountType: null,
+    brand: null,
+  },
+  mountFilters: {
+    mountType: null,
+    brand: null,
+  },
+  eyepieceFilters: {
+    buildType: null,
+    brand: null,
+  },
+  filterFilters: {
+    buildType: null,
+    brand: null,
+  },
 
   // STATE SETTERS
   setProducts: (products) => set({ products }),
@@ -97,7 +130,19 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
   },
   setTelescopeFilters: (filters) => {
     set({ telescopeFilters: filters });
-    setItemSessionStorage("telescopeFilters", filters);
+    setItemSessionStorage("productFilters", filters);
+  },
+  setMountFilters: (filters) => {
+    set({ mountFilters: filters });
+    setItemSessionStorage("productFilters", filters);
+  },
+  setEyepieceFilters: (filters) => {
+    set({ eyepieceFilters: filters });
+    setItemSessionStorage("productFilters", filters);
+  },
+  setFilterFilters: (filters) => {
+    set({ filterFilters: filters });
+    setItemSessionStorage("productFilters", filters);
   },
 
   // FUNCTIONS
@@ -145,6 +190,15 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
       console.error("Error fetching products", error);
     }
   },
+  clearProductFilters: () => {
+    set({
+      telescopeFilters: { opticalDesign: null, mountType: null, brand: null },
+      mountFilters: { mountType: null, brand: null },
+      eyepieceFilters: { buildType: null, brand: null },
+      filterFilters: { buildType: null, brand: null },
+    });
+    removeItemSessionStorage("productFilters");
+  },
   filterProductsByCategory: (category) => {
     const {
       products,
@@ -153,9 +207,10 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
       eyepieces,
       filters,
       setSelectedCategory,
+      clearProductFilters,
     } = get();
 
-    let filtered: ProductType[] = [];
+    let filtered: FilterItemsCategoryType = [];
     if (category === "products") {
       filtered = [...products];
     } else if (category === "telescopes") {
@@ -168,29 +223,99 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
       filtered = [...filters];
     }
 
+    clearProductFilters();
     setSelectedCategory(category);
     set({ filteredProducts: filtered });
   },
-  filterTelescopesBySubCategory: (updatedFilters) => {
-    const { opticalDesign, mountType, brand } = updatedFilters;
-    const { telescopes, setTelescopeFilters } = get();
+  filterProductsBySubCategory: (category, updatedFilters) => {
+    const {
+      telescopes,
+      mounts,
+      eyepieces,
+      filters,
+      setTelescopeFilters,
+      setMountFilters,
+      setEyepieceFilters,
+      setFilterFilters,
+    } = get();
 
-    let filtered = [...telescopes];
-    if (opticalDesign) {
-      filtered = filtered.filter(
-        (telescope) => telescope.telescopeData.optical_design === opticalDesign,
-      );
-    }
-    if (mountType) {
-      filtered = filtered.filter(
-        (telescope) => telescope.telescopeData.mount_type === mountType,
-      );
-    }
-    if (brand) {
-      filtered = filtered.filter((telescope) => telescope.brand === brand);
-    }
+    if (category === "telescopes") {
+      const updatedTelescopeFilters = updatedFilters as TelescopeFiltersType;
+      const { opticalDesign, mountType, brand } = updatedTelescopeFilters;
 
-    setTelescopeFilters(updatedFilters);
-    set({ filteredProducts: filtered });
+      let filtered = [...telescopes];
+      if (opticalDesign) {
+        filtered = filtered.filter(
+          (telescope) =>
+            telescope.telescopeData.optical_design === opticalDesign,
+        );
+      }
+      if (mountType) {
+        filtered = filtered.filter(
+          (telescope) => telescope.telescopeData.mount_type === mountType,
+        );
+      }
+      if (brand) {
+        filtered = filtered.filter((telescope) => telescope.brand === brand);
+      }
+
+      setTelescopeFilters(updatedTelescopeFilters);
+      set({ filteredProducts: filtered });
+      return;
+    }
+    if (category === "mounts") {
+      const updatedMountFilters = updatedFilters as MountFiltersType;
+      const { mountType, brand } = updatedMountFilters;
+
+      let filtered = [...mounts];
+      if (mountType) {
+        filtered = filtered.filter(
+          (mount) => mount.mountData.mount_type === mountType,
+        );
+      }
+      if (brand) {
+        filtered = filtered.filter((mount) => mount.brand === brand);
+      }
+
+      setMountFilters(updatedMountFilters);
+      set({ filteredProducts: filtered });
+      return;
+    }
+    if (category === "eyepieces") {
+      const updatedEyepieceFilters = updatedFilters as EyepieceFiltersType;
+      const { buildType, brand } = updatedEyepieceFilters;
+
+      let filtered = [...eyepieces];
+      if (buildType) {
+        filtered = filtered.filter(
+          (eyepiece) => eyepiece.eyepieceData.eyepiece_type === buildType,
+        );
+      }
+      if (brand) {
+        filtered = filtered.filter((eyepiece) => eyepiece.brand === brand);
+      }
+
+      setEyepieceFilters(updatedEyepieceFilters);
+      set({ filteredProducts: filtered });
+      return;
+    }
+    if (category === "filters") {
+      const updatedFiltersFilters = updatedFilters as FilterFiltersType;
+      const { buildType, brand } = updatedFiltersFilters;
+
+      let filtered = [...filters];
+      if (buildType) {
+        filtered = filtered.filter(
+          (filter) => filter.filterData.filter_type === buildType,
+        );
+      }
+      if (brand) {
+        filtered = filtered.filter((filter) => filter.brand === brand);
+      }
+
+      setFilterFilters(updatedFiltersFilters);
+      set({ filteredProducts: filtered });
+      return;
+    }
   },
 }));
