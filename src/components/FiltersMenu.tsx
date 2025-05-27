@@ -26,7 +26,7 @@ export default function FiltersMenu() {
 
   if (!isFiltersMenuOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 m-4 overflow-y-auto bg-white p-4 shadow-lg">
+    <div className="fixed inset-0 z-50 m-4 overflow-y-auto bg-white p-6 shadow-lg">
       <div className="mb-4 flex w-full justify-between">
         <h3 className="text-2xl font-medium">
           {selectedCategory &&

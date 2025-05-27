@@ -19,6 +19,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import CategoriesMenu from "./CategoriesMenu";
 import FiltersMenu from "./FiltersMenu";
+import SortByMenu from "./SortByMenu";
 
 import {
   ProductType,
@@ -36,9 +37,12 @@ export default function Dashboard() {
     setMounts,
     setEyepieces,
     setFilters,
+    setSelectedCategory,
+    setSortBy,
     fetchProducts,
     filterProductsByCategory,
     filterProductsBySubCategory,
+    sortFilteredProducts,
   } = useProductsStore();
   const { cartItems } = useCartStore();
   const { isMenuOpen } = useUiStore();
@@ -51,6 +55,7 @@ export default function Dashboard() {
     savedFilters: getItemLocalStorage<FilterType[]>("filters"),
   });
 
+  // Load data API or Local and Session Storage
   useEffect(() => {
     const {
       savedProducts,
@@ -63,6 +68,7 @@ export default function Dashboard() {
     const savedCategory: string | null = getItemSessionStorage("category");
     const savedProductFilters: FilterItemsSubCategoryType | null =
       getItemSessionStorage("productFilters");
+    const savedSortBy: string | null = getItemSessionStorage("sortBy");
 
     if (
       // Set saved products
@@ -80,7 +86,14 @@ export default function Dashboard() {
 
       // If saved category filter products by category????????
       // ¿Seguir utilizando categoria products y mostrar todos los productos??????'
-      filterProductsByCategory(savedCategory || "products");
+      if (savedCategory) {
+        setSelectedCategory(savedCategory);
+        filterProductsByCategory(savedCategory);
+      }
+
+      const sortValue = savedSortBy || "a-z";
+      setSortBy(sortValue);
+      sortFilteredProducts(sortValue);
 
       // Manage saved product filters
       if (savedProductFilters) {
@@ -134,10 +147,12 @@ export default function Dashboard() {
 
       <CategoriesMenu />
       <FiltersMenu />
+      <SortByMenu />
 
       <main className="mt-[60px] flex-grow px-4">
         <Outlet />
       </main>
+
       <footer className="bg-gray-400 p-4">
         <Footer />
       </footer>

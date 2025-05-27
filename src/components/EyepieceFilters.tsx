@@ -25,10 +25,12 @@ export default function EyepieceFilters() {
   const handleBuildTypeFilter = (buildType: string | null) => {
     filterProductsBySubCategory("eyepieces", { ...eyepieceFilters, buildType });
     setIsFiltersMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const handleBrandFilter = (brand: string | null) => {
     filterProductsBySubCategory("eyepieces", { ...eyepieceFilters, brand });
     setIsFiltersMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (

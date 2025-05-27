@@ -40,6 +40,7 @@ export default function TelescopeFilters() {
       opticalDesign,
     });
     setIsFiltersMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const handleMountingTypeFilter = (mountType: string | null) => {
     filterProductsBySubCategory("telescopes", {
@@ -47,10 +48,12 @@ export default function TelescopeFilters() {
       mountType,
     });
     setIsFiltersMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const handleBrandFilter = (brand: string | null) => {
     filterProductsBySubCategory("telescopes", { ...telescopeFilters, brand });
     setIsFiltersMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (

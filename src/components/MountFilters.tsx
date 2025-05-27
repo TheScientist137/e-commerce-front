@@ -25,10 +25,12 @@ export default function MountFilters() {
   const handleMountingTypeFilter = (mountType: string | null) => {
     filterProductsBySubCategory("mounts", { ...mountFilters, mountType });
     setIsFiltersMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const handleBrandFilter = (brand: string | null) => {
     filterProductsBySubCategory("mounts", { ...mountFilters, brand });
     setIsFiltersMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (

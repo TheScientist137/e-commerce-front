@@ -9,6 +9,7 @@ import {
 } from "../services/shopService.ts";
 
 import {
+  getItemSessionStorage,
   removeItemSessionStorage,
   setItemSessionStorage,
 } from "../utils/sessionStorage";
@@ -68,6 +69,7 @@ type ProductsStateType = {
   mountFilters: MountFiltersType;
   eyepieceFilters: EyepieceFiltersType;
   filterFilters: FilterFiltersType;
+  sortBy: string;
 
   setProducts: (products: ProductType[]) => void;
   setTelescopes: (telescopes: TelescopeType[]) => void;
@@ -80,6 +82,7 @@ type ProductsStateType = {
   setMountFilters: (filters: MountFiltersType) => void;
   setEyepieceFilters: (filters: EyepieceFiltersType) => void;
   setFilterFilters: (filters: FilterFiltersType) => void;
+  setSortBy: (sortBy: string) => void;
 
   fetchProducts: () => Promise<void>;
   clearProductFilters: () => void;
@@ -88,6 +91,7 @@ type ProductsStateType = {
     category: string,
     updatedFilters: FilterItemsSubCategoryType,
   ) => void;
+  sortFilteredProducts: (sortBy: string) => void;
 };
 
 export const useProductsStore = create<ProductsStateType>((set, get) => ({
@@ -116,6 +120,7 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
     buildType: null,
     brand: null,
   },
+  sortBy: "a-z",
 
   // STATE SETTERS
   setProducts: (products) => set({ products }),
@@ -143,6 +148,10 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
   setFilterFilters: (filters) => {
     set({ filterFilters: filters });
     setItemSessionStorage("productFilters", filters);
+  },
+  setSortBy: (sortBy) => {
+    set({ sortBy: sortBy });
+    setItemSessionStorage("sortBy", sortBy);
   },
 
   // FUNCTIONS
@@ -317,5 +326,32 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
       set({ filteredProducts: filtered });
       return;
     }
+  },
+  sortFilteredProducts: (sortBy) => {
+    const { filteredProducts, setSortBy } = get();
+
+    let sortFiltered = [...filteredProducts];
+    if (sortBy === "a-z") {
+      sortFiltered = sortFiltered.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortBy === "z-a") {
+      sortFiltered = sortFiltered.sort((a, b) => b.name.localeCompare(a.name));
+    } else if (sortBy === "low-high") {
+      sortFiltered = sortFiltered.sort((a, b) => a.price - b.price);
+    } else if (sortBy === "high-low") {
+      sortFiltered = sortFiltered.sort((a, b) => b.price - a.price);
+    } else if (sortBy === "old-new") {
+      sortFiltered = sortFiltered.sort(
+        (a, b) =>
+          new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+      );
+    } else if (sortBy === "new-old") {
+      sortFiltered = sortFiltered.sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      );
+    }
+
+    setSortBy(sortBy);
+    set({ filteredProducts: sortFiltered });
   },
 }));

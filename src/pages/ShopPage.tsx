@@ -38,10 +38,6 @@ export default function ShopPage() {
       description:
         "Enhance your celestial views with our professional-grade filters. Reduce light pollution, boost planetary contrast, and reveal subtle nebula details with precision optical filters designed for specific astronomical targets. Our carefully selected range helps you see more, even under less-than-ideal observing conditions.",
     },
-    products: {
-      title: "ALL PRODUCTS",
-      description: "Browse our complete collection of astronomy equipment.",
-    },
   };
 
   return (
@@ -53,6 +49,7 @@ export default function ShopPage() {
         </div>
       )}
 
+      {/* Don`t show FiltersNavbar when CategoriesMenu is open */}
       {!isMenuOpen && <FiltersNavBar />}
 
       {/* PRODUCTS LIST */}

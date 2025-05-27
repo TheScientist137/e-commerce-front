@@ -25,10 +25,12 @@ export default function FilterFilters() {
   const handleBuildTypeFilter = (buildType: string | null) => {
     filterProductsBySubCategory("filters", { ...filterFilters, buildType });
     setIsFiltersMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const handleBrandFilter = (brand: string | null) => {
     filterProductsBySubCategory("filters", { ...filterFilters, brand });
     setIsFiltersMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
