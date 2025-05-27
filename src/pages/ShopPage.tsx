@@ -1,8 +1,6 @@
-import { Link } from "react-router";
 import { useProductsStore } from "../stores/productsStore.ts";
-import { useUiStore } from "../stores/uiStore.ts";
-import { FaArrowCircleUp } from "react-icons/fa";
 import FiltersNavBar from "../components/FiltersNavBar.tsx";
+import ProductCard from "../components/ProductCard.tsx";
 
 type CategoryConfig = {
   title: string;
@@ -15,7 +13,6 @@ type CategoryConfigMap = {
 
 export default function ShopPage() {
   const { filteredProducts, selectedCategory } = useProductsStore();
-  const { isMenuOpen } = useUiStore();
 
   const CATEGORY_CONFIG: CategoryConfigMap = {
     telescopes: {
@@ -41,36 +38,23 @@ export default function ShopPage() {
   };
 
   return (
-    <section className="">
+    <section className="my-4">
       {selectedCategory && (
         <div>
-          <h2>{CATEGORY_CONFIG[selectedCategory].title}</h2>
-          <p>{CATEGORY_CONFIG[selectedCategory].description}</p>
+          <h2 className="font-zen text-lg">
+            {CATEGORY_CONFIG[selectedCategory].title}
+          </h2>
+          <p className="">{CATEGORY_CONFIG[selectedCategory].description}</p>
         </div>
       )}
 
       {/* Don`t show FiltersNavbar when CategoriesMenu is open */}
-      {!isMenuOpen && <FiltersNavBar />}
+      <FiltersNavBar />
 
       {/* PRODUCTS LIST */}
-      <div className="">
+      <div className="grid grid-cols-2 gap-2">
         {filteredProducts.map((product) => (
-          <div className="flex flex-col items-center" key={product.id}>
-            <h3>{product.name}</h3>
-            <img
-              src={product.image}
-              alt="image"
-              style={{ maxWidth: "200px" }}
-            />
-            <p>{product.brand}</p>
-            <p>{product.price} $</p>
-            <Link
-              className="underline"
-              to={`/product/${product.product_type}/${product.id}`}
-            >
-              View details
-            </Link>
-          </div>
+          <ProductCard product={product} />
         ))}
       </div>
     </section>

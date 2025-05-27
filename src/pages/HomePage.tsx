@@ -20,7 +20,7 @@ export default function HomePage() {
   return (
     <section className="flex h-full flex-col text-center">
       <div className="my-12 flex flex-col">
-        <h1 className="text-4xl">Welcome!</h1>
+        <h1 className="font-zen text-4xl">Welcome!</h1>
         <p className="text-xl"> Discover the best astronomy equipment!</p>
       </div>
 

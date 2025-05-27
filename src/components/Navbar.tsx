@@ -5,14 +5,20 @@ import { useProductsStore } from "../stores/productsStore";
 import { useCartStore } from "../stores/cartStore";
 import { useUiStore } from "../stores/uiStore";
 
-import { FaShoppingCart, FaAlignJustify } from "react-icons/fa";
+import {
+  FaShoppingCart,
+  FaAlignJustify,
+  FaUserAstronaut,
+} from "react-icons/fa";
+import { RiLogoutCircleFill } from "react-icons/ri";
+import { FaCartShopping } from "react-icons/fa6";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const { isAdmin, user, logout } = useAuthContext();
   const { filterProductsByCategory } = useProductsStore();
   const { cartItems } = useCartStore();
-  const { setIsMenuOpen } = useUiStore();
+  const { setIsMenuOpen, setIsLoginModalOpen } = useUiStore();
 
   const handleTitleClick = () => {
     filterProductsByCategory("products");
@@ -21,29 +27,35 @@ export default function Navbar() {
 
   console.log(user);
   return (
-    <div className="flex justify-between">
+    <div className="flex content-center justify-between">
       <button onClick={() => setIsMenuOpen(true)}>
-        <FaAlignJustify className="mr-4 h-5 w-5" />
+        <FaAlignJustify className="text-xl" />
       </button>
 
-      <h1 className="font-zen mr-4 text-lg">
+      <h1 className="font-zen mx-2 text-lg">
         <Link to="/" onClick={() => handleTitleClick()}>
           TelescopEcommerce
         </Link>
       </h1>
 
-      <button onClick={() => navigate("/cart")} className="cursor-pointer px-1">
-        <FaShoppingCart className="h-5 w-5 self-center" />
-      </button>
-      {cartItems.length > 0 && <span>{cartItems.length}</span>}
+      {user ? (
+        <button onClick={logout} title="Logout">
+          <RiLogoutCircleFill className="text-xl" />
+        </button>
+      ) : (
+        <button onClick={() => setIsLoginModalOpen(true)} title="Login">
+          <FaUserAstronaut className="text-xl" />
+        </button>
+      )}
 
-      {isAdmin ? (
-        <div>
-          <button onClick={() => navigate("/admin")}>Admin Panel</button>
-        </div>
-      ) : null}
-
-      {user && (<div onClick={logout}>hola</div>)}
+      <div className="flex justify-center">
+        <button onClick={() => navigate("/cart")} className="cursor-pointer">
+          <FaCartShopping className="text-xl" />
+        </button>
+        {cartItems.length > 0 && (
+          <span className="text-lg font-black">{cartItems.length}</span>
+        )}
+      </div>
     </div>
   );
 }
