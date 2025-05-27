@@ -15,18 +15,6 @@ export default function SortByMenu() {
     { title: "Date: New-Old", value: "new-old" },
   ];
 
-  // Effect to block body scroll effect when menu is open
-  useEffect(() => {
-    isSortMenuOpen
-      ? (document.body.style.overflow = "hidden")
-      : (document.body.style.overflow = "unset");
-    // Clean the effect
-    // This is important to avoid scroll lock when the menu is closed
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isSortMenuOpen]);
-
   const handleSortFilter = (sortFilter: string) => {
     sortFilteredProducts(sortFilter);
     setIsSortMenuOpen(false);

@@ -11,19 +11,6 @@ export default function FiltersMenu() {
   const { selectedCategory } = useProductsStore();
   const { isFiltersMenuOpen, setIsFiltersMenuOpen } = useUiStore();
 
-  // Effect to block body scroll effect when menu is open
-  useEffect(() => {
-    isFiltersMenuOpen
-      ? (document.body.style.overflow = "hidden")
-      : (document.body.style.overflow = "unset");
-
-    // Clean the effect
-    // This is important to avoid scroll lock when the menu is closed
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isFiltersMenuOpen]);
-
   if (!isFiltersMenuOpen) return null;
   return (
     <div className="fixed inset-0 z-50 m-4 overflow-y-auto bg-white p-6 shadow-lg">

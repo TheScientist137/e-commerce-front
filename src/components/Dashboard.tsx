@@ -45,7 +45,7 @@ export default function Dashboard() {
     sortFilteredProducts,
   } = useProductsStore();
   const { cartItems } = useCartStore();
-  const { isMenuOpen } = useUiStore();
+  const { isMenuOpen, isFiltersMenuOpen, isSortMenuOpen } = useUiStore();
 
   const getSavedDataFromLocalStorage = () => ({
     savedProducts: getItemLocalStorage<ProductType[]>("products"),
@@ -124,9 +124,9 @@ export default function Dashboard() {
     }
   }, [cartItems]);
 
-  // Effect to block body scroll effect when menu is open
+  // Effect to block body scroll effect when menus are open
   useEffect(() => {
-    if (isMenuOpen) {
+    if (isMenuOpen || isFiltersMenuOpen || isSortMenuOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -135,7 +135,7 @@ export default function Dashboard() {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isMenuOpen]);
+  }, [isMenuOpen, isFiltersMenuOpen, isSortMenuOpen]);
 
   // No render anything until data is iniatialized
   if (!initialized) return null;
