@@ -9,7 +9,7 @@ import { FaShoppingCart, FaAlignJustify } from "react-icons/fa";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const { isAdmin } = useAuthContext();
+  const { isAdmin, user, logout } = useAuthContext();
   const { filterProductsByCategory } = useProductsStore();
   const { cartItems } = useCartStore();
   const { setIsMenuOpen } = useUiStore();
@@ -19,6 +19,7 @@ export default function Navbar() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  console.log(user);
   return (
     <div className="flex justify-between">
       <button onClick={() => setIsMenuOpen(true)}>
@@ -41,6 +42,8 @@ export default function Navbar() {
           <button onClick={() => navigate("/admin")}>Admin Panel</button>
         </div>
       ) : null}
+
+      {user && (<div onClick={logout}>hola</div>)}
     </div>
   );
 }

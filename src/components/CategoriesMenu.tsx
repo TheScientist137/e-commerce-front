@@ -14,18 +14,6 @@ export default function CategoriesMenu() {
   const { isMenuOpen, setIsMenuOpen } = useUiStore();
   const categories: string[] = ["TELESCOPES", "MOUNTS", "EYEPIECES", "FILTERS"];
 
-  // Effect to block body scroll effect when menu is open
-  useEffect(() => { // Improve ?
-    isMenuOpen
-      ? (document.body.style.overflow = "hidden")
-      : (document.body.style.overflow = "unset");
-    // Clean the effect
-    // This is important to avoid scroll lock when the menu is closed
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isMenuOpen]);
-
   // mover logout logic a auth context ???
   const handleLogout = async () => {
     try {

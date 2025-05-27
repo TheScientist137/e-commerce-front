@@ -1,29 +1,29 @@
-import { ReactNode } from "react"
+import { ReactNode } from "react";
 
 type FormModalProps = {
- showModalForm: boolean,
- title: string,
- onClose: () => void,
- children: ReactNode
-}
+  showModalForm: boolean;
+  title: string;
+  onClose: () => void;
+  children: ReactNode;
+};
 
 export default function FormModal({
- showModalForm,
- title,
- onClose,
- children
+  showModalForm,
+  title,
+  onClose,
+  children,
 }: FormModalProps) {
- return (
-  <div>
-   {showModalForm && (
+  return (
     <div>
-     <div>
-      <h2>{title}</h2>
-      <button onClick={onClose}>x</button>
-     </div>
-     {children}
+      {showModalForm && (
+        <div>
+          <div>
+            <h2>{title}</h2>
+            <button onClick={onClose}>x</button>
+          </div>
+          {children}
+        </div>
+      )}
     </div>
-   )}
-  </div>
- )
+  );
 }
