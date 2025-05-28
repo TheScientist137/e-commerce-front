@@ -39,7 +39,7 @@ export default function HomePage() {
               key={category}
               onClick={() => handleCategoryClick(category.toLowerCase())}
             >
-              <p>{category}</p>
+              <p className="font-zen">{category}</p>
               <span>image</span>
             </div>
           ))}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { FaPlus, FaMinus, FaTimes, FaArrowRight } from "react-icons/fa";
 import { useProductsStore } from "../stores/productsStore";
 import { useUiStore } from "../stores/uiStore";
@@ -7,11 +7,17 @@ import { TelescopeType } from "../types/types";
 export default function TelescopeFilters() {
   const { filteredProducts, telescopeFilters, filterProductsBySubCategory } =
     useProductsStore();
-  const { setIsFiltersMenuOpen } = useUiStore();
-
-  const [openOpticalDesigns, setOpenOpticalDesigns] = useState<boolean>(false);
-  const [openMountingTypes, setOpenMountingTypes] = useState<boolean>(false);
-  const [openBrands, setOpenBrands] = useState<boolean>(false);
+  const {
+    isFiltersMenuOpen,
+    openTelescopeFilters,
+    setIsFiltersMenuOpen,
+    setOpenTelescopeFilters,
+  } = useUiStore();
+  const {
+    isOpticalDesignFiltersOpen,
+    isMountTypeFiltersOpen,
+    isBrandFiltersOpen,
+  } = openTelescopeFilters;
 
   // Obtain dynamic options from filtered products
   const opticalDesigns = Array.from(
@@ -56,17 +62,54 @@ export default function TelescopeFilters() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // ENTENDER Y MEJORAR !!!!!!!!!
+  // Efecto para cerrar submenús al cerrar el menú de filtros
+  useEffect(() => {
+    if (isFiltersMenuOpen) {
+      setOpenTelescopeFilters(
+        "isOpticalDesignFiltersOpen",
+        !!telescopeFilters.opticalDesign || opticalDesigns.length === 1,
+      );
+      setOpenTelescopeFilters(
+        "isMountTypeFiltersOpen",
+        !!telescopeFilters.mountType || mountingTypes.length === 1,
+      );
+      setOpenTelescopeFilters(
+        "isBrandFiltersOpen",
+        !!telescopeFilters.brand || telescopeBrands.length === 1,
+      );
+    } else {
+      setOpenTelescopeFilters("isOpticalDesignFiltersOpen", false);
+      setOpenTelescopeFilters("isMountTypeFiltersOpen", false);
+      setOpenTelescopeFilters("isBrandFiltersOpen", false);
+    }
+  }, [
+    isFiltersMenuOpen,
+    telescopeFilters.opticalDesign,
+    opticalDesigns.length,
+    telescopeFilters.mountType,
+    mountingTypes.length,
+    telescopeFilters.brand,
+    telescopeBrands.length,
+    setOpenTelescopeFilters,
+  ]);
+
   return (
     <div className="flex flex-col">
       {/* Optical Designs Filters */}
       <div className="border-t-1 border-t-gray-400 py-2">
         <div
           className="flex items-center justify-between"
-          onClick={() => setOpenOpticalDesigns(!openOpticalDesigns)}
+          onClick={() =>
+            setOpenTelescopeFilters(
+              "isOpticalDesignFiltersOpen",
+              !isOpticalDesignFiltersOpen,
+            )
+          }
         >
           <h4 className="text-xl font-medium">Optical Designs</h4>
           <span>
-            {openOpticalDesigns ? (
+            {isOpticalDesignFiltersOpen ? (
               <FaMinus className="" />
             ) : (
               <FaPlus className="" />
@@ -74,7 +117,7 @@ export default function TelescopeFilters() {
           </span>
         </div>
 
-        {openOpticalDesigns && (
+        {isOpticalDesignFiltersOpen && (
           <div className="ml-4 py-2">
             {telescopeFilters.opticalDesign !== null ? (
               <div
@@ -114,11 +157,16 @@ export default function TelescopeFilters() {
       <div className="border-t-1 border-t-gray-400 py-2">
         <div
           className="flex items-center justify-between"
-          onClick={() => setOpenMountingTypes(!openMountingTypes)}
+          onClick={() =>
+            setOpenTelescopeFilters(
+              "isMountTypeFiltersOpen",
+              !isMountTypeFiltersOpen,
+            )
+          }
         >
           <h4 className="text-xl font-medium">Mounting Types</h4>
           <span>
-            {openMountingTypes ? (
+            {isMountTypeFiltersOpen ? (
               <FaMinus className="" />
             ) : (
               <FaPlus className="" />
@@ -126,7 +174,7 @@ export default function TelescopeFilters() {
           </span>
         </div>
 
-        {openMountingTypes && (
+        {isMountTypeFiltersOpen && (
           <div className="ml-4 py-2">
             {telescopeFilters.mountType ? (
               <div
@@ -166,15 +214,21 @@ export default function TelescopeFilters() {
       <div className="border-t-1 border-t-gray-400 pt-2">
         <div
           className="flex items-center justify-between"
-          onClick={() => setOpenBrands(!openBrands)}
+          onClick={() =>
+            setOpenTelescopeFilters("isBrandFiltersOpen", !isBrandFiltersOpen)
+          }
         >
           <h4 className="text-xl font-medium">Brands</h4>
           <span>
-            {openBrands ? <FaMinus className="" /> : <FaPlus className="" />}
+            {isBrandFiltersOpen ? (
+              <FaMinus className="" />
+            ) : (
+              <FaPlus className="" />
+            )}
           </span>
         </div>
 
-        {openBrands && (
+        {isBrandFiltersOpen && (
           <div className="ml-4 py-2">
             {telescopeFilters.brand ? (
               <div

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { FaPlus, FaMinus, FaTimes, FaArrowRight } from "react-icons/fa";
 import { useProductsStore } from "../stores/productsStore";
 import { useUiStore } from "../stores/uiStore";
@@ -7,9 +7,13 @@ import { FilterType } from "../types/types";
 export default function FilterFilters() {
   const { filteredProducts, filterFilters, filterProductsBySubCategory } =
     useProductsStore();
-  const { setIsFiltersMenuOpen } = useUiStore();
-  const [openBuildTypes, setOpenBuildTypes] = useState<boolean>(false);
-  const [openBrands, setOpenBrands] = useState<boolean>(false);
+  const {
+    isFiltersMenuOpen,
+    openFilterFilters,
+    setOpenFilterFilters,
+    setIsFiltersMenuOpen,
+  } = useUiStore();
+  const { isBuildTypeFiltersOpen, isBrandFiltersOpen } = openFilterFilters;
 
   const buildTypes = Array.from(
     new Set(
@@ -33,19 +37,47 @@ export default function FilterFilters() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  useEffect(() => {
+    if (isFiltersMenuOpen) {
+      setOpenFilterFilters(
+        "isBuildTypeFiltersOpen",
+        !!filterFilters.buildType || buildTypes.length === 1,
+      );
+      setOpenFilterFilters(
+        "isBrandFiltersOpen",
+        !!filterFilters.brand || filterBrands.length === 1,
+      );
+    } else {
+      setOpenFilterFilters("isBuildTypeFiltersOpen", false);
+      setOpenFilterFilters("isBrandFiltersOpen", false);
+    }
+  }, [
+    isFiltersMenuOpen,
+    filterFilters.buildType,
+    filterFilters.brand,
+    buildTypes.length,
+    filterBrands.length,
+    setOpenFilterFilters,
+  ]);
+
   return (
     <div className="flex flex-col">
       {/* Build Types Filters */}
       <div className="border-t-1 border-t-gray-400 py-2">
         <div
           className="flex items-center justify-between"
-          onClick={() => setOpenBuildTypes(!openBuildTypes)}
+          onClick={() =>
+            setOpenFilterFilters(
+              "isBuildTypeFiltersOpen",
+              !isBuildTypeFiltersOpen,
+            )
+          }
         >
           <h4 className="text-xl font-medium">Type of Build</h4>
-          <span>{openBuildTypes ? <FaMinus /> : <FaPlus />}</span>
+          <span>{isBuildTypeFiltersOpen ? <FaMinus /> : <FaPlus />}</span>
         </div>
 
-        {openBuildTypes && (
+        {isBuildTypeFiltersOpen && (
           <div className="ml-4 py-2">
             {filterFilters.buildType ? (
               <div
@@ -84,13 +116,15 @@ export default function FilterFilters() {
       <div className="border-t-1 border-t-gray-400 pt-2">
         <div
           className="flex items-center justify-between"
-          onClick={() => setOpenBrands(!openBrands)}
+          onClick={() =>
+            setOpenFilterFilters("isBrandFiltersOpen", !isBrandFiltersOpen)
+          }
         >
           <h4 className="text-xl font-medium">Brands</h4>
-          <span>{openBrands ? <FaMinus /> : <FaPlus />}</span>
+          <span>{isBrandFiltersOpen ? <FaMinus /> : <FaPlus />}</span>
         </div>
 
-        {openBrands && (
+        {isBrandFiltersOpen && (
           <div className="ml-4 py-2">
             {filterFilters.brand ? (
               <div

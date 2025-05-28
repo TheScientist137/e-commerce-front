@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { FaPlus, FaMinus, FaTimes, FaArrowRight } from "react-icons/fa";
 import { useProductsStore } from "../stores/productsStore";
 import { useUiStore } from "../stores/uiStore";
@@ -7,9 +7,13 @@ import { MountType } from "../types/types";
 export default function MountFilters() {
   const { filteredProducts, mountFilters, filterProductsBySubCategory } =
     useProductsStore();
-  const { setIsFiltersMenuOpen } = useUiStore();
-  const [openMountingTypes, setOpenMountingTypes] = useState<boolean>(false);
-  const [openBrands, setOpenBrands] = useState<boolean>(false);
+  const {
+    isFiltersMenuOpen,
+    openMountFilters,
+    setIsFiltersMenuOpen,
+    setOpenMountFilters,
+  } = useUiStore();
+  const { isMountTypeFiltersOpen, isBrandFiltersOpen } = openMountFilters;
 
   const mountingTypes = Array.from(
     new Set(
@@ -33,19 +37,47 @@ export default function MountFilters() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  useEffect(() => {
+    if (isFiltersMenuOpen) {
+      setOpenMountFilters(
+        "isMountTypeFiltersOpen",
+        !!mountFilters.mountType || mountingTypes.length === 1,
+      );
+      setOpenMountFilters(
+        "isBrandFiltersOpen",
+        !!mountFilters.brand || mountBrands.length === 1,
+      );
+    } else {
+      setOpenMountFilters("isMountTypeFiltersOpen", false);
+      setOpenMountFilters("isBrandFiltersOpen", false);
+    }
+  }, [
+    isFiltersMenuOpen,
+    mountFilters.mountType,
+    mountFilters.brand,
+    mountingTypes.length,
+    mountBrands.length,
+    setOpenMountFilters,
+  ]);
+
   return (
     <div className="flex flex-col">
       {/* Mounting Types Filters */}
       <div className="border-t-1 border-t-gray-400 py-2">
         <div
           className="flex items-center justify-between"
-          onClick={() => setOpenMountingTypes(!openMountingTypes)}
+          onClick={() =>
+            setOpenMountFilters(
+              "isMountTypeFiltersOpen",
+              !isMountTypeFiltersOpen,
+            )
+          }
         >
           <h4 className="text-xl font-medium">Mounting Types</h4>
-          <span>{openMountingTypes ? <FaMinus /> : <FaPlus />}</span>
+          <span>{isMountTypeFiltersOpen ? <FaMinus /> : <FaPlus />}</span>
         </div>
 
-        {openMountingTypes && (
+        {isMountTypeFiltersOpen && (
           <div className="ml-4 py-2">
             {mountFilters.mountType ? (
               <div
@@ -84,13 +116,15 @@ export default function MountFilters() {
       <div className="border-t-1 border-t-gray-400 pt-2">
         <div
           className="flex items-center justify-between"
-          onClick={() => setOpenBrands(!openBrands)}
+          onClick={() =>
+            setOpenMountFilters("isBrandFiltersOpen", !isBrandFiltersOpen)
+          }
         >
           <h4 className="text-xl font-medium">Brands</h4>
-          <span>{openBrands ? <FaMinus /> : <FaPlus />}</span>
+          <span>{isBrandFiltersOpen ? <FaMinus /> : <FaPlus />}</span>
         </div>
 
-        {openBrands && (
+        {isBrandFiltersOpen && (
           <div className="ml-4 py-2">
             {mountFilters.brand ? (
               <div
