@@ -9,12 +9,19 @@ export default function HomePage() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { filterProductsByCategory } = useProductsStore();
-  const { setIsLoginModalOpen, setIsSignupModalOpen } = useUiStore();
+  const {
+    setIsLoginModalOpen,
+    setIsSignupModalOpen,
+    setIsFiltersMenuOpen,
+    setIsSortMenuOpen,
+  } = useUiStore();
   const categories: string[] = ["TELESCOPES", "MOUNTS", "EYEPIECES", "FILTERS"];
 
   const handleCategoryClick = (category: string) => {
     navigate("/shop");
     filterProductsByCategory(category);
+    setIsFiltersMenuOpen(false);
+    setIsSortMenuOpen(false);
   };
 
   return (

@@ -3,6 +3,7 @@ import { Outlet } from "react-router";
 
 import {
   FilterItemsSubCategoryType,
+  SubFiltersType,
   useProductsStore,
 } from "../stores/productsStore";
 import { useCartStore } from "../stores/cartStore";
@@ -18,8 +19,6 @@ import { getItemSessionStorage } from "../utils/sessionStorage";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import CategoriesMenu from "./CategoriesMenu";
-import FiltersMenu from "./FiltersMenu";
-import SortByMenu from "./SortByMenu";
 
 import {
   ProductType,
@@ -37,6 +36,7 @@ export default function Dashboard() {
     setMounts,
     setEyepieces,
     setFilters,
+    setSubFilters,
     setSelectedCategory,
     setSortBy,
     fetchProducts,
@@ -45,7 +45,13 @@ export default function Dashboard() {
     sortFilteredProducts,
   } = useProductsStore();
   const { cartItems } = useCartStore();
-  const { isMenuOpen, isFiltersMenuOpen, isSortMenuOpen } = useUiStore();
+  const {
+    isMenuOpen,
+    isFiltersMenuOpen,
+    isSortMenuOpen,
+    isLoginModalOpen,
+    isSignUpModalOpen,
+  } = useUiStore();
 
   const getSavedDataFromLocalStorage = () => ({
     savedProducts: getItemLocalStorage<ProductType[]>("products"),
@@ -53,6 +59,7 @@ export default function Dashboard() {
     savedMounts: getItemLocalStorage<MountType[]>("mounts"),
     savedEyepieces: getItemLocalStorage<EyepieceType[]>("eyepieces"),
     savedFilters: getItemLocalStorage<FilterType[]>("filters"),
+    savedSubFilters: getItemLocalStorage<SubFiltersType[]>("subFilters"),
   });
 
   // Load data API or Local and Session Storage
@@ -63,6 +70,7 @@ export default function Dashboard() {
       savedMounts,
       savedEyepieces,
       savedFilters,
+      savedSubFilters
     } = getSavedDataFromLocalStorage();
 
     const savedCategory: string | null = getItemSessionStorage("category");
@@ -76,26 +84,24 @@ export default function Dashboard() {
       savedTelescopes &&
       savedMounts &&
       savedEyepieces &&
-      savedFilters
+      savedFilters &&
+      savedSubFilters
     ) {
       setProducts(savedProducts);
       setTelescopes(savedTelescopes);
       setMounts(savedMounts);
       setEyepieces(savedEyepieces);
       setFilters(savedFilters);
+      setSubFilters(savedSubFilters);
+      
 
-      // If saved category filter products by category????????
-      // ¿Seguir utilizando categoria products y mostrar todos los productos??????'
+      // If savedCategory set savedCategory and filter products by SavedCategory
       if (savedCategory) {
         setSelectedCategory(savedCategory);
         filterProductsByCategory(savedCategory);
       }
 
-      const sortValue = savedSortBy || "a-z";
-      setSortBy(sortValue);
-      sortFilteredProducts(sortValue);
-
-      // Manage saved product filters
+      // If savedProductFilters filter filteredProducts applying the saved filters values
       if (savedProductFilters) {
         if (savedCategory === "telescopes") {
           filterProductsBySubCategory("telescopes", savedProductFilters);
@@ -107,7 +113,14 @@ export default function Dashboard() {
           filterProductsBySubCategory("filters", savedProductFilters);
         }
       }
+
+      // If savedSortBy sort filteredProducts applying saved sortBy value
+      if (savedSortBy) {
+        setSortBy(savedSortBy);
+        sortFilteredProducts(savedSortBy);
+      }
     } else {
+      // If no saved products call API and fetch products
       fetchProducts();
     }
 
@@ -126,7 +139,13 @@ export default function Dashboard() {
 
   // Effect to block body scroll effect when menus are open
   useEffect(() => {
-    if (isMenuOpen || isFiltersMenuOpen || isSortMenuOpen) {
+    if (
+      isMenuOpen ||
+      isFiltersMenuOpen ||
+      isSortMenuOpen ||
+      isLoginModalOpen ||
+      isSignUpModalOpen
+    ) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -135,7 +154,13 @@ export default function Dashboard() {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isMenuOpen, isFiltersMenuOpen, isSortMenuOpen]);
+  }, [
+    isMenuOpen,
+    isFiltersMenuOpen,
+    isSortMenuOpen,
+    isLoginModalOpen,
+    isSignUpModalOpen,
+  ]);
 
   // No render anything until data is iniatialized
   if (!initialized) return null;
@@ -146,8 +171,6 @@ export default function Dashboard() {
       </header>
 
       <CategoriesMenu />
-      <FiltersMenu />
-      <SortByMenu />
 
       <main className="mt-[60px] flex-grow px-4">
         <Outlet />

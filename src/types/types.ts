@@ -93,31 +93,19 @@ export type FilterSpecsType = {
 
 // Tipo para el telescopio que extiende ProductType
 export type TelescopeType = ProductType & {
-  specifications: TelescopeSpecsType;
-  telescopeData: {
-    optical_design: string;
-    mount_type: string;
-  };
+  optical_design: string;
+  mount_type: string;
 };
 
 export type MountType = ProductType & {
-  specifications: MountSpecsType;
-  mountData: {
-    mount_type: string;
-  };
+  build_type: string;
 };
 
 export type EyepieceType = ProductType & {
-  specifications: EyepieceSpecsType;
-  eyepieceData: {
-    eyepiece_type: string;
-  };
+  build_type: string;
 };
 export type FilterType = ProductType & {
-  specifications: FilterSpecsType;
-  filterData: {
-    filter_type: string;
-  };
+  filter_type: string;
 };
 
 // Comprobar si sigue haciendo falta?? => Refactor

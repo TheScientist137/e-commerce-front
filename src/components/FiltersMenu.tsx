@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import { useProductsStore } from "../stores/productsStore";
 import { useUiStore } from "../stores/uiStore";
-import { IoClose } from "react-icons/io5";
 import TelescopeFilters from "./TelescopeFilters";
 import MountFilters from "./MountFilters";
 import EyepieceFilters from "./EyepieceFilters";
@@ -9,21 +7,13 @@ import FilterFilters from "./FilterFilters";
 
 export default function FiltersMenu() {
   const { selectedCategory } = useProductsStore();
-  const { isFiltersMenuOpen, setIsFiltersMenuOpen } = useUiStore();
+  const { isFiltersMenuOpen } = useUiStore();
+
+  // MEJORAR ALTURA DEL MENU CON SCROLL
 
   if (!isFiltersMenuOpen) return null;
   return (
-    <div className="fixed top-0 right-0 left-0 z-50 m-8 rounded-xl overflow-y-auto bg-white p-6 shadow-lg">
-      <div className="mb-4 flex w-full justify-between">
-        <h3 className="text-2xl font-medium">
-          {selectedCategory &&
-            `${selectedCategory.charAt(0).toUpperCase()}${selectedCategory.slice(1)} Filters`}
-        </h3>
-        <button onClick={() => setIsFiltersMenuOpen(false)}>
-          <IoClose className="self-center text-2xl" />
-        </button>
-      </div>
-
+    <div className="max-h-[45vh] overflow-y-auto rounded-xl bg-white p-6 shadow-lg inset-shadow-sm">
       {selectedCategory === "telescopes" && <TelescopeFilters />}
       {selectedCategory === "mounts" && <MountFilters />}
       {selectedCategory === "eyepieces" && <EyepieceFilters />}

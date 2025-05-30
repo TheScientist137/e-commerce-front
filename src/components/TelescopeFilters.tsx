@@ -19,18 +19,20 @@ export default function TelescopeFilters() {
     isBrandFiltersOpen,
   } = openTelescopeFilters;
 
+  console.log(filteredProducts);
+
   // Obtain dynamic options from filtered products
   const opticalDesigns = Array.from(
     new Set(
       filteredProducts.map(
-        (product) => (product as TelescopeType).telescopeData.optical_design,
+        (product) => (product as TelescopeType).optical_design,
       ),
     ),
   );
   const mountingTypes = Array.from(
     new Set(
       filteredProducts.map(
-        (product) => (product as TelescopeType).telescopeData.mount_type,
+        (product) => (product as TelescopeType).mount_type,
       ),
     ),
   );
@@ -97,7 +99,7 @@ export default function TelescopeFilters() {
   return (
     <div className="flex flex-col">
       {/* Optical Designs Filters */}
-      <div className="border-t-1 border-t-gray-400 py-2">
+      <div className="border-t-gray-400 py-2">
         <div
           className="flex items-center justify-between"
           onClick={() =>
@@ -107,7 +109,7 @@ export default function TelescopeFilters() {
             )
           }
         >
-          <h4 className="text-xl font-medium">Optical Designs</h4>
+          <h4 className="text-lg font-medium">Optical Designs</h4>
           <span>
             {isOpticalDesignFiltersOpen ? (
               <FaMinus className="" />
@@ -154,7 +156,7 @@ export default function TelescopeFilters() {
       </div>
 
       {/* Mounting type Filters */}
-      <div className="border-t-1 border-t-gray-400 py-2">
+      <div className="border-t-gray-400 py-2">
         <div
           className="flex items-center justify-between"
           onClick={() =>
@@ -164,7 +166,7 @@ export default function TelescopeFilters() {
             )
           }
         >
-          <h4 className="text-xl font-medium">Mounting Types</h4>
+          <h4 className="text-lg font-medium">Mounting Types</h4>
           <span>
             {isMountTypeFiltersOpen ? (
               <FaMinus className="" />
@@ -211,14 +213,14 @@ export default function TelescopeFilters() {
       </div>
 
       {/* Brands Filters */}
-      <div className="border-t-1 border-t-gray-400 pt-2">
+      <div className="border-t-gray-400 pt-2">
         <div
           className="flex items-center justify-between"
           onClick={() =>
             setOpenTelescopeFilters("isBrandFiltersOpen", !isBrandFiltersOpen)
           }
         >
-          <h4 className="text-xl font-medium">Brands</h4>
+          <h4 className="text-lg font-medium">Brands</h4>
           <span>
             {isBrandFiltersOpen ? (
               <FaMinus className="" />

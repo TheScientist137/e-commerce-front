@@ -12,13 +12,13 @@ export const getProductsService = async (): Promise<ProductType[]> => {
 };
 
 export const getTelesocopeByIdService = async (
-  id: string | number
+  id: string | number,
 ): Promise<TelescopeType> => {
   const response = await fetch(
     `http://localhost:3000/api/shop/telescopes/${id}`,
     {
       credentials: "include",
-    }
+    },
   );
   const data = await response.json();
   console.log(data.message);
@@ -26,7 +26,7 @@ export const getTelesocopeByIdService = async (
 };
 
 export const getMountByIdService = async (
-  id: string | number
+  id: string | number,
 ): Promise<MountType> => {
   const response = await fetch(`http://localhost:3000/api/shop/mounts/${id}`, {
     credentials: "include",
@@ -37,13 +37,13 @@ export const getMountByIdService = async (
 };
 
 export const getEyepieceByIdService = async (
-  id: string | number
+  id: string | number,
 ): Promise<any> => {
   const response = await fetch(
     `http://localhost:3000/api/shop/eyepieces/${id}`,
     {
       credentials: "include",
-    }
+    },
   );
   const data = await response.json();
   console.log(data.message);
@@ -51,7 +51,7 @@ export const getEyepieceByIdService = async (
 };
 
 export const getFilterByIdService = async (
-  id: string | number
+  id: string | number,
 ): Promise<any> => {
   const response = await fetch(`http://localhost:3000/api/shop/filters/${id}`, {
     credentials: "include",
@@ -95,4 +95,16 @@ export const getFiltersService = async (): Promise<any[]> => {
   const data = await response.json();
   console.log(data.message);
   return data.filters || [];
+};
+
+export const getProductFiltersService = async (): Promise<any[]> => {
+  const response = await fetch(
+    "http://localhost:3000/api/shop/filterImages",
+    {
+      credentials: "include",
+    },
+  );
+  const data = await response.json();
+  console.log(data.message)
+  return data.productFilters || [];
 };

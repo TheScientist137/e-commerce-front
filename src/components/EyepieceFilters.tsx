@@ -17,9 +17,7 @@ export default function EyepieceFilters() {
 
   const buildTypes = Array.from(
     new Set(
-      filteredProducts.map(
-        (product) => (product as EyepieceType).eyepieceData.eyepiece_type,
-      ),
+      filteredProducts.map((product) => (product as EyepieceType).build_type),
     ),
   );
   const eyepieceBrands = Array.from(

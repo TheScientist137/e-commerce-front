@@ -25,7 +25,6 @@ export default function Navbar() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  console.log(user);
   return (
     <div className="flex content-center justify-between">
       <button onClick={() => setIsMenuOpen(true)}>

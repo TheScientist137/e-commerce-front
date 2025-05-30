@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import { useProductsStore } from "../stores/productsStore";
 import { useUiStore } from "../stores/uiStore";
-import { IoClose } from "react-icons/io5";
 
 export default function SortByMenu() {
   const { isSortMenuOpen, setIsSortMenuOpen } = useUiStore();
@@ -23,18 +21,11 @@ export default function SortByMenu() {
 
   if (!isSortMenuOpen) return null;
   return (
-    <div className="fixed top-0 right-0 left-0 z-50 m-8 rounded-xl overflow-y-auto bg-white p-6 shadow-lg">
-      <div className="mb-4 flex w-full justify-between">
-        <h3 className="text-2xl font-medium">Sort By</h3>
-        <button onClick={() => setIsSortMenuOpen(false)}>
-          <IoClose className="self-center text-2xl" />
-        </button>
-      </div>
-
+    <div className="max-h-[50vh] overflow-y-auto rounded-b-xl bg-white p-4">
       <div className="flex flex-col gap-4">
         {sortFilters.map((sortFilter) => (
           <div
-            className={`cursor-pointer border-1 py-1 rounded-xl text-center text-lg ${sortBy === sortFilter.value ? "bg-gray-300 font-bold" : ""}`}
+            className={`cursor-pointer rounded-xl border-1 py-1 text-center text-bse ${sortBy === sortFilter.value ? "bg-gray-300 font-bold" : ""}`}
             key={sortFilter.value}
             onClick={() => handleSortFilter(sortFilter.value)}
           >

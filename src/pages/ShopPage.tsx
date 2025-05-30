@@ -1,6 +1,10 @@
 import { useProductsStore } from "../stores/productsStore.ts";
+import { useUiStore } from "../stores/uiStore.ts";
+import FiltersButtons from "../components/FiltersButtons.tsx";
 import FiltersNavBar from "../components/FiltersNavBar.tsx";
 import ProductCard from "../components/ProductCard.tsx";
+import FiltersMenu from "../components/FiltersMenu.tsx";
+import SortByMenu from "../components/SortByMenu.tsx";
 
 type CategoryConfig = {
   title: string;
@@ -13,6 +17,7 @@ type CategoryConfigMap = {
 
 export default function ShopPage() {
   const { filteredProducts, selectedCategory } = useProductsStore();
+  const { isFiltersMenuOpen, isSortMenuOpen } = useUiStore();
 
   const CATEGORY_CONFIG: CategoryConfigMap = {
     telescopes: {
@@ -41,20 +46,28 @@ export default function ShopPage() {
     <section className="my-4">
       {selectedCategory && (
         <div>
-          <h2 className="font-zen text-lg">
-            {CATEGORY_CONFIG[selectedCategory].title}
-          </h2>
-          <p className="">{CATEGORY_CONFIG[selectedCategory].description}</p>
+          <div>
+            <h2 className="font-zen text-lg">
+              {CATEGORY_CONFIG[selectedCategory].title}
+            </h2>
+            <p className="">{CATEGORY_CONFIG[selectedCategory].description}</p>
+          </div>
+
+          <FiltersButtons />
         </div>
       )}
 
       {/* Don`t show FiltersNavbar when CategoriesMenu is open */}
-      <FiltersNavBar />
+      <div className="sticky top-20">
+        <FiltersNavBar />
+        {isFiltersMenuOpen && <FiltersMenu />}
+        {isSortMenuOpen && <SortByMenu />}
+      </div>
 
       {/* PRODUCTS LIST */}
-      <div className="grid grid-cols-2 gap-2">
+      <div className="mt-4 grid grid-cols-2 gap-2">
         {filteredProducts.map((product) => (
-          <ProductCard product={product} />
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </section>

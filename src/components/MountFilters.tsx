@@ -18,7 +18,7 @@ export default function MountFilters() {
   const mountingTypes = Array.from(
     new Set(
       filteredProducts.map(
-        (product) => (product as MountType).mountData.mount_type,
+        (product) => (product as MountType).build_type,
       ),
     ),
   );
@@ -41,7 +41,7 @@ export default function MountFilters() {
     if (isFiltersMenuOpen) {
       setOpenMountFilters(
         "isMountTypeFiltersOpen",
-        !!mountFilters.mountType || mountingTypes.length === 1,
+        !!mountFilters.buildType || mountingTypes.length === 1,
       );
       setOpenMountFilters(
         "isBrandFiltersOpen",
@@ -53,7 +53,7 @@ export default function MountFilters() {
     }
   }, [
     isFiltersMenuOpen,
-    mountFilters.mountType,
+    mountFilters.buildType,
     mountFilters.brand,
     mountingTypes.length,
     mountBrands.length,
@@ -79,12 +79,12 @@ export default function MountFilters() {
 
         {isMountTypeFiltersOpen && (
           <div className="ml-4 py-2">
-            {mountFilters.mountType ? (
+            {mountFilters.buildType ? (
               <div
                 className="flex items-center text-lg"
                 onClick={() => handleMountingTypeFilter(null)}
               >
-                {mountFilters.mountType}
+                {mountFilters.buildType}
                 <span className="ml-2 text-red-700">
                   <FaTimes />
                 </span>

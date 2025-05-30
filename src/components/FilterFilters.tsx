@@ -18,7 +18,7 @@ export default function FilterFilters() {
   const buildTypes = Array.from(
     new Set(
       filteredProducts.map(
-        (product) => (product as FilterType).filterData.filter_type,
+        (product) => (product as FilterType).filter_type,
       ),
     ),
   );
