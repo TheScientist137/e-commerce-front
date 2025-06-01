@@ -18,16 +18,16 @@ export default function MountFilters() {
   const mountingTypes = Array.from(
     new Set(
       filteredProducts.map(
-        (product) => (product as MountType).build_type,
+        (product) => (product as MountType).build_type_name,
       ),
     ),
   );
   const mountBrands = Array.from(
-    new Set(filteredProducts.map((product) => (product as MountType).brand)),
+    new Set(filteredProducts.map((product) => (product as MountType).brand_name)),
   );
 
   const handleMountingTypeFilter = (mountType: string | null) => {
-    filterProductsBySubCategory("mounts", { ...mountFilters, mountType });
+    filterProductsBySubCategory("mounts", { ...mountFilters, buildType: mountType });
     setIsFiltersMenuOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };

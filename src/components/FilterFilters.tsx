@@ -18,12 +18,12 @@ export default function FilterFilters() {
   const buildTypes = Array.from(
     new Set(
       filteredProducts.map(
-        (product) => (product as FilterType).filter_type,
+        (product) => (product as FilterType).build_type_name,
       ),
     ),
   );
   const filterBrands = Array.from(
-    new Set(filteredProducts.map((product) => (product as FilterType).brand)),
+    new Set(filteredProducts.map((product) => (product as FilterType).brand_name)),
   );
 
   const handleBuildTypeFilter = (buildType: string | null) => {

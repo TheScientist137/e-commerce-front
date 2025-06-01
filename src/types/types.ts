@@ -11,7 +11,8 @@ export type ProductType = {
   id: number;
   name: string;
   description: string;
-  brand: string;
+  brand_name: string;
+  brand_image: string;
   price: number;
   image: string;
   image_public_id: string;
@@ -93,19 +94,28 @@ export type FilterSpecsType = {
 
 // Tipo para el telescopio que extiende ProductType
 export type TelescopeType = ProductType & {
-  optical_design: string;
-  mount_type: string;
+  optical_design_name: string;
+  optical_design_image: string;
+  mount_type_name: string;
+  mount_type_image: string;
+  specifications: TelescopeSpecsType;
 };
 
 export type MountType = ProductType & {
-  build_type: string;
+  build_type_name: string;
+  build_type_image: string;
+  specifications: MountSpecsType
 };
 
 export type EyepieceType = ProductType & {
-  build_type: string;
+  build_type_name: string;
+  build_type_image: string;
+  specifications: EyepieceSpecsType
 };
 export type FilterType = ProductType & {
-  filter_type: string;
+  build_type_name: string;
+  build_type_image: string;
+  specifications: FilterSpecsType
 };
 
 // Comprobar si sigue haciendo falta?? => Refactor

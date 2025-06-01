@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useProductsStore } from "../stores/productsStore.ts";
 import { useUiStore } from "../stores/uiStore.ts";
 import FiltersButtons from "../components/FiltersButtons.tsx";
@@ -16,8 +17,11 @@ type CategoryConfigMap = {
 };
 
 export default function ShopPage() {
+  const filterButtonsRef = useRef<HTMLDivElement | null>(null);
   const { filteredProducts, selectedCategory } = useProductsStore();
   const { isFiltersMenuOpen, isSortMenuOpen } = useUiStore();
+
+  console.log(filteredProducts);
 
   const CATEGORY_CONFIG: CategoryConfigMap = {
     telescopes: {
@@ -52,14 +56,14 @@ export default function ShopPage() {
             </h2>
             <p className="">{CATEGORY_CONFIG[selectedCategory].description}</p>
           </div>
-
-          <FiltersButtons />
         </div>
       )}
 
-      {/* Don`t show FiltersNavbar when CategoriesMenu is open */}
+      {/* Show buttons only when any filter is active */}
+      <div ref={filterButtonsRef} className="mb-8">{<FiltersButtons />}</div>
+
       <div className="sticky top-20">
-        <FiltersNavBar />
+        <FiltersNavBar filterButtonsRef={filterButtonsRef} />
         {isFiltersMenuOpen && <FiltersMenu />}
         {isSortMenuOpen && <SortByMenu />}
       </div>

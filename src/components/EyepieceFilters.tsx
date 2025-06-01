@@ -8,20 +8,24 @@ export default function EyepieceFilters() {
   const { filteredProducts, eyepieceFilters, filterProductsBySubCategory } =
     useProductsStore();
   const {
-    setIsFiltersMenuOpen,
-    openEyepieceFilters,
-    setOpenEyepieceFilters,
     isFiltersMenuOpen,
+    openEyepieceFilters,
+    setIsFiltersMenuOpen,
+    setOpenEyepieceFilters,
   } = useUiStore();
   const { isBuildTypeFiltersOpen, isBrandFiltersOpen } = openEyepieceFilters;
 
   const buildTypes = Array.from(
     new Set(
-      filteredProducts.map((product) => (product as EyepieceType).build_type),
+      filteredProducts.map(
+        (product) => (product as EyepieceType).build_type_name,
+      ),
     ),
   );
   const eyepieceBrands = Array.from(
-    new Set(filteredProducts.map((product) => (product as EyepieceType).brand)),
+    new Set(
+      filteredProducts.map((product) => (product as EyepieceType).brand_name),
+    ),
   );
 
   const handleBuildTypeFilter = (buildType: string | null) => {

@@ -5,35 +5,103 @@ import {
   getTelesocopeByIdService,
   getMountByIdService,
   getEyepieceByIdService,
-  getFilterByIdService
+  getFilterByIdService,
 } from "../services/shopService.ts";
-import { MountType, TelescopeType, EyepieceType, FilterType } from "../types/types.ts";
+import {
+  MountType,
+  TelescopeType,
+  EyepieceType,
+  FilterType,
+} from "../types/types.ts";
+
+const SPEC_FIELDS: Record<string, { key: string; label: string }[]> = {
+  telescope: [
+    { key: "type", label: "Type" },
+    { key: "optical_design", label: "Type of build" },
+    { key: "aperture", label: "Aperture (mm)" },
+    { key: "focal_length", label: "Focal length (mm)" },
+    { key: "aperture_ratio", label: "Aperture ratio (f/)" },
+    { key: "resolving_capacity", label: "Resolving capacity" },
+    { key: "limit_value", label: "Limit value (mag)" },
+    { key: "light_gathering_capacity", label: "Light gathering capacity" },
+    { key: "max_useful_magnification", label: "Max useful magnification" },
+    { key: "total_weight", label: "Total weight (kg)" },
+    { key: "mount_build_type", label: "Mount build type" },
+    { key: "mount_type", label: "Mount type" },
+    { key: "GoTo", label: "GoTo" },
+    { key: "moon_planets", label: "Moon and planets" },
+    { key: "nebulae_galaxies", label: "Nebulae and galaxies" },
+    { key: "nature_observation", label: "Nature observation" },
+    { key: "astrophotography", label: "Astrophotography" },
+    { key: "sun", label: "Sun" },
+    { key: "beginners", label: "Beginners" },
+    { key: "advanced", label: "Advanced" },
+    { key: "observatories", label: "Observatories" },
+  ],
+  mount: [
+    {
+      key: "max_adding_load_capacity",
+      label: "Max. additional load capacity (kg)",
+    },
+    { key: "polar_axis_scale", label: "Polar axis scale" },
+    { key: "GoTo", label: "GoTo system" },
+    { key: "pole_finder", label: "Pole finder" },
+    { key: "total_weight", label: "Total weight (kg)" },
+    { key: "type", label: "Type" },
+    { key: "build_type", label: "Type of build" },
+    { key: "series", label: "Series" },
+    { key: "software", label: "Software" },
+    { key: "database", label: "Database" },
+    { key: "GPS", label: "GPS" },
+    { key: "autoguiding", label: "Autoguiding" },
+    { key: "WIFI", label: "WIFI" },
+  ],
+  eyepiece: [
+    { key: "focal_length", label: "Focal length (mm)" },
+    { key: "apparent_field", label: "Apparent field of view" },
+    { key: "number_of_lenses", label: "Number of lenses" },
+    { key: "coating_optical_system", label: "Coating optical system" },
+    { key: "adjustable_eyepiece_cup", label: "Adjustable eyepiece cup" },
+    { key: "filter_thread", label: "Filter thread" },
+    { key: "series", label: "Series" },
+    { key: "type", label: "Type" },
+    { key: "build_type", label: "Type of build" },
+  ],
+  filter: [
+    { key: "connection", label: "Connection (to the telescope)" },
+    { key: "transmission", label: "Transmission" },
+    { key: "mount_material", label: "Mount material" },
+    { key: "frame", label: "Frame" },
+    { key: "series", label: "Series" },
+    { key: "type", label: "Type" },
+    { key: "build_type", label: "Type of build" },
+  ],
+};
 
 export default function ProductPage() {
   const { id, type } = useParams();
-  const {addToCart} = useCartStore();
+  const { addToCart } = useCartStore();
   const [selectedProduct, setSelectedProduct] = useState<
     TelescopeType | MountType | EyepieceType | FilterType | null
   >(null);
 
+  // MEJORAR
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         if (!id || !type) {
           throw new Error("Id is missing");
         }
-        if (type === 'telescope') {
+        if (type === "telescope") {
           const product = await getTelesocopeByIdService(id);
           setSelectedProduct(product);
-        } else if (type === 'mount') {
+        } else if (type === "mount") {
           const product = await getMountByIdService(id);
           setSelectedProduct(product);
-        }
-        else if (type === 'eyepiece') {
+        } else if (type === "eyepiece") {
           const product = await getEyepieceByIdService(id);
           setSelectedProduct(product);
-        }
-        else if (type === 'filter') {
+        } else if (type === "filter") {
           const product = await getFilterByIdService(id);
           setSelectedProduct(product);
         }
@@ -51,97 +119,50 @@ export default function ProductPage() {
     <section>
       <Link to="/">Back shop</Link>
 
-      <div>
-        <h3>{selectedProduct.brand}</h3>
-        <h3>{selectedProduct.name}</h3>
+      {/* Add to cart Product card */}
+      <div className="my-4 text-center border">
         <img src={selectedProduct.image} alt="product image" />
-        <p>{selectedProduct.price} $</p>
-        <button onClick={() => addToCart(selectedProduct)}>
+        <h3 className="text-xl mt-4">{selectedProduct.name}</h3>
+        <img
+        className=""
+          src={selectedProduct.brand_image}
+          alt={selectedProduct.brand_name}
+        />
+        <p className="text-xl text-red-600 font-bold">{selectedProduct.price} $</p>
+        <button
+          className="rounded-xl border p-2 my-2"
+          onClick={() => addToCart(selectedProduct)}
+        >
           <Link to="/cart">ADD TO CART</Link>
         </button>
       </div>
-      <div>
-        <h3>Product Description</h3>
+
+      {/* Description and Specifications */}
+      <div className="my-2">
+        <h3 className="text-xl">Product Description</h3>
         <p>{selectedProduct.description}</p>
       </div>
-      <div>
-        <h3>Specifications</h3>
-        {selectedProduct.product_type === "telescope" && (
-          <div>
-            <p><strong>Type</strong> {(selectedProduct as TelescopeType).specifications.type}</p>
-            <p><strong>Type of build</strong> {(selectedProduct as TelescopeType).specifications.optical_design}</p>
-            <p><strong>Aperture (mm)</strong> {(selectedProduct as TelescopeType).specifications.aperture}</p>
-            <p><strong>Focal length (mm)</strong> {(selectedProduct as TelescopeType).specifications.focal_length}</p>
-            <p><strong>Aperture ratio (f/)</strong> {(selectedProduct as TelescopeType).specifications.aperture_ratio}</p>
-            <p><strong>Resolving capacity</strong> {(selectedProduct as TelescopeType).specifications.resolving_capacity}</p>
-            <p><strong>Limit value (mag)</strong> {(selectedProduct as TelescopeType).specifications.limit_value}</p>
-            <p><strong>Light gathering capacity</strong> {(selectedProduct as TelescopeType).specifications.light_gathering_capacity}</p>
-            <p><strong>Max useful magnification</strong> {(selectedProduct as TelescopeType).specifications.max_useful_magnification}</p>
-            <p><strong>Total weight (kg)</strong> {(selectedProduct as TelescopeType).specifications.total_weight}</p>
-            <p><strong>Mount build type</strong> {(selectedProduct as TelescopeType).specifications.mount_build_type}</p>
-            <p><strong>Mount type</strong> {(selectedProduct as TelescopeType).specifications.mount_type}</p>
-            <p><strong>GoTo</strong> {(selectedProduct as TelescopeType).specifications.GoTo}</p>
-            <p><strong>Moon and planets</strong> {(selectedProduct as TelescopeType).specifications.moon_planets}</p>
-            <p><strong>Nebulae and galaxies</strong> {(selectedProduct as TelescopeType).specifications.nebulae_galaxies}</p>
-            <p><strong>Nature observation</strong> {(selectedProduct as TelescopeType).specifications.nature_observation}</p>
-            <p><strong>Astrophotography</strong> {(selectedProduct as TelescopeType).specifications.astrophotography}</p>
-            <p><strong>Sun</strong> {(selectedProduct as TelescopeType).specifications.sun}</p>
-            <p><strong>Beginners</strong> {(selectedProduct as TelescopeType).specifications.beginners}</p>
-            <p><strong>Advanced</strong> {(selectedProduct as TelescopeType).specifications.advanced}</p>
-            <p><strong>Observatories</strong> {(selectedProduct as TelescopeType).specifications.observatories}</p>
-          </div>
-        )}
-        {selectedProduct.product_type === "mount" && (
-          <div>
-            <div>
-              <p><strong>Max. additional load capacity (kg)</strong> {(selectedProduct as MountType).specifications.max_adding_load_capacity}</p>
-              <p><strong>Polar axis scale</strong> {(selectedProduct as MountType).specifications.polar_axis_scale}</p>
-              <p><strong>GoTo system</strong> {(selectedProduct as MountType).specifications.GoTo}</p>
-              <p><strong>Pole finder</strong> {(selectedProduct as MountType).specifications.pole_finder}</p>
-              <p><strong>Total weight (kg)</strong> {(selectedProduct as MountType).specifications.total_weight}</p>
-              <p><strong>Type</strong> {(selectedProduct as MountType).specifications.type}</p>
-              <p><strong>Type of build</strong> {(selectedProduct as MountType).specifications.build_type}</p>
-              <p><strong>Series</strong> {(selectedProduct as MountType).specifications.series}</p>
-              {(selectedProduct as MountType).specifications.GoTo && (
-                <>
-                  <p><strong>Software</strong> {(selectedProduct as MountType).specifications.software}</p>
-                  <p><strong>Database</strong> {(selectedProduct as MountType).specifications.database}</p>
-                  <p><strong>GPS</strong> {(selectedProduct as MountType).specifications.GPS}</p>
-                  <p><strong>Autoguiding</strong> {(selectedProduct as MountType).specifications.autoguiding}</p>
-                  <p><strong>WIFI</strong> {(selectedProduct as MountType).specifications.WIFI}</p>
-                </>
-              )}
-            </div>
-          </div>
-        )}
-        {selectedProduct.product_type === "eyepiece" && (
-          <div>
-            <div>
-              <p><strong>Focal length (mm)</strong> {(selectedProduct as EyepieceType).specifications.focal_length}</p>
-              <p><strong>Apparent field of view</strong> {(selectedProduct as EyepieceType).specifications.apparent_field}</p>
-              <p><strong>Number of lenses</strong> {(selectedProduct as EyepieceType).specifications.number_of_lenses}</p>
-              <p><strong>Coating optical system</strong> {(selectedProduct as EyepieceType).specifications.coating_optical_system}</p>
-              <p><strong>Adjustable eyepiece cup</strong> {(selectedProduct as EyepieceType).specifications.adjustable_eyepiece_cup}</p>
-              <p><strong>Filter thread</strong> {(selectedProduct as EyepieceType).specifications.filter_thread}</p>
-              <p><strong>Series</strong> {(selectedProduct as EyepieceType).specifications.series}</p>
-              <p><strong>Type</strong> {(selectedProduct as EyepieceType).specifications.type}</p>
-              <p><strong>Type of build</strong> {(selectedProduct as EyepieceType).specifications.build_type}</p>
-            </div>
-          </div>
-        )}
-        {selectedProduct.product_type === "filter" && (
-          <div>
-            <div>
-              <p><strong>Connection (to the telescope)</strong> {(selectedProduct as FilterType).specifications.connection}</p>
-              <p><strong>Transmission</strong> {(selectedProduct as FilterType).specifications.transmission}</p>
-              <p><strong>Mount material</strong> {(selectedProduct as FilterType).specifications.mount_material}</p>
-              <p><strong>Frame</strong> {(selectedProduct as FilterType).specifications.frame}</p>
-              <p><strong>Series</strong> {(selectedProduct as FilterType).specifications.series}</p>
-              <p><strong>Type</strong> {(selectedProduct as FilterType).specifications.type}</p>
-              <p><strong>Type of build</strong> {(selectedProduct as FilterType).specifications.build_type}</p>
-            </div>
-          </div>
-        )}
+      <div className="my-4">
+        <h3 className="text-xl">Specifications</h3>
+        <table className="table-auto border-separate border-spacing-2">
+          <tbody>
+            {SPEC_FIELDS[selectedProduct.product_type].map((specs) => (
+              <tr key={specs.key}>
+                <td className="bg-gray-300">{specs.label}</td>
+                <td className="bg-gray-200">
+                  {
+                    (
+                      selectedProduct.specifications as Record<
+                        string,
+                        string | number
+                      >
+                    )[specs.key]
+                  }
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </section>
   );

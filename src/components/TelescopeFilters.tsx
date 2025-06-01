@@ -21,27 +21,29 @@ export default function TelescopeFilters() {
 
   console.log(filteredProducts);
 
-  // Obtain dynamic options from filtered products
+  // Obtain unique dynamic options from filtered products
   const opticalDesigns = Array.from(
     new Set(
       filteredProducts.map(
-        (product) => (product as TelescopeType).optical_design,
+        (product) => (product as TelescopeType).optical_design_name,
       ),
     ),
   );
   const mountingTypes = Array.from(
     new Set(
       filteredProducts.map(
-        (product) => (product as TelescopeType).mount_type,
+        (product) => (product as TelescopeType).mount_type_name,
       ),
     ),
   );
   const telescopeBrands = Array.from(
     new Set(
-      filteredProducts.map((product) => (product as TelescopeType).brand),
+      filteredProducts.map((product) => (product as TelescopeType).brand_name),
     ),
   );
 
+  // Handlers for filter selection
+  // These functions update the filters and close the menu
   const handleOpticalDesignFilter = (opticalDesign: string | null) => {
     filterProductsBySubCategory("telescopes", {
       ...telescopeFilters,

@@ -96,15 +96,3 @@ export const getFiltersService = async (): Promise<any[]> => {
   console.log(data.message);
   return data.filters || [];
 };
-
-export const getProductFiltersService = async (): Promise<any[]> => {
-  const response = await fetch(
-    "http://localhost:3000/api/shop/filterImages",
-    {
-      credentials: "include",
-    },
-  );
-  const data = await response.json();
-  console.log(data.message)
-  return data.productFilters || [];
-};

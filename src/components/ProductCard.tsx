@@ -21,7 +21,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
 
       <div className="flex font-medium flex-grow flex-col justify-between mb-2">
         <div className="">
-          <p className="text-gray-400 mb-2">{product.brand}</p>
+          <p className="text-gray-400 mb-2">{product.brand_name}</p>
           <h3 className="text-base">{product.name}</h3>
         </div>
         <p className="text-gray-600">{product.price} $</p>

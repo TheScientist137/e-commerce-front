@@ -3,7 +3,6 @@ import { Outlet } from "react-router";
 
 import {
   FilterItemsSubCategoryType,
-  SubFiltersType,
   useProductsStore,
 } from "../stores/productsStore";
 import { useCartStore } from "../stores/cartStore";
@@ -28,6 +27,8 @@ import {
   FilterType,
 } from "../types/types";
 
+// SPA Initialization
+// This component is responsible for initializing the application state
 export default function Dashboard() {
   const [initialized, setInitialized] = useState<boolean>(false);
   const {
@@ -36,7 +37,6 @@ export default function Dashboard() {
     setMounts,
     setEyepieces,
     setFilters,
-    setSubFilters,
     setSelectedCategory,
     setSortBy,
     fetchProducts,
@@ -59,7 +59,6 @@ export default function Dashboard() {
     savedMounts: getItemLocalStorage<MountType[]>("mounts"),
     savedEyepieces: getItemLocalStorage<EyepieceType[]>("eyepieces"),
     savedFilters: getItemLocalStorage<FilterType[]>("filters"),
-    savedSubFilters: getItemLocalStorage<SubFiltersType[]>("subFilters"),
   });
 
   // Load data API or Local and Session Storage
@@ -70,7 +69,6 @@ export default function Dashboard() {
       savedMounts,
       savedEyepieces,
       savedFilters,
-      savedSubFilters
     } = getSavedDataFromLocalStorage();
 
     const savedCategory: string | null = getItemSessionStorage("category");
@@ -84,16 +82,13 @@ export default function Dashboard() {
       savedTelescopes &&
       savedMounts &&
       savedEyepieces &&
-      savedFilters &&
-      savedSubFilters
+      savedFilters 
     ) {
       setProducts(savedProducts);
       setTelescopes(savedTelescopes);
       setMounts(savedMounts);
       setEyepieces(savedEyepieces);
       setFilters(savedFilters);
-      setSubFilters(savedSubFilters);
-      
 
       // If savedCategory set savedCategory and filter products by SavedCategory
       if (savedCategory) {
