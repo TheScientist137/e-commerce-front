@@ -1,17 +1,13 @@
-import { useState } from "react";
 import { Link } from "react-router";
 import { ProductType } from "../types/types";
 
 export default function ProductCard({ product }: { product: ProductType }) {
-  const [showFullName, setShowFullName] = useState(false);
-  const maxWords = 4;
-
   return (
     <div
-      className="flex h-full flex-col justify-between rounded-lg  p-4 text-center shadow-lg inset-shadow-sm"
+      className="flex h-full flex-col justify-between rounded-lg p-4 text-center shadow-lg inset-shadow-sm"
       key={product.id}
     >
-      <div className="mb-3 flex h-auto w-full items-center justify-center overflow-hidden rounded border border-gray-400 bg-gray-50">
+      <div className="flex h-42 w-full items-center justify-center overflow-hidden rounded  bg-gray-100">
         <img
           src={product.image}
           alt={product.name}
@@ -19,10 +15,10 @@ export default function ProductCard({ product }: { product: ProductType }) {
         />
       </div>
 
-      <div className="flex font-medium flex-grow flex-col justify-between mb-2">
+      <div className="my-4 flex flex-grow flex-col justify-between font-medium">
         <div className="">
-          <p className="text-gray-400 mb-2">{product.brand_name}</p>
-          <h3 className="text-base">{product.name}</h3>
+          <p className="text-gray-400">{product.brand_name}</p>
+          <h3 className="font-zen my-2 text-sm">{product.name}</h3>
         </div>
         <p className="text-gray-600">{product.price} $</p>
       </div>

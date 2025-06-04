@@ -25,7 +25,7 @@ export default function FiltersNavBar({
       if (filterButtonsRef.current) {
         const filterButtonsRect =
           filterButtonsRef.current.getBoundingClientRect();
-        setShowFiltersButton(filterButtonsRect.bottom <= 50);
+        setShowFiltersButton(filterButtonsRect.bottom <= 60);
       }
     };
     window.addEventListener("scroll", handleScroll);

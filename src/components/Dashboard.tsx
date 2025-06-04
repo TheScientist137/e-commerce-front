@@ -51,6 +51,8 @@ export default function Dashboard() {
     isSortMenuOpen,
     isLoginModalOpen,
     isSignUpModalOpen,
+    darkMode,
+    setDarkMode,
   } = useUiStore();
 
   const getSavedDataFromLocalStorage = () => ({
@@ -61,7 +63,7 @@ export default function Dashboard() {
     savedFilters: getItemLocalStorage<FilterType[]>("filters"),
   });
 
-  // Load data API or Local and Session Storage
+  // Load data API or/and Local and Session Storage
   useEffect(() => {
     const {
       savedProducts,
@@ -82,7 +84,7 @@ export default function Dashboard() {
       savedTelescopes &&
       savedMounts &&
       savedEyepieces &&
-      savedFilters 
+      savedFilters
     ) {
       setProducts(savedProducts);
       setTelescopes(savedTelescopes);
@@ -157,21 +159,36 @@ export default function Dashboard() {
     isSignUpModalOpen,
   ]);
 
+  // Effect to load and control dark mode (UNDERSTAND)
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      setDarkMode(true);
+    } else if (savedTheme === "light") {
+      setDarkMode(false);
+    } else {
+      // If no theme saved, use system preference
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
+      setDarkMode(prefersDark);
+    }
+  }, [setDarkMode]);
   // No render anything until data is iniatialized
   if (!initialized) return null;
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="fixed top-0 w-full bg-gray-400 p-4">
+    <div className="flex min-h-screen flex-col text-slate-800 dark:text-indigo-50">
+      <header className="fixed top-0 w-full bg-white  p-4 dark:bg-gray-800">
         <Navbar />
       </header>
 
       <CategoriesMenu />
 
-      <main className="mt-[60px] flex-grow px-4">
+      <main className="mt-[60px] flex-grow bg-slate-50 px-4  dark:bg-gray-950">
         <Outlet />
       </main>
 
-      <footer className="bg-gray-400 p-4">
+      <footer className="bg-white dark:bg-gray-800 p-4">
         <Footer />
       </footer>
     </div>

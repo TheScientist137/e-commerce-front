@@ -23,7 +23,7 @@ export default function CategoriesMenu() {
 
   if (!isMenuOpen) return null;
   return (
-    <div className="fixed top-0 bottom-0 left-0 z-50 w-[70%] bg-white p-4 shadow-lg">
+    <div className="fixed top-0 bottom-0 left-0 z-50 w-[70%] bg-white dark:bg-slate-800 p-4 shadow-lg">
       <div className="mb-6 flex w-full justify-between">
         <h2 className="font-zen text-xl">Categories</h2>
         <button className="" onClick={() => setIsMenuOpen(false)}>

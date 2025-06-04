@@ -1,0 +1,14 @@
+Paleta Galaxia	HEX	Tailwind color sugerido
+
+  Fondo Light	#f3f0ff	bg-violet-50  
+  Primario Light	#3f37c9	bg-indigo-800 / bg-violet-800
+  Secundario L	#4895ef	bg-blue-400 / bg-sky-400
+  Acento	#ffbe0b	bg-yellow-400 / bg-amber-400
+  Detalle Light	#4361ee	bg-indigo-600 / bg-violet-600
+  
+  Fondo Dark	#232946	bg-gray-900 / bg-indigo-950
+  Primario Dark	#eebbc3	bg-pink-200 / bg-rose-200
+  Secundario D	#b8c1ec	bg-indigo-200 / bg-blue-200
+  Detalle Dark	#232946	bg-gray-900 / bg-indigo-950
+
+

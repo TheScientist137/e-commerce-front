@@ -18,7 +18,7 @@ export default function Navbar() {
   const { isAdmin, user, logout } = useAuthContext();
   const { filterProductsByCategory } = useProductsStore();
   const { cartItems } = useCartStore();
-  const { setIsMenuOpen, setIsLoginModalOpen } = useUiStore();
+  const { setIsMenuOpen, setIsLoginModalOpen, darkMode, setDarkMode } = useUiStore();
 
   const handleTitleClick = () => {
     filterProductsByCategory("products");
@@ -55,6 +55,8 @@ export default function Navbar() {
           <span className="text-lg font-black">{cartItems.length}</span>
         )}
       </div>
+
+      <button onClick={() => setDarkMode(!darkMode)}>{darkMode ? 'light' : 'dark'}</button>
     </div>
   );
 }

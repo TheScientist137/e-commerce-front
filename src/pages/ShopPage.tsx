@@ -60,7 +60,7 @@ export default function ShopPage() {
       )}
 
       {/* Show buttons only when any filter is active */}
-      <div ref={filterButtonsRef} className="mb-8">{<FiltersButtons />}</div>
+      <div ref={filterButtonsRef} className="">{<FiltersButtons />}</div>
 
       <div className="sticky top-20">
         <FiltersNavBar filterButtonsRef={filterButtonsRef} />

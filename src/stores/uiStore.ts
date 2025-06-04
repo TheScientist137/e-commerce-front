@@ -1,6 +1,10 @@
 import { create } from "zustand";
+import { setItemLocalStorage } from "../utils/localStorage";
 
 type uiStoreType = {
+  darkMode: boolean;
+  setDarkMode: (isActive: boolean) => void;
+
   isMenuOpen: boolean;
   isFiltersMenuOpen: boolean;
   isSortMenuOpen: boolean;
@@ -52,6 +56,18 @@ type uiStoreType = {
 };
 
 export const useUiStore = create<uiStoreType>((set) => ({
+  darkMode: false,
+  setDarkMode: (isActive) => {
+    if (isActive) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+    set({ darkMode: isActive });
+  },
+
   isMenuOpen: false,
   isFiltersMenuOpen: false,
   isSortMenuOpen: false,

@@ -17,7 +17,7 @@ export default function FormModal({
     <div>
       {showModalForm && (
         <div>
-          <div>
+          <div className="flex">
             <h2>{title}</h2>
             <button onClick={onClose}>x</button>
           </div>

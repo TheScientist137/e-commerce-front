@@ -1,5 +1,5 @@
-import { Link, useParams } from "react-router";
 import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router";
 import { useCartStore } from "../stores/cartStore.ts";
 import {
   getTelesocopeByIdService,
@@ -13,6 +13,7 @@ import {
   EyepieceType,
   FilterType,
 } from "../types/types.ts";
+import { FaArrowLeft } from "react-icons/fa";
 
 const SPEC_FIELDS: Record<string, { key: string; label: string }[]> = {
   telescope: [
@@ -85,13 +86,14 @@ export default function ProductPage() {
     TelescopeType | MountType | EyepieceType | FilterType | null
   >(null);
 
-  // MEJORAR
+  // show more (expand/collapse) in description and table implementation !!
+
+  // Effect to obtain the product when id updates
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        if (!id || !type) {
-          throw new Error("Id is missing");
-        }
+        if (!id || !type) throw new Error("Id is missing");
+
         if (type === "telescope") {
           const product = await getTelesocopeByIdService(id);
           setSelectedProduct(product);
@@ -112,57 +114,76 @@ export default function ProductPage() {
     fetchProduct();
   }, [id]);
 
-  if (!selectedProduct) {
-    return <div>Loading product...</div>;
-  }
+  if (!selectedProduct) return <div>Loading product...</div>;
   return (
     <section>
-      <Link to="/">Back shop</Link>
+      <Link to="/">
+        <div className="flex h-8 items-center gap-2">
+          <FaArrowLeft />
+          <button>Back</button>
+        </div>
+      </Link>
 
       {/* Add to cart Product card */}
-      <div className="my-4 text-center border">
-        <img src={selectedProduct.image} alt="product image" />
-        <h3 className="text-xl mt-4">{selectedProduct.name}</h3>
+      <div className="p-2 text-center">
         <img
-        className=""
-          src={selectedProduct.brand_image}
-          alt={selectedProduct.brand_name}
+          className="object-contain"
+          src={selectedProduct.image}
+          alt="product image"
         />
-        <p className="text-xl text-red-600 font-bold">{selectedProduct.price} $</p>
-        <button
-          className="rounded-xl border p-2 my-2"
-          onClick={() => addToCart(selectedProduct)}
-        >
-          <Link to="/cart">ADD TO CART</Link>
-        </button>
+
+        <div className="my-6">
+          <h3 className="mb-4 text-2xl font-semibold">
+            {selectedProduct.name}
+          </h3>
+          <img
+            className="h-24 w-full object-contain"
+            src={selectedProduct.brand_image}
+            alt={selectedProduct.brand_name}
+          />
+        </div>
+
+        <div className="my-4">
+          <p className="text-xl font-bold text-red-600 mb-2">
+            {selectedProduct.price} $
+          </p>
+          <button
+            className="rounded-xl border p-2 font-extrabold"
+            onClick={() => addToCart(selectedProduct)}
+          >
+            <Link to="/cart">ADD TO CART</Link>
+          </button>
+        </div>
       </div>
 
       {/* Description and Specifications */}
-      <div className="my-2">
-        <h3 className="text-xl">Product Description</h3>
-        <p>{selectedProduct.description}</p>
-      </div>
-      <div className="my-4">
-        <h3 className="text-xl">Specifications</h3>
-        <table className="table-auto border-separate border-spacing-2">
-          <tbody>
-            {SPEC_FIELDS[selectedProduct.product_type].map((specs) => (
-              <tr key={specs.key}>
-                <td className="bg-gray-300">{specs.label}</td>
-                <td className="bg-gray-200">
-                  {
-                    (
-                      selectedProduct.specifications as Record<
-                        string,
-                        string | number
-                      >
-                    )[specs.key]
-                  }
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="font-space">
+        <div className="">
+          <h3 className="text-xl">Product Description</h3>
+          <p className="font-space">{selectedProduct.description}</p>
+        </div>
+        <div className="">
+          <h3 className="text-xl">Specifications</h3>
+          <table className="table-auto border-separate border-spacing-2">
+            <tbody>
+              {SPEC_FIELDS[selectedProduct.product_type].map((specs) => (
+                <tr key={specs.key}>
+                  <td className="bg-gray-300 p-2 font-bold">{specs.label}</td>
+                  <td className="bg-gray-200 p-2 text-center">
+                    {
+                      (
+                        selectedProduct.specifications as Record<
+                          string,
+                          string | number
+                        >
+                      )[specs.key]
+                    }
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
   );

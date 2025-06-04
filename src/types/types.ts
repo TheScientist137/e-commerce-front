@@ -104,18 +104,18 @@ export type TelescopeType = ProductType & {
 export type MountType = ProductType & {
   build_type_name: string;
   build_type_image: string;
-  specifications: MountSpecsType
+  specifications: MountSpecsType;
 };
 
 export type EyepieceType = ProductType & {
   build_type_name: string;
   build_type_image: string;
-  specifications: EyepieceSpecsType
+  specifications: EyepieceSpecsType;
 };
 export type FilterType = ProductType & {
   build_type_name: string;
   build_type_image: string;
-  specifications: FilterSpecsType
+  specifications: FilterSpecsType;
 };
 
 // Comprobar si sigue haciendo falta?? => Refactor

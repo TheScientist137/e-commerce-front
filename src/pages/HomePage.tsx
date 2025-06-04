@@ -31,28 +31,30 @@ export default function HomePage() {
         <p className="text-xl"> Discover the best astronomy equipment!</p>
       </div>
 
+      {/* Browse Products */}
       <div>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="mb-6 rounded-xl border p-2"
+          className="mb-6 rounded-xl border-2 p-2 font-semibold"
         >
           BROWSE PRODUCTS
         </button>
-
+        {/* Categories buttons */}
         <div className={`${!isOpen ? "hidden" : ""} mb-6 flex flex-col gap-2`}>
           {categories.map((category) => (
             <div
-              className="rounded-xl border"
+              className="flex flex-col items-center rounded-xl border py-2"
               key={category}
               onClick={() => handleCategoryClick(category.toLowerCase())}
             >
               <p className="font-zen">{category}</p>
-              <span>image</span>
+              {/*<img src={`/categories/${category.toLowerCase()}.png`} alt={category} className="h-24 w-auto" /> */}
             </div>
           ))}
         </div>
       </div>
 
+      {/* Authentication */}
       {user ? (
         <div>
           <button onClick={logout}>Logout</button>
@@ -61,15 +63,15 @@ export default function HomePage() {
         <div className="">
           <button
             onClick={() => setIsLoginModalOpen(true)}
-            className="rounded-xl border p-2"
+            className="mb-2 rounded-xl border-2 p-2 font-semibold"
           >
             LOGIN
           </button>
           <div className="text-sm">
-            <p>Still do not have an account?</p>
+            <p className="text-base">Still do not have an account?</p>
             <span
               onClick={() => setIsSignupModalOpen(true)}
-              className="ml-2 text-purple-600 underline"
+              className="ml-2 text-base text-purple-600 underline"
             >
               Signup
             </span>
