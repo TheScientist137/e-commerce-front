@@ -160,7 +160,7 @@ export default function ProductPage() {
       <div className="font-space">
         <div className="">
           <h3 className="text-xl">Product Description</h3>
-          <p className="font-space">{selectedProduct.description}</p>
+          <p className="">{selectedProduct.description}</p>
         </div>
         <div className="">
           <h3 className="text-xl">Specifications</h3>
