@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { useProductsStore } from "../stores/productsStore";
 import { useUiStore } from "../stores/uiStore";
 import { FaFilter, FaSort } from "react-icons/fa";
+import { IoIosOptions } from "react-icons/io";
+import { IoAccessibility } from "react-icons/io5";
+
 
 export default function FiltersNavBar({
   filterButtonsRef,
@@ -17,6 +20,8 @@ export default function FiltersNavBar({
   } = useUiStore();
   const [showFiltersButton, setShowFiltersButton] = useState<boolean>(false);
   const shouldShowFiltersButton = showFiltersButton || getIsFiltersActive();
+
+  // MOSTRAR/OCULTAR COMPONENTE ENTERO ??????????
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,14 +54,14 @@ export default function FiltersNavBar({
   };
 
   return (
-    <div className="my-4 flex justify-around rounded-xl border border-gray-500 bg-white p-1">
+    <div className="flex gap-6 my-6 rounded-xl bg-slate-100 dark:bg-gray-800 p-4">
       {shouldShowFiltersButton && (
         <div
           className="flex items-center gap-1"
           onClick={() => handleOpenFiltersMenu()}
         >
-          <FaFilter className="text-lg" />
-          <span className="text-sm text-gray-500">Filters</span>
+          <IoIosOptions className="text-2xl" />
+          <span className="">Filters</span>
         </div>
       )}
 
@@ -65,7 +70,7 @@ export default function FiltersNavBar({
         onClick={() => handleOpenSortByMenu()}
       >
         <FaSort className="text-xl" />
-        <span className="text-sm text-gray-500">Sort by</span>
+        <span className="">Sort by</span>
       </div>
     </div>
   );

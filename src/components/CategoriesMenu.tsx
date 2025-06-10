@@ -1,13 +1,18 @@
 import { useNavigate } from "react-router";
+
+import { useAuthContext } from "../hooks/useContext";
 import { useProductsStore } from "../stores/productsStore";
 import { useUiStore } from "../stores/uiStore";
+
+import { RiLogoutCircleFill } from "react-icons/ri";
+import { FaUserAstronaut } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
-import logo from "../assets/Telescopios-Prismáticos-Astroshop-es-06-05-2025_07_32_PM.png";
 
 export default function CategoriesMenu() {
   const navigate = useNavigate();
+  const { user, logout } = useAuthContext();
   const { filterProductsByCategory, selectedCategory } = useProductsStore();
-  const { isMenuOpen, setIsMenuOpen } = useUiStore();
+  const { isMenuOpen, setIsMenuOpen, setIsLoginModalOpen } = useUiStore();
 
   const CATEGORIES = ["Telescopes", "Mounts", "Eyepieces", "Filters"];
 
@@ -17,9 +22,14 @@ export default function CategoriesMenu() {
     setTimeout(() => setIsMenuOpen(false), 200); // Espera 200ms antes de cerrar menu al seleccioanr categoria
   };
 
+  const handleLoginClick = () => {
+    setIsMenuOpen(false);
+    setIsLoginModalOpen(true);
+  };
+
   return (
     <>
-      {/* Backdrop Blur */}
+      {/* Blur Backdrop */}
       {isMenuOpen && (
         <div
           onClick={() => setIsMenuOpen(false)}
@@ -29,25 +39,40 @@ export default function CategoriesMenu() {
 
       {/* Slide in-out fixed menu */}
       <div
-        className={`fixed z-50 flex h-full w-[70%] flex-col bg-white transition-transform duration-300 ease-in-out ${
+        className={`fixed z-50 flex h-full w-[70%] flex-col border-r-4 border-violet-100 dark:border-black bg-white transition-transform duration-300 ease-in-out dark:bg-gray-950 ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex justify-between border-b-1 p-4">
-          <button className="text-2xl font-semibold">Categories</button>
+        {/* Login with close menu button */}
+        <div className="flex justify-between border-b-4 border-violet-100 dark:border-black bg-slate-100 p-4 dark:bg-gray-800">
+          {user ? (
+            <button onClick={logout} title="Logout">
+              <RiLogoutCircleFill className="text-xl" />
+            </button>
+          ) : (
+            <button
+              className="flex items-center gap-2"
+              onClick={() => handleLoginClick()}
+              title="Login"
+            >
+              <FaUserAstronaut className="text-xl" />
+              <span className="font-space text-base font-semibold">Login</span>
+            </button>
+          )}
           <button onClick={() => setIsMenuOpen(false)}>
             <IoClose className="size-6" />
           </button>
         </div>
 
-        <nav className="mt-4">
-          <ul className="space-y-6">
+        {/* Categories navbar */}
+        <nav className="">
+          <ul className="">
             {CATEGORIES.map((category) => (
               <li
-                className={`flex h-16 items-center pl-4 text-2xl font-bold text-gray-500 ${
+                className={`font-orbitron flex h-16 items-center pl-4 text-lg font-bold ${
                   selectedCategory &&
                   selectedCategory === category.toLowerCase() &&
-                  "bg-violet-50"
+                  "bg-slate-50 dark:bg-gray-800"
                 }`}
                 onClick={() => handleCategoryClick(category.toLowerCase())}
               >

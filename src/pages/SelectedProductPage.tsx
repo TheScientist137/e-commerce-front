@@ -88,7 +88,7 @@ export default function ProductPage() {
 
   // show more (expand/collapse) in description and table implementation !!
 
-  // Effect to obtain the product when id updates
+  // Effect to obtain from db the product by id
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -107,6 +107,9 @@ export default function ProductPage() {
           const product = await getFilterByIdService(id);
           setSelectedProduct(product);
         }
+
+        // Go to the top when opening SelectedProductPage
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } catch (error) {
         console.error("Error fetching product by id", error);
       }
@@ -125,35 +128,32 @@ export default function ProductPage() {
       </Link>
 
       {/* Add to cart Product card */}
-      <div className="p-2 text-center">
-        <img
-          className="object-contain"
-          src={selectedProduct.image}
-          alt="product image"
-        />
-
-        <div className="my-6">
-          <h3 className="mb-4 text-2xl font-semibold">
-            {selectedProduct.name}
-          </h3>
+      <div className="flex flex-col">
+        <div className="mt-4 border p-4">
           <img
-            className="h-24 w-full object-contain"
-            src={selectedProduct.brand_image}
-            alt={selectedProduct.brand_name}
+            className="object-contain"
+            src={selectedProduct.image}
+            alt="product image"
           />
         </div>
 
-        <div className="my-4">
-          <p className="text-xl font-bold text-red-600 mb-2">
-            {selectedProduct.price} $
-          </p>
-          <button
-            className="rounded-xl border p-2 font-extrabold"
-            onClick={() => addToCart(selectedProduct)}
-          >
-            <Link to="/cart">ADD TO CART</Link>
-          </button>
-        </div>
+        <img
+          className="h-20 w-30 object-contain"
+          src={selectedProduct.brand_image}
+          alt={selectedProduct.brand_name}
+        />
+        <h2 className="font-space mb-4 text-xl font-bold">
+          {selectedProduct.name}
+        </h2>
+        <span className="text-2xl font-semibold text-red-600">
+          {selectedProduct.price} $
+        </span>
+        <button
+          className="my-4 rounded-xl border p-2 font-extrabold"
+          onClick={() => addToCart(selectedProduct)}
+        >
+          <Link to="/cart">ADD TO CART</Link>
+        </button>
       </div>
 
       {/* Description and Specifications */}

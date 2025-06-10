@@ -18,9 +18,10 @@ export default function FiltersButtons() {
     eyepieceFilters,
     filterFilters,
     filterProductsBySubCategory,
-    getIsFiltersActive
+    getIsFiltersActive,
   } = useProductsStore();
 
+  // FILTERS
   // Telescopes Unique Filters and Brands Values
   const opticalDesigns = Array.from(
     new Map(
@@ -128,6 +129,7 @@ export default function FiltersButtons() {
     ).values(),
   );
 
+  // HANDLERS
   // Telescopes Filter Handlers
   const handleOpticalDesignFilter = (opticalDesign: string | null) => {
     filterProductsBySubCategory("telescopes", {
@@ -190,147 +192,94 @@ export default function FiltersButtons() {
   // If no filters are active, return null to hide the filter buttons
   // This is used to conditionally render the filter buttons only when there are active filters
   // (Avoiding state or functions to manage visibility)
-
-
   if (getIsFiltersActive()) return null;
+
+  function FilterButtonsSection({
+    title,
+    items,
+    onClick,
+  }: {
+    title: string;
+    items: { name: string; image: string }[];
+    onClick: (name: string) => void;
+  }) {
+    return (
+      <div className="flex flex-col">
+        <h3 className="mb-2 text-lg font-semibold">{title}</h3>
+        <div className="grid grid-cols-3 gap-4">
+          {items.map((item) => (
+            <button className="cursor-pointer flex flex-col gap-2" onClick={() => onClick(item.name)}>
+              <img className="" src={item.image} alt={item.name} />
+              <span>{item.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       {selectedCategory === "telescopes" && (
         <div className="flex flex-col">
-          <h3 className="mb-2 text-lg font-semibold">Optical Designs</h3>
-          <div className="grid grid-cols-2 gap-4">
-            {opticalDesigns.map((design) => (
-              <button
-                onClick={() => handleOpticalDesignFilter(design.name)}
-                key={design.name}
-                className=""
-              >
-                <img src={design.image} alt={design.name} className="" />
-                <span>{design.name}</span>
-              </button>
-            ))}
-          </div>
+          <FilterButtonsSection
+            title="Optical Designs"
+            items={opticalDesigns}
+            onClick={handleOpticalDesignFilter}
+          />
 
-          <h3 className="mt-4 mb-2 text-lg font-semibold">Mounting Types</h3>
-          <div className="grid grid-cols-2 gap-4">
-            {mountingTypes.map((type) => (
-              <button
-                onClick={() => handleTelescopeMountingTypeFilter(type.name)}
-                key={type.name}
-                className=""
-              >
-                <img src={type.image} alt={type.name} className="" />
-                <span>{type.name}</span>
-              </button>
-            ))}
-          </div>
-
-          <h3 className="mt-4 mb-2 text-lg font-semibold">Brands</h3>
-          <div className="grid grid-cols-2 gap-4">
-            {telescopeBrands.map((brand) => (
-              <button
-                onClick={() => handleTelescopeBrandFilter(brand.name)}
-                key={brand.name}
-                className=""
-              >
-                <img src={brand.image} alt={brand.name} className="" />
-                <span>{brand.name}</span>
-              </button>
-            ))}
-          </div>
+          <FilterButtonsSection
+            title="Mounting Types"
+            items={mountingTypes}
+            onClick={handleTelescopeMountingTypeFilter}
+          />
+          <FilterButtonsSection
+            title="Brands"
+            items={telescopeBrands}
+            onClick={handleTelescopeBrandFilter}
+          />
         </div>
       )}
       {selectedCategory === "mounts" && (
         <div className="flex flex-col">
-          <h3 className="mb-2 text-lg font-semibold">Mount Types</h3>
-          <div className="grid grid-cols-2 gap-4">
-            {mountTypes.map((type) => (
-              <button
-                onClick={() => handleMountingTypeFilter(type.name)}
-                key={type.name}
-                className=""
-              >
-                <img src={type.image} alt={type.name} className="" />
-                <span>{type.name}</span>
-              </button>
-            ))}
-          </div>
-
-          <h3 className="mt-4 mb-2 text-lg font-semibold">Brands</h3>
-          <div className="grid grid-cols-2 gap-4">
-            {mountBrands.map((brand) => (
-              <button
-                onClick={() => handleMountBrandFilter(brand.name)}
-                key={brand.name}
-                className=""
-              >
-                <img src={brand.image} alt={brand.name} className="" />
-                <span>{brand.name}</span>
-              </button>
-            ))}
-          </div>
+          <FilterButtonsSection
+            title="Mount Types"
+            items={mountTypes}
+            onClick={handleMountingTypeFilter}
+          />
+          <FilterButtonsSection
+            title="Brands"
+            items={mountBrands}
+            onClick={handleMountBrandFilter}
+          />
         </div>
       )}
       {selectedCategory === "eyepieces" && (
         <div className="flex flex-col">
-          <h3 className="mb-2 text-lg font-semibold">Build Types</h3>
-          <div className="grid grid-cols-2 gap-4">
-            {eyepieceTypes.map((type) => (
-              <button
-                onClick={() => handleEyepieceTypeFilter(type.name)}
-                key={type.name}
-                className=""
-              >
-                <img src={type.image} alt={type.name} className="" />
-                <span>{type.name}</span>
-              </button>
-            ))}
-          </div>
-
-          <h3 className="mt-4 mb-2 text-lg font-semibold">Brands</h3>
-          <div className="grid grid-cols-2 gap-4">
-            {eyepieceBrands.map((brand) => (
-              <button
-                onClick={() => handleEyepieceBrandFilter(brand.name)}
-                key={brand.name}
-                className=""
-              >
-                <img src={brand.image} alt={brand.name} className="" />
-                <span>{brand.name}</span>
-              </button>
-            ))}
-          </div>
+          <FilterButtonsSection
+            title="Build Types"
+            items={eyepieceTypes}
+            onClick={handleEyepieceTypeFilter}
+          />
+          <FilterButtonsSection
+            title="Brands"
+            items={eyepieceBrands}
+            onClick={handleEyepieceBrandFilter}
+          />
         </div>
       )}
       {selectedCategory === "filters" && (
         <div className="flex flex-col">
-          <h3 className="mb-2 text-lg font-semibold">Build Types</h3>
-          <div className="grid grid-cols-2 gap-4">
-            {filterTypes.map((type) => (
-              <button
-                onClick={() => handleFilterTypeFilter(type.name)}
-                key={type.name}
-                className=""
-              >
-                <img src={type.image} alt={type.name} className="" />
-                <span>{type.name}</span>
-              </button>
-            ))}
-          </div>
-
-          <h3 className="mt-4 mb-2 text-lg font-semibold">Brands</h3>
-          <div className="grid grid-cols-2 gap-4">
-            {filterBrands.map((brand) => (
-              <button
-                onClick={() => handleFilterBrandFilter(brand.name)}
-                key={brand.name}
-                className=""
-              >
-                <img src={brand.image} alt={brand.name} className="" />
-                <span>{brand.name}</span>
-              </button>
-            ))}
-          </div>
+          <FilterButtonsSection
+            title="Build Types"
+            items={filterTypes}
+            onClick={handleFilterTypeFilter}
+          />
+          <FilterButtonsSection
+            title="Brands"
+            items={filterBrands}
+            onClick={handleFilterBrandFilter}
+          />
         </div>
       )}
     </>

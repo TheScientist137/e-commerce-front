@@ -13,7 +13,7 @@ export default function FiltersMenu() {
 
   if (!isFiltersMenuOpen) return null;
   return (
-    <div className="max-h-[45vh] overflow-y-auto rounded-xl bg-white p-6 shadow-lg inset-shadow-sm">
+    <div className="max-h-[70vh] overflow-y-auto rounded-xl bg-white p-6 shadow-lg inset-shadow-sm">
       {selectedCategory === "telescopes" && <TelescopeFilters />}
       {selectedCategory === "mounts" && <MountFilters />}
       {selectedCategory === "eyepieces" && <EyepieceFilters />}

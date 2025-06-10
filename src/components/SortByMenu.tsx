@@ -21,7 +21,7 @@ export default function SortByMenu() {
 
   if (!isSortMenuOpen) return null;
   return (
-    <div className="max-h-[50vh] overflow-y-auto rounded-b-xl bg-white p-4">
+    <div className="rounded-xl bg-slate-100 p-4">
       <div className="flex flex-col gap-4">
         {sortFilters.map((sortFilter) => (
           <div

@@ -1,9 +1,19 @@
 import { create } from "zustand";
-import { setItemLocalStorage } from "../utils/localStorage";
+import {
+  getItemLocalStorage,
+  setItemLocalStorage,
+} from "../utils/localStorage";
+
+const getInitialDarkMode = (): boolean => {
+  const savedTheme = getItemLocalStorage("theme");
+  if (savedTheme === "dark") return true;
+  if (savedTheme === "light") return false;
+  // If no theme saved on localStorage
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+};
 
 type uiStoreType = {
   darkMode: boolean;
-  setDarkMode: (isActive: boolean) => void;
 
   isMenuOpen: boolean;
   isFiltersMenuOpen: boolean;
@@ -30,6 +40,8 @@ type uiStoreType = {
     isBrandFiltersOpen: false;
   };
 
+  setDarkMode: (isActive: boolean) => void;
+
   setIsMenuOpen: (isOpen: boolean) => void;
   setIsFiltersMenuOpen: (isOpen: boolean) => void;
   setIsSortMenuOpen: (isOpen: boolean) => void;
@@ -55,65 +67,78 @@ type uiStoreType = {
   ) => void;
 };
 
-export const useUiStore = create<uiStoreType>((set) => ({
-  darkMode: false,
-  setDarkMode: (isActive) => {
-    if (isActive) {
+export const useUiStore = create<uiStoreType>((set) => {
+  const initialDarkMode = getInitialDarkMode();
+  // Aplica la clase al crear el store (Carga la aplicacion/Renders)
+  if (typeof window !== "undefined") {
+    if (initialDarkMode) {
       document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
     }
-    set({ darkMode: isActive });
-  },
+  }
 
-  isMenuOpen: false,
-  isFiltersMenuOpen: false,
-  isSortMenuOpen: false,
+  return {
+    darkMode: initialDarkMode,
 
-  isLoginModalOpen: false,
-  isSignUpModalOpen: false,
+    isMenuOpen: false,
+    isFiltersMenuOpen: false,
+    isSortMenuOpen: false,
 
-  openTelescopeFilters: {
-    isOpticalDesignFiltersOpen: false,
-    isMountTypeFiltersOpen: false,
-    isBrandFiltersOpen: false,
-  },
-  openMountFilters: {
-    isMountTypeFiltersOpen: false,
-    isBrandFiltersOpen: false,
-  },
-  openEyepieceFilters: {
-    isBuildTypeFiltersOpen: false,
-    isBrandFiltersOpen: false,
-  },
-  openFilterFilters: {
-    isBuildTypeFiltersOpen: false,
-    isBrandFiltersOpen: false,
-  },
+    isLoginModalOpen: false,
+    isSignUpModalOpen: false,
 
-  setIsMenuOpen: (isOpen) => set({ isMenuOpen: isOpen }),
-  setIsFiltersMenuOpen: (isOpen) => set({ isFiltersMenuOpen: isOpen }),
-  setIsSortMenuOpen: (isOpen) => set({ isSortMenuOpen: isOpen }),
+    openTelescopeFilters: {
+      isOpticalDesignFiltersOpen: false,
+      isMountTypeFiltersOpen: false,
+      isBrandFiltersOpen: false,
+    },
+    openMountFilters: {
+      isMountTypeFiltersOpen: false,
+      isBrandFiltersOpen: false,
+    },
+    openEyepieceFilters: {
+      isBuildTypeFiltersOpen: false,
+      isBrandFiltersOpen: false,
+    },
+    openFilterFilters: {
+      isBuildTypeFiltersOpen: false,
+      isBrandFiltersOpen: false,
+    },
 
-  setIsLoginModalOpen: (isOpen) => set({ isLoginModalOpen: isOpen }),
-  setIsSignupModalOpen: (isOpen) => set({ isSignUpModalOpen: isOpen }),
+    setDarkMode: (isActive) => {
+      set({ darkMode: isActive });
+      if (isActive) {
+        document.documentElement.classList.add("dark");
+        setItemLocalStorage("theme", "dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+        setItemLocalStorage("theme", "light");
+      }
+    },
 
-  setOpenTelescopeFilters: (key, value) =>
-    set((state) => ({
-      openTelescopeFilters: { ...state.openTelescopeFilters, [key]: value },
-    })),
-  setOpenMountFilters: (key, value) =>
-    set((state) => ({
-      openMountFilters: { ...state.openMountFilters, [key]: value },
-    })),
-  setOpenEyepieceFilters: (key, value) =>
-    set((state) => ({
-      openEyepieceFilters: { ...state.openEyepieceFilters, [key]: value },
-    })),
-  setOpenFilterFilters: (key, value) =>
-    set((state) => ({
-      openFilterFilters: { ...state.openFilterFilters, [key]: value },
-    })),
-}));
+    setIsMenuOpen: (isOpen) => set({ isMenuOpen: isOpen }),
+    setIsFiltersMenuOpen: (isOpen) => set({ isFiltersMenuOpen: isOpen }),
+    setIsSortMenuOpen: (isOpen) => set({ isSortMenuOpen: isOpen }),
+
+    setIsLoginModalOpen: (isOpen) => set({ isLoginModalOpen: isOpen }),
+    setIsSignupModalOpen: (isOpen) => set({ isSignUpModalOpen: isOpen }),
+
+    setOpenTelescopeFilters: (key, value) =>
+      set((state) => ({
+        openTelescopeFilters: { ...state.openTelescopeFilters, [key]: value },
+      })),
+    setOpenMountFilters: (key, value) =>
+      set((state) => ({
+        openMountFilters: { ...state.openMountFilters, [key]: value },
+      })),
+    setOpenEyepieceFilters: (key, value) =>
+      set((state) => ({
+        openEyepieceFilters: { ...state.openEyepieceFilters, [key]: value },
+      })),
+    setOpenFilterFilters: (key, value) =>
+      set((state) => ({
+        openFilterFilters: { ...state.openFilterFilters, [key]: value },
+      })),
+  };
+});

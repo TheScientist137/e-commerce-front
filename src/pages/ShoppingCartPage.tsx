@@ -1,5 +1,8 @@
 import { Link } from "react-router";
 import { useCartStore } from "../stores/cartStore";
+import { CiCirclePlus } from "react-icons/ci";
+import { CiCircleMinus } from "react-icons/ci";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 export default function ShoppingCartPage() {
   const { cartItems, removeFromCart, updateQuantity, calculateTotalPrice } =
@@ -7,47 +10,47 @@ export default function ShoppingCartPage() {
 
   return (
     <section>
-      {cartItems.length > 0 ? (
-        <div>
-          <div>
-            {cartItems.map((item) => (
-              <div key={item.product.id}>
-                {/* Item Image */}
-                <p>{item.product.name}</p>
-                <p>{item.product.brand}</p>
-                <img src={item.product.image} alt="Product Image" />
+      <h2>Shopping Cart</h2>
+
+      <div className="border-1 p-1">
+        {cartItems.map((item) => (
+          <div className="border-1">
+            <div className="flex">
+              <img
+                src={item.product.image}
+                alt={item.product.name}
+                className="size-24"
+              />
+              <div>
+                <h3>{item.product.name}</h3>
+                <p>{item.product.brand_name}</p>
+              </div>
+            </div>
+
+            <div className="flex justify-between text-center">
+              <span>{item.product.price} $</span>
+              <div className="rounded-full border-1 px-6">
                 <button
-                  onClick={() =>
-                    updateQuantity(item.product.id, item.quantity - 1)
-                  }
+                  onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
                 >
-                  -
+                  <CiCircleMinus />
                 </button>
                 <span>{item.quantity}</span>
-                <button
-                  onClick={() =>
-                    updateQuantity(item.product.id, item.quantity + 1)
-                  }
-                >
-                  +
+                <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)}>
+                  <CiCirclePlus />
                 </button>
-                <button onClick={() => removeFromCart(item.product.id)}>
-                  DELETE
-                </button>
-                <p>{(item.product.price * item.quantity).toFixed(2)} $</p>
               </div>
-            ))}
+              <button onClick={() => removeFromCart(item.product.id)}>
+                <RiDeleteBin5Line />
+              </button>
+            </div>
           </div>
-          <p>Total: {calculateTotalPrice().toFixed(2)} $</p>
-          <button>
-            <Link to="/checkout">Proceed to checkout</Link>
-          </button>
-        </div>
-      ) : (
-        <p>Empty cart</p>
-      )}
+        ))}
+      </div>
 
-      <Link to="/">Back to shop</Link>
+      <button className="rounded-full border-1 px-4 py-2">
+        PROCEED TO CHECKOUT
+      </button>
     </section>
   );
 }

@@ -9,10 +9,12 @@ import {
 } from "../services/shopService.ts";
 
 import {
+  getItemSessionStorage,
   removeItemSessionStorage,
   setItemSessionStorage,
 } from "../utils/sessionStorage";
 import {
+  getItemLocalStorage,
   removeItemLocalStorage,
   setItemLocalStorage,
 } from "../utils/localStorage.ts";
@@ -94,6 +96,7 @@ type ProductsStateType = {
   setSortBy: (sortBy: string) => void;
 
   fetchProducts: () => Promise<void>;
+  initializeFromStorage: () => void;
   clearProductFilters: () => void;
   filterProductsByCategory: (category: string) => void;
   filterProductsBySubCategory: (
@@ -106,33 +109,33 @@ type ProductsStateType = {
 
 export const useProductsStore = create<ProductsStateType>((set, get) => ({
   // STATE
-  products: [],
-  telescopes: [],
-  mounts: [],
-  eyepieces: [],
-  filters: [],
+  products: getItemLocalStorage("products") || [],
+  telescopes: getItemLocalStorage("telescopes") || [],
+  mounts: getItemLocalStorage("mounts") || [],
+  eyepieces: getItemLocalStorage("eyepieces") || [],
+  filters: getItemLocalStorage("filters") || [],
 
   filteredProducts: [],
-  selectedCategory: "",
+  selectedCategory: getItemSessionStorage("category") || "",
+  sortBy: getItemSessionStorage("sortBy") || "a-z",
 
-  telescopeFilters: {
+  telescopeFilters: getItemSessionStorage("productFilters") || {
     opticalDesign: null,
     mountType: null,
     brand: null,
   },
-  mountFilters: {
+  mountFilters: getItemSessionStorage("productFilters") || {
     buildType: null,
     brand: null,
   },
-  eyepieceFilters: {
+  eyepieceFilters: getItemSessionStorage("productFilters") || {
     buildType: null,
     brand: null,
   },
-  filterFilters: {
+  filterFilters: getItemSessionStorage("productFilters") || {
     buildType: null,
     brand: null,
   },
-  sortBy: "a-z",
 
   // STATE SETTERS
   setProducts: (products) => {
@@ -161,6 +164,10 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
     set({ selectedCategory: category });
     setItemSessionStorage("category", category);
   },
+  setSortBy: (sortBy) => {
+    set({ sortBy: sortBy });
+    setItemSessionStorage("sortBy", sortBy);
+  },
 
   setTelescopeFilters: (filters) => {
     set({ telescopeFilters: filters });
@@ -177,10 +184,6 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
   setFilterFilters: (filters) => {
     set({ filterFilters: filters });
     setItemSessionStorage("productFilters", filters);
-  },
-  setSortBy: (sortBy) => {
-    set({ sortBy: sortBy });
-    setItemSessionStorage("sortBy", sortBy);
   },
 
   // FUNCTIONS
@@ -209,6 +212,32 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
       removeItemLocalStorage("productFilters");
       removeItemLocalStorage("productsBrands");
       console.error("Error fetching products", error);
+    }
+  },
+  initializeFromStorage: () => {
+    const {
+      setSelectedCategory,
+      setSortBy,
+      filterProductsByCategory,
+      filterProductsBySubCategory,
+      sortFilteredProducts,
+    } = get();
+
+    const savedCategory: string | null = getItemSessionStorage("category");
+    const savedProductFilters: FilterItemsSubCategoryType | null =
+      getItemSessionStorage("productFilters");
+    const savedSortBy: string | null = getItemSessionStorage("sortBy");
+
+    if (savedCategory) {
+      setSelectedCategory(savedCategory);
+      filterProductsByCategory(savedCategory);
+    }
+    if (savedCategory && savedProductFilters) {
+      filterProductsBySubCategory(savedCategory, savedProductFilters);
+    }
+    if (savedSortBy) {
+      setSortBy(savedSortBy);
+      sortFilteredProducts(savedSortBy);
     }
   },
   clearProductFilters: () => {

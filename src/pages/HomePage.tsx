@@ -1,8 +1,12 @@
 import { useUiStore } from "../stores/uiStore";
 
 export default function HomePage() {
-  const { setIsMenuOpen, isMenuOpen, setIsLoginModalOpen, setIsSignupModalOpen } =
-    useUiStore();
+  const {
+    setIsMenuOpen,
+    isMenuOpen,
+    setIsLoginModalOpen,
+    setIsSignupModalOpen,
+  } = useUiStore();
 
   return (
     <section className="flex h-full flex-col px-12 text-center">
@@ -17,7 +21,7 @@ export default function HomePage() {
       {/* Browse Products */}
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className="mb-6 rounded-2xl border-2 p-2 text-xl"
+        className="font-orbitron shadow-x mb-6 cursor-pointer rounded-2xl bg-slate-50 p-2 text-lg font-semibold shadow-lg dark:bg-slate-700"
       >
         BROWSE PRODUCTS
       </button>
@@ -26,15 +30,17 @@ export default function HomePage() {
       <div className="">
         <button
           onClick={() => setIsLoginModalOpen(true)}
-          className="mb-2 rounded-2xl border-2 p-2 font-semibold"
+          className="font-orbitron mb-2 cursor-pointer rounded-2xl bg-slate-50 px-4 py-2 font-semibold shadow-lg dark:bg-slate-700"
         >
           LOGIN
         </button>
         <div className="text-sm">
-          <p className="text-base">Still do not have an account?</p>
+          <p className="font-space text-base font-semibold">
+            Still do not have an account?
+          </p>
           <span
             onClick={() => setIsSignupModalOpen(true)}
-            className="ml-2 text-base text-purple-600 underline"
+            className="ml-2 cursor-pointer text-lg underline decoration-violet-500 underline-offset-2"
           >
             Signup
           </span>
