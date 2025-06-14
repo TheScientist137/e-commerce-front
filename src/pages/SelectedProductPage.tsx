@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useCartStore } from "../stores/cartStore.ts";
+import { useProductsStore } from "../stores/productsStore.ts";
 import {
   getTelesocopeByIdService,
   getMountByIdService,
@@ -80,11 +81,16 @@ const SPEC_FIELDS: Record<string, { key: string; label: string }[]> = {
 };
 
 export default function ProductPage() {
+  const navigate = useNavigate();
   const { id, type } = useParams();
   const { addToCart } = useCartStore();
+  const {selectedCategory, filterProductsByCategory} = useProductsStore()
   const [selectedProduct, setSelectedProduct] = useState<
     TelescopeType | MountType | EyepieceType | FilterType | null
   >(null);
+  const [showFullDescription, setShowFullDescription] =
+    useState<boolean>(false);
+  const [showFullTable, setShowFullTable] = useState<boolean>(false);
 
   // show more (expand/collapse) in description and table implementation !!
 
@@ -117,59 +123,97 @@ export default function ProductPage() {
     fetchProduct();
   }, [id]);
 
+  const handleAddToCartClick = () => {
+    selectedProduct && addToCart(selectedProduct);
+    navigate("/cart");
+  };
+
+    const handleBackToShop = (category: string) => {
+    navigate("/shop");
+    filterProductsByCategory(category);
+    // Go to the top when changing category
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   if (!selectedProduct) return <div>Loading product...</div>;
   return (
-    <section>
-      <Link to="/">
-        <div className="flex h-8 items-center gap-2">
-          <FaArrowLeft />
-          <button>Back</button>
-        </div>
-      </Link>
-
-      {/* Add to cart Product card */}
-      <div className="flex flex-col">
-        <div className="mt-4 border p-4">
-          <img
-            className="object-contain"
-            src={selectedProduct.image}
-            alt="product image"
-          />
-        </div>
-
-        <img
-          className="h-20 w-30 object-contain"
-          src={selectedProduct.brand_image}
-          alt={selectedProduct.brand_name}
-        />
-        <h2 className="font-space mb-4 text-xl font-bold">
-          {selectedProduct.name}
-        </h2>
-        <span className="text-2xl font-semibold text-red-600">
-          {selectedProduct.price} $
-        </span>
-        <button
-          className="my-4 rounded-xl border p-2 font-extrabold"
-          onClick={() => addToCart(selectedProduct)}
-        >
-          <Link to="/cart">ADD TO CART</Link>
-        </button>
+    <section className="h-full">
+      <div
+        onClick={() => selectedCategory && handleBackToShop(selectedCategory)}
+        className="flex items-center py-2 justify-center gap-4 rounded-xl bg-slate-100 dark:bg-slate-800 "
+      >
+        <FaArrowLeft />
+        <span>Back to shop</span>
       </div>
 
-      {/* Description and Specifications */}
-      <div className="font-space">
-        <div className="">
-          <h3 className="text-xl">Product Description</h3>
-          <p className="">{selectedProduct.description}</p>
+      {/* ----------------- Add to cart Product card ------------------ */}
+      <div className="my-4 flex flex-col gap-4 rounded-xl bg-slate-100 p-4 dark:bg-slate-800">
+        {/* Product details */}
+        <div>
+          <div className="rounded-xl border bg-slate-50 p-2 dark:bg-slate-700">
+            <img
+              className="object-contain rounded-xl"
+              src={selectedProduct.image}
+              alt="product image"
+            />
+          </div>
+          <img
+            className="h-20 w-30 object-contain rounded-2xl"
+            src={selectedProduct.brand_image}
+            alt={selectedProduct.brand_name}
+          />
+          <h2 className="font-space text-lg font-bold">
+            {selectedProduct.name}
+          </h2>
         </div>
-        <div className="">
+        {/* Add to Cart */}
+        <div className="flex items-center justify-between">
+          <span className="text-xl font-semibold text-red-600">
+            {selectedProduct.price} $
+          </span>
+          <button
+            className="rounded-xl bg-slate-50 p-4 font-extrabold dark:bg-slate-700"
+            onClick={() => handleAddToCartClick()}
+          >
+            ADD TO CART
+          </button>
+        </div>
+      </div>
+
+      {/* --------------- Description & Specs -------------------------*/}
+      <div className="font-space flex flex-col gap-4 rounded-xl bg-slate-100 p-4 dark:bg-slate-800">
+        {/* Description */}
+        <div className="flex flex-col gap-2">
+          <h3 className="text-2xl">Product Description</h3>
+          <p>
+            {showFullDescription
+              ? selectedProduct.description
+              : selectedProduct.description.slice(0, 200) +
+                (selectedProduct.description.length > 200 ? "..." : "")}
+          </p>
+          {selectedProduct.description.length > 200 && (
+            <button
+              className="rounded-xl bg-slate-50 p-2 dark:bg-slate-700"
+              onClick={() => setShowFullDescription(!showFullDescription)}
+            >
+              {showFullDescription ? "Show less" : "Show more"}
+            </button>
+          )}
+        </div>
+        {/* Specifications */}
+        <div className="flex flex-col gap-2">
           <h3 className="text-xl">Specifications</h3>
           <table className="table-auto border-separate border-spacing-2">
             <tbody>
-              {SPEC_FIELDS[selectedProduct.product_type].map((specs) => (
+              {(showFullTable
+                ? SPEC_FIELDS[selectedProduct.product_type]
+                : SPEC_FIELDS[selectedProduct.product_type].slice(0, 5)
+              ).map((specs) => (
                 <tr key={specs.key}>
-                  <td className="bg-gray-300 p-2 font-bold">{specs.label}</td>
-                  <td className="bg-gray-200 p-2 text-center">
+                  <td className="bg-slate-100 p-2 font-bold dark:bg-slate-700">
+                    {specs.label}
+                  </td>
+                  <td className="bg-slate-50 p-2 text-center dark:bg-slate-600">
                     {
                       (
                         selectedProduct.specifications as Record<
@@ -183,6 +227,14 @@ export default function ProductPage() {
               ))}
             </tbody>
           </table>
+          {SPEC_FIELDS[selectedProduct.product_type].length > 5 && (
+            <button
+              className="rounded-xl bg-slate-50 p-2 dark:bg-slate-700"
+              onClick={() => setShowFullTable((prev) => !prev)}
+            >
+              {showFullTable ? "Show less" : "Show more"}
+            </button>
+          )}
         </div>
       </div>
     </section>

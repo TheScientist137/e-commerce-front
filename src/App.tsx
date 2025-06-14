@@ -3,8 +3,6 @@ import { AuthProvider } from "./context/AuthContext.tsx";
 import { useUiStore } from "./stores/uiStore.ts";
 
 import Dashboard from "./components/Dashboard.tsx";
-import LoginPage from "./pages/LoginPage.tsx";
-import SignupPage from "./pages/SignupPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import ShopPage from "./pages/ShopPage.tsx";
 import SelectedProductPage from "./pages/SelectedProductPage.tsx";
@@ -30,6 +28,7 @@ export default function App() {
       <BrowserRouter>
         {/* Login Modal */}
         <AccountModal
+          title="Login"
           isOpen={isLoginModalOpen}
           onclose={() => setIsLoginModalOpen(false)}
         >
@@ -37,6 +36,7 @@ export default function App() {
         </AccountModal>
         {/* Signup Modal */}
         <AccountModal
+          title="Signup"
           isOpen={isSignUpModalOpen}
           onclose={() => setIsSignupModalOpen(false)}
         >
@@ -52,10 +52,6 @@ export default function App() {
             <Route path="product/:type/:id" element={<SelectedProductPage />} />
             <Route path="cart" element={<ShoppingCartPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
-
-            {/* Authentication Routes */}
-            <Route path="signup" element={<SignupPage />} />
-            <Route path="login" element={<LoginPage />} />
 
             {/* Admin Route -- Create and implement ProtectedRoute */}
             <Route element={<ProtectedRoute />}>

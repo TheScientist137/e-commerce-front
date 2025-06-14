@@ -54,7 +54,7 @@ export default function FiltersNavBar({
   };
 
   return (
-    <div className="flex gap-6 my-6 rounded-xl bg-slate-100 dark:bg-gray-800 p-4">
+    <div className="flex gap-6 rounded-xl bg-slate-100 dark:bg-gray-800 p-4">
       {shouldShowFiltersButton && (
         <div
           className="flex items-center gap-1"

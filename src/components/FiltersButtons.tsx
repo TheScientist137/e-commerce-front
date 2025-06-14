@@ -204,12 +204,16 @@ export default function FiltersButtons() {
     onClick: (name: string) => void;
   }) {
     return (
-      <div className="flex flex-col">
+      <div className="flex flex-col rounded-xl bg-slate-50 p-4 dark:bg-slate-700">
         <h3 className="mb-2 text-lg font-semibold">{title}</h3>
         <div className="grid grid-cols-3 gap-4">
           {items.map((item) => (
-            <button className="cursor-pointer flex flex-col gap-2" onClick={() => onClick(item.name)}>
-              <img className="" src={item.image} alt={item.name} />
+            <button
+              key={item.name}
+              className="flex cursor-pointer flex-col gap-2"
+              onClick={() => onClick(item.name)}
+            >
+              <img className="rounded-lg" src={item.image} alt={item.name} />
               <span>{item.name}</span>
             </button>
           ))}
@@ -221,7 +225,7 @@ export default function FiltersButtons() {
   return (
     <>
       {selectedCategory === "telescopes" && (
-        <div className="flex flex-col">
+        <>
           <FilterButtonsSection
             title="Optical Designs"
             items={opticalDesigns}
@@ -238,10 +242,10 @@ export default function FiltersButtons() {
             items={telescopeBrands}
             onClick={handleTelescopeBrandFilter}
           />
-        </div>
+        </>
       )}
       {selectedCategory === "mounts" && (
-        <div className="flex flex-col">
+        <>
           <FilterButtonsSection
             title="Mount Types"
             items={mountTypes}
@@ -252,10 +256,10 @@ export default function FiltersButtons() {
             items={mountBrands}
             onClick={handleMountBrandFilter}
           />
-        </div>
+        </>
       )}
       {selectedCategory === "eyepieces" && (
-        <div className="flex flex-col">
+        <>
           <FilterButtonsSection
             title="Build Types"
             items={eyepieceTypes}
@@ -266,10 +270,10 @@ export default function FiltersButtons() {
             items={eyepieceBrands}
             onClick={handleEyepieceBrandFilter}
           />
-        </div>
+        </>
       )}
       {selectedCategory === "filters" && (
-        <div className="flex flex-col">
+        <>
           <FilterButtonsSection
             title="Build Types"
             items={filterTypes}
@@ -280,7 +284,7 @@ export default function FiltersButtons() {
             items={filterBrands}
             onClick={handleFilterBrandFilter}
           />
-        </div>
+        </>
       )}
     </>
   );

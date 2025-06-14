@@ -19,7 +19,10 @@ export default function CategoriesMenu() {
   const handleCategoryClick = (category: string) => {
     navigate("/shop");
     filterProductsByCategory(category);
-    setTimeout(() => setIsMenuOpen(false), 200); // Espera 200ms antes de cerrar menu al seleccioanr categoria
+    // Espera 200ms antes de cerrar menu al seleccioanr categoria
+    setTimeout(() => setIsMenuOpen(false), 200);
+    // Go to the top when changing category
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleLoginClick = () => {
@@ -39,12 +42,12 @@ export default function CategoriesMenu() {
 
       {/* Slide in-out fixed menu */}
       <div
-        className={`fixed z-50 flex h-full w-[70%] flex-col border-r-4 border-violet-100 dark:border-black bg-white transition-transform duration-300 ease-in-out dark:bg-gray-950 ${
+        className={`fixed z-50 flex h-full w-[70%] flex-col border-r-4 border-violet-100 bg-white transition-transform duration-300 ease-in-out dark:border-black dark:bg-gray-950 ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Login with close menu button */}
-        <div className="flex justify-between border-b-4 border-violet-100 dark:border-black bg-slate-100 p-4 dark:bg-gray-800">
+        <div className="flex justify-between border-b-4 border-violet-100 bg-slate-100 p-4 dark:border-black dark:bg-gray-800">
           {user ? (
             <button onClick={logout} title="Logout">
               <RiLogoutCircleFill className="text-xl" />
@@ -69,6 +72,7 @@ export default function CategoriesMenu() {
           <ul className="">
             {CATEGORIES.map((category) => (
               <li
+                key={category}
                 className={`font-orbitron flex h-16 items-center pl-4 text-lg font-bold ${
                   selectedCategory &&
                   selectedCategory === category.toLowerCase() &&

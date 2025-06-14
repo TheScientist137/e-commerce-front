@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { ProductType } from "../types/types";
+import { FaEuroSign } from "react-icons/fa";
 
 export default function ProductCard({ product }: { product: ProductType }) {
   return (
@@ -17,17 +18,21 @@ export default function ProductCard({ product }: { product: ProductType }) {
       </div>
 
       {/* Product Info */}
-      <div className="my-4 flex flex-grow flex-col justify-between font-medium">
+      <div className="my-4 flex flex-grow flex-col justify-between items-center">
         <div className="">
-          <p className="text-gray-400">{product.brand_name}</p>
-          <h3 className="font-mono font-semibold my-2 text-sm">{product.name}</h3>
+          <p className="text-gray-400 font-bold">{product.brand_name}</p>
+          <h3 className="my-2 font-mono text-base font-semibold">
+            {product.name}
+          </h3>
         </div>
-        <p className="text-gray-600 dark:text-gray-300">{product.price} $</p>
+        <p className="text-gray-600 dark:text-gray-300 flex items-center gap-1 font-semibold">
+          {product.price} <FaEuroSign />
+        </p>
       </div>
 
-      {/* Link to SelectedProductPage */}
+      {/* Link to SelectedProductPage cambiar a useNavigate() ???????? */}
       <Link
-        className="underline"
+        className="underline font-bold underline-offset-4"
         to={`/product/${product.product_type}/${product.id}`}
       >
         View details

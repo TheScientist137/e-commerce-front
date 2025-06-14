@@ -1,4 +1,6 @@
 import { useUiStore } from "../stores/uiStore";
+import { GiGalaxy } from "react-icons/gi";
+import { FaRegArrowAltCircleDown } from "react-icons/fa";
 
 export default function HomePage() {
   const {
@@ -9,32 +11,35 @@ export default function HomePage() {
   } = useUiStore();
 
   return (
-    <section className="flex h-full flex-col px-12 text-center">
-      <div className="my-12 flex flex-col gap-2">
-        <h1 className="font-orbitron text-4xl">Welcome!</h1>
+    <section className="flex h-full flex-col items-center gap-12">
+      <div className="flex flex-col gap-4 text-center">
+        <h1 className="font-orbitron text-4xl">Welcome To StellarScope!</h1>
         <p className="font-space text-xl font-black">
           {" "}
           Discover the best astronomy equipment!
         </p>
       </div>
 
-      {/* Browse Products */}
-      <button
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className="font-orbitron shadow-x mb-6 cursor-pointer rounded-2xl bg-slate-50 p-2 text-lg font-semibold shadow-lg dark:bg-slate-700"
-      >
-        BROWSE PRODUCTS
-      </button>
+        {/* Browse Products */}
+      <div className="flex flex-col items-center gap-4">
+        <FaRegArrowAltCircleDown size={46} className="animate-bounce" />
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="font-orbitron shadow-x cursor-pointer rounded-2xl bg-slate-50 px-6 py-4 text-lg font-semibold dark:bg-slate-700"
+        >
+          BROWSE PRODUCTS
+        </button>
+      </div>
 
       {/* Authentication */}
-      <div className="">
+      <div className="flex flex-col items-center">
         <button
           onClick={() => setIsLoginModalOpen(true)}
-          className="font-orbitron mb-2 cursor-pointer rounded-2xl bg-slate-50 px-4 py-2 font-semibold shadow-lg dark:bg-slate-700"
+          className="font-orbitron mb-2 cursor-pointer rounded-2xl bg-slate-50 px-4 py-2 font-semibold dark:bg-slate-700"
         >
           LOGIN
         </button>
-        <div className="text-sm">
+        <div className="text-center text-sm">
           <p className="font-space text-base font-semibold">
             Still do not have an account?
           </p>

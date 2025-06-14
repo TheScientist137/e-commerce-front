@@ -2,7 +2,7 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <div className="flex content-center justify-between">
+    <>
       <p className="font-space font-bold text-sm">Guillermo Casado 2025</p>
       <div className="flex gap-2">
         <button className="cursor-pointer px-1 text-xl">
@@ -12,6 +12,6 @@ export default function Footer() {
           <FaLinkedin />
         </button>
       </div>
-    </div>
+    </>
   );
 }

@@ -59,18 +59,18 @@ export default function Dashboard() {
   // No render anything until data is iniatialized
   if (!initialized) return null;
   return (
-    <div className="flex min-h-screen flex-col text-slate-800 dark:text-indigo-50">
-      <header className="fixed top-0 w-full bg-slate-100 p-4 dark:bg-gray-800">
+    <div className="flex h-screen flex-col text-slate-800 dark:text-indigo-50">
+      <header className="fixed top-0 h-[60px] w-full bg-slate-200 p-4 dark:bg-gray-900">
         <Navbar />
       </header>
 
       <CategoriesMenu />
 
-      <main className="mt-[60px] flex-grow bg-white px-4 dark:bg-gray-950">
+      <main className="mt-[60px] flex-grow bg-white p-4 dark:bg-gray-950 font-space">
         <Outlet />
       </main>
 
-      <footer className="bg-slate-100 p-4 dark:bg-gray-800">
+      <footer className="flex items-center justify-between bg-slate-200 px-4 py-4 dark:bg-gray-900">
         <Footer />
       </footer>
     </div>

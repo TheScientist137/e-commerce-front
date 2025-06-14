@@ -43,12 +43,12 @@ export default function ShopPage() {
   const { isFiltersMenuOpen, isSortMenuOpen } = useUiStore();
 
   return (
-    <section className="my-8">
+    <section className="h-full">
       {/* Category and Description */}
       {selectedCategory && (
         <div className="">
           <div>
-            <h2 className="font-orbitron text-xl font-bold">
+            <h2 className="font-orbitron text-2xl font-bold">
               {CATEGORY_CONFIG[selectedCategory].title}
             </h2>
             <p className="font-space text-sm">
@@ -59,19 +59,19 @@ export default function ShopPage() {
       )}
 
       {/* Show buttons only when any filter is active */}
-      <div ref={filterButtonsRef} className="">
+      <div ref={filterButtonsRef} className="my-4 flex flex-col gap-4">
         {<FiltersButtons />}
       </div>
 
       {/* Filters Navbar */}
-      <div className="sticky top-[62px]">
+      <div className="sticky top-[58px]">
         <FiltersNavBar filterButtonsRef={filterButtonsRef} />
         {isFiltersMenuOpen && <FiltersMenu />}
         {isSortMenuOpen && <SortByMenu />}
       </div>
 
       {/* PRODUCTS LIST */}
-      <div className="mt-6 grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 mt-4">
         {filteredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
