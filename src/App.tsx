@@ -30,7 +30,7 @@ export default function App() {
         <AccountModal
           title="Login"
           isOpen={isLoginModalOpen}
-          onclose={() => setIsLoginModalOpen(false)}
+          onClose={() => setIsLoginModalOpen(false)}
         >
           <LoginForm />
         </AccountModal>
@@ -38,7 +38,7 @@ export default function App() {
         <AccountModal
           title="Signup"
           isOpen={isSignUpModalOpen}
-          onclose={() => setIsSignupModalOpen(false)}
+          onClose={() => setIsSignupModalOpen(false)}
         >
           <SignupForm />
         </AccountModal>

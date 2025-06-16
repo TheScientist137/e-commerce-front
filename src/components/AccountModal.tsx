@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 type AccountModalProps = {
   title: string;
   isOpen: boolean;
-  onclose: () => void;
+  onClose: () => void;
   children: ReactNode;
 };
 
@@ -11,18 +11,24 @@ export default function AccountModal({
   title,
   children,
   isOpen,
-  onclose,
+  onClose,
 }: AccountModalProps) {
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 left-0 z-50 flex flex-col gap-4 bg-slate-200 dark:bg-slate-800 p-4 shadow-lg">
-      <div className="font-orbitron flex items-center justify-between text-xl font-bold">
-        <h2>{title}</h2>
-        <button className="text-right text-2xl" onClick={() => onclose()}>
-          x
-        </button>
+    <>
+      {<div className="fixed inset-0 z-40 backdrop-blur-sm" />}
+
+      <div className="fixed inset-x-8 inset-y-24 z-50 flex flex-col gap-4 rounded-xl bg-slate-200 p-4 dark:bg-slate-800">
+        <div className="font-orbitron flex items-center justify-between text-xl font-bold">
+          <h2>{title}</h2>
+          <button className="text-right text-2xl" onClick={() => onClose()}>
+            x
+          </button>
+        </div>
+        <div className="h-full bg-slate-50 rounded-xl p-4 overflow-y-auto">
+        {children}
+        </div>
       </div>
-      {children}
-    </div>
+    </>
   );
 }

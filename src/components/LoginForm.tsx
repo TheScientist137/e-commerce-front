@@ -27,14 +27,14 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="">
-      <h2>Log in</h2>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <div className="flex h-full flex-col justify-between">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-8">
         <div className="flex flex-col">
           <label htmlFor="email">Email</label>
           <input
             type="email"
             name="email"
+            placeholder="Enter your email"
             value={formData.email}
             onChange={handleChange}
             className="rounded-xl border px-3 py-1 focus:ring-2 focus:ring-purple-600 focus:outline-none"
@@ -45,6 +45,7 @@ export default function LoginForm() {
           <input
             type="password"
             name="password"
+            placeholder="Enter your password"
             value={formData.password}
             onChange={handleChange}
             className="rounded-xl border px-3 py-1 focus:ring-2 focus:ring-purple-600 focus:outline-none"

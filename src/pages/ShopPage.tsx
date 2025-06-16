@@ -38,40 +38,37 @@ const CATEGORY_CONFIG: CategoryConfigMap = {
 };
 
 export default function ShopPage() {
-  const filterButtonsRef = useRef<HTMLDivElement | null>(null);
   const { filteredProducts, selectedCategory } = useProductsStore();
-  const { isFiltersMenuOpen, isSortMenuOpen } = useUiStore();
 
   return (
     <section className="h-full">
       {/* Category and Description */}
       {selectedCategory && (
-        <div className="">
-          <div>
-            <h2 className="font-orbitron text-2xl font-bold">
-              {CATEGORY_CONFIG[selectedCategory].title}
-            </h2>
-            <p className="font-space text-sm">
-              {CATEGORY_CONFIG[selectedCategory].description}
-            </p>
-          </div>
+        <div className="mb-4">
+          <h2 className="font-orbitron text-2xl font-bold">
+            {CATEGORY_CONFIG[selectedCategory].title}
+          </h2>
+          <p className="font-space text-sm">
+            {CATEGORY_CONFIG[selectedCategory].description}
+          </p>
         </div>
       )}
 
-      {/* Show buttons only when any filter is active */}
-      <div ref={filterButtonsRef} className="my-4 flex flex-col gap-4">
-        {<FiltersButtons />}
-      </div>
+      {/* Show buttons only when any filter is active
+      <div ref={filterButtonsRef}>{<FiltersButtons />}</div>
+       */}
 
       {/* Filters Navbar */}
-      <div className="sticky top-[58px]">
-        <FiltersNavBar filterButtonsRef={filterButtonsRef} />
-        {isFiltersMenuOpen && <FiltersMenu />}
-        {isSortMenuOpen && <SortByMenu />}
+      <div className="sticky top-[68px]">
+        <FiltersNavBar />
       </div>
 
+      {/* Fixed Filter Menus */}
+      <FiltersMenu />
+      <SortByMenu />
+
       {/* PRODUCTS LIST */}
-      <div className="grid grid-cols-2 gap-4 mt-4">
+      <div className="mt-4 grid grid-cols-2 gap-4">
         {filteredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

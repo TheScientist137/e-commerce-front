@@ -45,7 +45,6 @@ export default function FiltersButtons() {
       ]),
     ).values(),
   );
-
   const telescopeBrands = Array.from(
     new Map(
       [...telescopes].map((product) => [
@@ -194,6 +193,7 @@ export default function FiltersButtons() {
   // (Avoiding state or functions to manage visibility)
   if (getIsFiltersActive()) return null;
 
+  // Crear un componente aparte!!!!!!!!!!!!!!!!!!
   function FilterButtonsSection({
     title,
     items,
@@ -210,11 +210,11 @@ export default function FiltersButtons() {
           {items.map((item) => (
             <button
               key={item.name}
-              className="flex cursor-pointer flex-col gap-2"
+              className="flex cursor-pointer flex-col justify-items-start gap-2"
               onClick={() => onClick(item.name)}
             >
-              <img className="rounded-lg" src={item.image} alt={item.name} />
-              <span>{item.name}</span>
+              <img className="rounded-full" src={item.image} alt={item.name} />
+              <span className="text-xs">{item.name}</span>
             </button>
           ))}
         </div>
@@ -223,7 +223,7 @@ export default function FiltersButtons() {
   }
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       {selectedCategory === "telescopes" && (
         <>
           <FilterButtonsSection
@@ -286,6 +286,6 @@ export default function FiltersButtons() {
           />
         </>
       )}
-    </>
+    </div>
   );
 }

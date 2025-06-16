@@ -33,14 +33,14 @@ export default function SignupForm() {
   };
 
   return (
-    <div className="">
-      <h2>Create Account</h2>
+    <div className="h-full flex flex-col justify-between">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col">
           <label htmlFor="email">Name</label>
           <input
             type="name"
             name="name"
+            placeholder="Enter your name"
             value={formData.name}
             onChange={handleChange}
             className="rounded-xl border px-3 py-1 focus:ring-2 focus:ring-purple-600 focus:outline-none"
@@ -51,6 +51,7 @@ export default function SignupForm() {
           <input
             type="email"
             name="email"
+            placeholder="Enter your email"
             value={formData.email}
             onChange={handleChange}
             className="rounded-xl border px-3 py-1 focus:ring-2 focus:ring-purple-600 focus:outline-none"
@@ -61,6 +62,7 @@ export default function SignupForm() {
           <input
             type="password"
             name="password"
+            placeholder="Enter your password"
             value={formData.password}
             onChange={handleChange}
             className="rounded-xl border px-3 py-1 focus:ring-2 focus:ring-purple-600 focus:outline-none"

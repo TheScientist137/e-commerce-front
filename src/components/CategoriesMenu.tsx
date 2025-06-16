@@ -30,6 +30,7 @@ export default function CategoriesMenu() {
     setIsLoginModalOpen(true);
   };
 
+  if (!isMenuOpen) return null;
   return (
     <>
       {/* Blur Backdrop */}

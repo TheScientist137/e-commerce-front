@@ -66,7 +66,7 @@ export default function TelescopeFilters() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // ENTENDER Y MEJORAR !!!!!!!!!
+  // ENTENDER Y MEJORAR !!!!!!!!! (Comprobar si de verdad lo necesitamos!)
   // Efecto para cerrar submenús al cerrar el menú de filtros
   useEffect(() => {
     if (isFiltersMenuOpen) {

@@ -21,7 +21,13 @@ export default function Dashboard() {
     fetchProducts,
     initializeFromStorage,
   } = useProductsStore();
-  const { isMenuOpen, isLoginModalOpen, isSignUpModalOpen } = useUiStore();
+  const {
+    isMenuOpen,
+    isLoginModalOpen,
+    isSignUpModalOpen,
+    isFiltersMenuOpen,
+    isSortMenuOpen,
+  } = useUiStore();
 
   useEffect(() => {
     const initialize = async () => {
@@ -45,7 +51,13 @@ export default function Dashboard() {
   }, []);
   // Effect to block body scroll effect when menus are open
   useEffect(() => {
-    if (isMenuOpen || isLoginModalOpen || isSignUpModalOpen) {
+    if (
+      isMenuOpen ||
+      isLoginModalOpen ||
+      isSignUpModalOpen ||
+      isFiltersMenuOpen ||
+      isSortMenuOpen
+    ) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -66,7 +78,7 @@ export default function Dashboard() {
 
       <CategoriesMenu />
 
-      <main className="mt-[60px] flex-grow bg-white p-4 dark:bg-gray-950 font-space">
+      <main className="font-space mt-[60px] flex-grow bg-white p-4 dark:bg-gray-950">
         <Outlet />
       </main>
 

@@ -1,6 +1,9 @@
 import { useProductsStore } from "../stores/productsStore";
 import { useUiStore } from "../stores/uiStore";
 
+import FiltersMenuModal from "./FilterMenuModal";
+import AccountModal from "./AccountModal";
+
 export default function SortByMenu() {
   const { isSortMenuOpen, setIsSortMenuOpen } = useUiStore();
   const { sortFilteredProducts, sortBy } = useProductsStore();
@@ -19,13 +22,16 @@ export default function SortByMenu() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (!isSortMenuOpen) return null;
   return (
-    <div className="rounded-xl bg-slate-100 p-4">
+    <FiltersMenuModal
+      title="Sort By"
+      isOpen={isSortMenuOpen}
+      onClose={() => setIsSortMenuOpen(false)}
+    >
       <div className="flex flex-col gap-4">
         {sortFilters.map((sortFilter) => (
           <div
-            className={`cursor-pointer rounded-xl border-1 py-1 text-center text-bse ${sortBy === sortFilter.value ? "bg-gray-300 font-bold" : ""}`}
+            className={`text-bse cursor-pointer rounded-xl border-1 py-1 text-center ${sortBy === sortFilter.value ? "bg-gray-300 font-bold" : ""}`}
             key={sortFilter.value}
             onClick={() => handleSortFilter(sortFilter.value)}
           >
@@ -33,6 +39,6 @@ export default function SortByMenu() {
           </div>
         ))}
       </div>
-    </div>
+    </FiltersMenuModal>
   );
 }
