@@ -21,9 +21,9 @@ export default function FiltersMenuModal({
 
       {/* Fixed Menu on top of Backdrop */}
       <div className="fixed inset-8 z-50 bg-slate-100 dark:bg-slate-800 rounded-xl p-4 flex flex-col gap-4">
-        <div className="flex items-center justify-between font-orbitron text-xl font-bold">
-          <h2>{title}</h2>
-          <button className="text-right text-2xl" onClick={() => onClose()}>
+        <div className="flex items-center justify-between font-orbitron text-2xl font-bold">
+          <h2 className="">{title}</h2>
+          <button className="text-right" onClick={() => onClose()}>
             <IoClose />
           </button>
         </div>

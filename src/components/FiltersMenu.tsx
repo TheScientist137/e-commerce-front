@@ -1,17 +1,35 @@
-import { useProductsStore } from "../stores/productsStore";
+import { useEffect } from "react";
 import { useUiStore } from "../stores/uiStore";
-import TelescopeFilters from "./TelescopeFilters";
-import MountFilters from "./MountFilters";
-import EyepieceFilters from "./EyepieceFilters";
-import FilterFilters from "./FilterFilters";
-
 import FiltersMenuModal from "./FilterMenuModal";
+import Filters from "./Filters";
 
 export default function FiltersMenu() {
-  const { selectedCategory } = useProductsStore();
-  const { isFiltersMenuOpen, setIsFiltersMenuOpen } = useUiStore();
+  const {
+    isFiltersMenuOpen,
+    setIsFiltersMenuOpen,
+    setOpenTelescopeFilters,
+    setOpenMountFilters,
+    setOpenEyepieceFilters,
+    setOpenFilterFilters,
+  } = useUiStore();
 
-  // MEJORAR ALTURA DEL MENU CON SCROLL
+  // Close subfilters menus when closing Filters Menu
+  useEffect(() => {
+    if (!isFiltersMenuOpen) {
+      setOpenTelescopeFilters("isOpticalDesignFiltersOpen", false);
+      setOpenTelescopeFilters("isMountTypeFiltersOpen", false);
+      setOpenTelescopeFilters("isBrandFiltersOpen", false);
+
+      setOpenMountFilters("isMountTypeFiltersOpen", false);
+      setOpenMountFilters("isBrandFiltersOpen", false);
+
+      setOpenEyepieceFilters("isBuildTypeFiltersOpen", false);
+      setOpenEyepieceFilters("isBrandFiltersOpen", false);
+
+      setOpenFilterFilters("isBuildTypeFiltersOpen", false);
+      setOpenFilterFilters("isBrandFiltersOpen", false);
+    }
+  }, [isFiltersMenuOpen]);
 
   return (
     <FiltersMenuModal
@@ -19,10 +37,7 @@ export default function FiltersMenu() {
       isOpen={isFiltersMenuOpen}
       onClose={() => setIsFiltersMenuOpen(false)}
     >
-        {selectedCategory === "telescopes" && <TelescopeFilters />}
-        {selectedCategory === "mounts" && <MountFilters />}
-        {selectedCategory === "eyepieces" && <EyepieceFilters />}
-        {selectedCategory === "filters" && <FilterFilters />}
+      <Filters />
     </FiltersMenuModal>
   );
 }

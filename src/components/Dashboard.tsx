@@ -66,7 +66,7 @@ export default function Dashboard() {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isMenuOpen, isLoginModalOpen, isSignUpModalOpen]);
+  }, [isMenuOpen, isLoginModalOpen, isSignUpModalOpen, isFiltersMenuOpen, isSortMenuOpen]);
 
   // No render anything until data is iniatialized
   if (!initialized) return null;

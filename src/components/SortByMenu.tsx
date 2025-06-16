@@ -28,15 +28,19 @@ export default function SortByMenu() {
       isOpen={isSortMenuOpen}
       onClose={() => setIsSortMenuOpen(false)}
     >
-      <div className="flex flex-col gap-4">
+      <div className="flex h-full flex-col gap-6">
         {sortFilters.map((sortFilter) => (
-          <div
-            className={`text-bse cursor-pointer rounded-xl border-1 py-1 text-center ${sortBy === sortFilter.value ? "bg-gray-300 font-bold" : ""}`}
+          <button
+            className={`cursor-pointer rounded-xl border-2 border-slate-200 px-4 py-2 dark:border-slate-800 ${
+              sortFilter.value === sortBy
+                ? "bg-slate-200 dark:bg-slate-500"
+                : "bg-slate-100 dark:bg-slate-600"
+            } `}
             key={sortFilter.value}
             onClick={() => handleSortFilter(sortFilter.value)}
           >
             {sortFilter.title}
-          </div>
+          </button>
         ))}
       </div>
     </FiltersMenuModal>

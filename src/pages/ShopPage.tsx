@@ -7,6 +7,8 @@ import ProductCard from "../components/ProductCard.tsx";
 import FiltersMenu from "../components/FiltersMenu.tsx";
 import SortByMenu from "../components/SortByMenu.tsx";
 
+import Filters from "../components/Filters.tsx";
+
 type CategoryConfig = {
   title: string;
   description: string;
@@ -43,7 +45,7 @@ export default function ShopPage() {
   return (
     <section className="h-full">
       {/* Category and Description */}
-      {selectedCategory && (
+      {selectedCategory && CATEGORY_CONFIG[selectedCategory] && (
         <div className="mb-4">
           <h2 className="font-orbitron text-2xl font-bold">
             {CATEGORY_CONFIG[selectedCategory].title}

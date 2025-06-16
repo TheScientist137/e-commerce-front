@@ -33,7 +33,7 @@ export default function SignupForm() {
   };
 
   return (
-    <div className="h-full flex flex-col justify-between">
+    <>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col">
           <label htmlFor="email">Name</label>
@@ -82,6 +82,6 @@ export default function SignupForm() {
           Sign in
         </span>
       </div>
-    </div>
+    </>
   );
 }

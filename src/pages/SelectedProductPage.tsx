@@ -14,6 +14,7 @@ import {
   EyepieceType,
   FilterType,
 } from "../types/types.ts";
+import { FaEuroSign } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
 
 const SPEC_FIELDS: Record<string, { key: string; label: string }[]> = {
@@ -84,15 +85,14 @@ export default function ProductPage() {
   const navigate = useNavigate();
   const { id, type } = useParams();
   const { addToCart } = useCartStore();
-  const {selectedCategory, filterProductsByCategory} = useProductsStore()
+  const { selectedCategory, filterProductsByCategory } = useProductsStore();
+
   const [selectedProduct, setSelectedProduct] = useState<
     TelescopeType | MountType | EyepieceType | FilterType | null
   >(null);
   const [showFullDescription, setShowFullDescription] =
     useState<boolean>(false);
   const [showFullTable, setShowFullTable] = useState<boolean>(false);
-
-  // show more (expand/collapse) in description and table implementation !!
 
   // Effect to obtain from db the product by id
   useEffect(() => {
@@ -128,7 +128,7 @@ export default function ProductPage() {
     navigate("/cart");
   };
 
-    const handleBackToShop = (category: string) => {
+  const handleBackToShop = (category: string) => {
     navigate("/shop");
     filterProductsByCategory(category);
     // Go to the top when changing category
@@ -140,7 +140,7 @@ export default function ProductPage() {
     <section className="h-full">
       <div
         onClick={() => selectedCategory && handleBackToShop(selectedCategory)}
-        className="flex items-center py-2 justify-center gap-4 rounded-xl bg-slate-100 dark:bg-slate-800 "
+        className="flex items-center justify-center gap-4 rounded-xl bg-slate-100 py-2 dark:bg-slate-800"
       >
         <FaArrowLeft />
         <span>Back to shop</span>
@@ -149,30 +149,29 @@ export default function ProductPage() {
       {/* ----------------- Add to cart Product card ------------------ */}
       <div className="my-4 flex flex-col gap-4 rounded-xl bg-slate-100 p-4 dark:bg-slate-800">
         {/* Product details */}
-        <div>
+        <div className="flex flex-col gap-2">
           <div className="rounded-xl border bg-slate-50 p-2 dark:bg-slate-700">
             <img
-              className="object-contain rounded-xl"
+              className="rounded-xl object-contain"
               src={selectedProduct.image}
               alt="product image"
             />
           </div>
-          <img
-            className="h-20 w-30 object-contain rounded-2xl"
-            src={selectedProduct.brand_image}
-            alt={selectedProduct.brand_name}
-          />
-          <h2 className="font-space text-lg font-bold">
-            {selectedProduct.name}
-          </h2>
+          <div className="ml-4">
+            <h2 className="text-lg font-bold">{selectedProduct.name}</h2>
+            {/* Brand image ???????? */}
+            <p className="text-lg font-bold text-gray-500">
+              {selectedProduct.brand_name}
+            </p>
+          </div>
         </div>
         {/* Add to Cart */}
         <div className="flex items-center justify-between">
-          <span className="text-xl font-semibold text-red-600">
-            {selectedProduct.price} $
+          <span className="flex items-center gap-1 text-xl font-semibold text-red-300">
+            {selectedProduct.price} <FaEuroSign />
           </span>
           <button
-            className="rounded-xl bg-slate-50 p-4 font-extrabold dark:bg-slate-700"
+            className="rounded-xl border-1 border-slate-400 bg-slate-50 p-4 text-xl font-black dark:bg-slate-700"
             onClick={() => handleAddToCartClick()}
           >
             ADD TO CART

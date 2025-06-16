@@ -30,7 +30,6 @@ export default function CategoriesMenu() {
     setIsLoginModalOpen(true);
   };
 
-  if (!isMenuOpen) return null;
   return (
     <>
       {/* Blur Backdrop */}
@@ -43,9 +42,7 @@ export default function CategoriesMenu() {
 
       {/* Slide in-out fixed menu */}
       <div
-        className={`fixed z-50 flex h-full w-[70%] flex-col border-r-4 border-violet-100 bg-white transition-transform duration-300 ease-in-out dark:border-black dark:bg-gray-950 ${
-          isMenuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed z-50 flex h-full w-[70%] flex-col border-r-4 border-violet-100 bg-white transition-transform delay-150 duration-300 ease-in-out ${isMenuOpen ? "translate-x-0" : "-translate-x-full"} dark:border-black dark:bg-gray-950`}
       >
         {/* Login with close menu button */}
         <div className="flex justify-between border-b-4 border-violet-100 bg-slate-100 p-4 dark:border-black dark:bg-gray-800">
