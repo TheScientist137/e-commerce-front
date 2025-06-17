@@ -29,6 +29,7 @@ export default function Dashboard() {
     isSortMenuOpen,
   } = useUiStore();
 
+  // Effect to initialize data from storage/API
   useEffect(() => {
     const initialize = async () => {
       if (
@@ -47,8 +48,8 @@ export default function Dashboard() {
       }
     };
     initialize();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   // Effect to block body scroll effect when menus are open
   useEffect(() => {
     if (
@@ -66,7 +67,13 @@ export default function Dashboard() {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isMenuOpen, isLoginModalOpen, isSignUpModalOpen, isFiltersMenuOpen, isSortMenuOpen]);
+  }, [
+    isMenuOpen,
+    isLoginModalOpen,
+    isSignUpModalOpen,
+    isFiltersMenuOpen,
+    isSortMenuOpen,
+  ]);
 
   // No render anything until data is iniatialized
   if (!initialized) return null;

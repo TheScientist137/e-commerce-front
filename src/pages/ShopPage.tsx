@@ -1,13 +1,8 @@
-import { useRef } from "react";
 import { useProductsStore } from "../stores/productsStore.ts";
-import { useUiStore } from "../stores/uiStore.ts";
-import FiltersButtons from "../components/FiltersButtons.tsx";
 import FiltersNavBar from "../components/FiltersNavBar.tsx";
 import ProductCard from "../components/ProductCard.tsx";
 import FiltersMenu from "../components/FiltersMenu.tsx";
 import SortByMenu from "../components/SortByMenu.tsx";
-
-import Filters from "../components/Filters.tsx";
 
 type CategoryConfig = {
   title: string;
@@ -56,16 +51,12 @@ export default function ShopPage() {
         </div>
       )}
 
-      {/* Show buttons only when any filter is active
-      <div ref={filterButtonsRef}>{<FiltersButtons />}</div>
-       */}
-
       {/* Filters Navbar */}
       <div className="sticky top-[68px]">
         <FiltersNavBar />
       </div>
 
-      {/* Fixed Filter Menus */}
+      {/* Fixed Filters and Sortby Menus */}
       <FiltersMenu />
       <SortByMenu />
 

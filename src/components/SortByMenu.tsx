@@ -1,8 +1,6 @@
 import { useProductsStore } from "../stores/productsStore";
 import { useUiStore } from "../stores/uiStore";
-
 import FiltersMenuModal from "./FilterMenuModal";
-import AccountModal from "./AccountModal";
 
 export default function SortByMenu() {
   const { isSortMenuOpen, setIsSortMenuOpen } = useUiStore();
