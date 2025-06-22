@@ -2,6 +2,7 @@ import { MountType, ProductType, TelescopeType } from "../types/types.ts";
 
 // MEJORAR SERVICIOS !!!!!!!!
 
+// GET ALL PRODUCTS
 export const getProductsService = async (): Promise<ProductType[]> => {
   const response = await fetch("http://localhost:3000/api/shop/products", {
     credentials: "include",
@@ -11,6 +12,7 @@ export const getProductsService = async (): Promise<ProductType[]> => {
   return data.products || [];
 };
 
+// GET PRODUCT BY ID
 export const getTelesocopeByIdService = async (
   id: string | number,
 ): Promise<TelescopeType> => {
@@ -61,6 +63,7 @@ export const getFilterByIdService = async (
   return data.product;
 };
 
+// GET PRODUCTS BY CATEGORY
 export const getTelescopesService = async (): Promise<TelescopeType[]> => {
   const response = await fetch("http://localhost:3000/api/shop/telescopes", {
     credentials: "include",
@@ -96,3 +99,13 @@ export const getFiltersService = async (): Promise<any[]> => {
   console.log(data.message);
   return data.filters || [];
 };
+
+// GET PRODUCTS FILTERS
+export const getProductsFiltersService = async (): Promise<any[]> => {
+  const response = await fetch('http://localhost:3000/api/shop/productFilters', {
+    credentials: 'include'
+  });
+  const data = await response.json();
+  console.log(data.message);
+  return data.productFilters || [];
+}

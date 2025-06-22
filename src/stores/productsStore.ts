@@ -6,6 +6,7 @@ import {
   getMountsService,
   getEyepiecesService,
   getFiltersService,
+  getProductsFiltersService,
 } from "../services/shopService.ts";
 
 import {
@@ -74,26 +75,32 @@ type ProductsStateType = {
   mounts: MountType[];
   eyepieces: EyepieceType[];
   filters: FilterType[];
+
+  productFilters: ProductsFiltersType[];
   filteredProducts: FilterItemsCategoryType;
   selectedCategory: string | null;
+  sortBy: string;
+
   telescopeFilters: TelescopeFiltersType;
   mountFilters: MountFiltersType;
   eyepieceFilters: EyepieceFiltersType;
   filterFilters: FilterFiltersType;
-  sortBy: string;
 
   setProducts: (products: ProductType[]) => void;
   setTelescopes: (telescopes: TelescopeType[]) => void;
   setMounts: (mounts: MountType[]) => void;
   setEyepieces: (eyepieces: EyepieceType[]) => void;
   setFilters: (filters: FilterType[]) => void;
+
+  setProductFilters: (filters: ProductsFiltersType[]) => void;
   setFilteredProducts: (filteredProducts: FilterItemsCategoryType) => void;
   setSelectedCategory: (category: string | null) => void;
+  setSortBy: (sortBy: string) => void;
+
   setTelescopeFilters: (filters: TelescopeFiltersType) => void;
   setMountFilters: (filters: MountFiltersType) => void;
   setEyepieceFilters: (filters: EyepieceFiltersType) => void;
   setFilterFilters: (filters: FilterFiltersType) => void;
-  setSortBy: (sortBy: string) => void;
 
   fetchProducts: () => Promise<void>;
   initializeFromStorage: () => void;
@@ -115,6 +122,7 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
   eyepieces: getItemLocalStorage("eyepieces") || [],
   filters: getItemLocalStorage("filters") || [],
 
+  productFilters: getItemLocalStorage("productFilters") || [],
   filteredProducts: [],
   selectedCategory: getItemSessionStorage("category") || "",
   sortBy: getItemSessionStorage("sortBy") || "a-z",
@@ -160,6 +168,10 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
   },
 
   setFilteredProducts: (items) => set({ filteredProducts: items }),
+  setProductFilters: (filters) => {
+    set({ productFilters: filters });
+    setItemLocalStorage("productFilters", filters);
+  },
   setSelectedCategory: (category) => {
     set({ selectedCategory: category });
     setItemSessionStorage("category", category);
@@ -188,8 +200,14 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
 
   // FUNCTIONS
   fetchProducts: async () => {
-    const { setProducts, setTelescopes, setMounts, setEyepieces, setFilters } =
-      get();
+    const {
+      setProducts,
+      setTelescopes,
+      setMounts,
+      setEyepieces,
+      setFilters,
+      setProductFilters,
+    } = get();
 
     try {
       const productsData = await getProductsService();
@@ -197,12 +215,14 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
       const mountsData = await getMountsService();
       const eyepiecesData = await getEyepiecesService();
       const filtersData = await getFiltersService();
+      const productFiltersData = await getProductsFiltersService();
 
       setProducts(productsData);
       setTelescopes(telescopesData);
       setMounts(mountsData);
       setEyepieces(eyepiecesData);
       setFilters(filtersData);
+      setProductFilters(productFiltersData);
     } catch (error) {
       removeItemLocalStorage("products");
       removeItemLocalStorage("telescopes");
@@ -210,7 +230,6 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
       removeItemLocalStorage("eyepieces");
       removeItemLocalStorage("filters");
       removeItemLocalStorage("productFilters");
-      removeItemLocalStorage("productsBrands");
       console.error("Error fetching products", error);
     }
   },

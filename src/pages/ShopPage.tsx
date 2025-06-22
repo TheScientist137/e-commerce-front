@@ -35,8 +35,9 @@ const CATEGORY_CONFIG: CategoryConfigMap = {
 };
 
 export default function ShopPage() {
-  const { filteredProducts, selectedCategory } = useProductsStore();
+  const { filteredProducts, selectedCategory, productFilters } = useProductsStore();
 
+  console.log(productFilters);
   return (
     <section className="h-full">
       {/* Category and Description */}
