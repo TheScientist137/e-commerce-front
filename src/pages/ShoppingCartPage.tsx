@@ -24,16 +24,16 @@ export default function ShoppingCartPage() {
             key={item.product.id}
             className="flex flex-col gap-4 rounded-xl bg-slate-50 p-4 dark:bg-slate-700"
           >
-            <div className="flex">
+            <div className="flex items-center gap-4">
               <img
                 src={item.product.image}
                 alt={item.product.name}
-                className="size-24 rounded"
+                className="size-18 rounded"
               />
               <div className="my-auto text-center">
-                <h3 className="font-semibold">{item.product.name}</h3>
+                <h3 className="font-semibold text-sm">{item.product.name}</h3>
                 <p className="font-semibold text-gray-500 dark:text-gray-400">
-                  {item.product.brand_name}
+                  {item.product.brand}
                 </p>
               </div>
             </div>

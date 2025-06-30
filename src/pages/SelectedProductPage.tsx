@@ -150,28 +150,27 @@ export default function ProductPage() {
       <div className="my-4 flex flex-col gap-4 rounded-xl bg-slate-100 p-4 dark:bg-slate-800">
         {/* Product details */}
         <div className="flex flex-col gap-2">
-          <div className="rounded-xl border bg-slate-50 p-2 dark:bg-slate-700">
+          <div className="rounded-xl border bg-slate-50 p-4 dark:bg-slate-700">
             <img
               className="rounded-xl object-contain"
               src={selectedProduct.image}
               alt="product image"
             />
           </div>
-          <div className="ml-4">
+          <div className="">
             <h2 className="text-lg font-bold">{selectedProduct.name}</h2>
-            {/* Brand image ???????? */}
             <p className="text-lg font-bold text-gray-500">
-              {selectedProduct.brand_name}
+              {selectedProduct.brand}
             </p>
           </div>
         </div>
         {/* Add to Cart */}
         <div className="flex items-center justify-between">
-          <span className="flex items-center gap-1 text-xl font-semibold text-red-300">
+          <span className="flex items-center gap-1 text-xl font-semibold text-red-400 dark:text-red-300">
             {selectedProduct.price} <FaEuroSign />
           </span>
           <button
-            className="rounded-xl border-1 border-slate-400 bg-slate-50 p-4 text-xl font-black dark:bg-slate-700"
+            className="rounded-xl border-1 border-slate-400 bg-slate-50 p-2 text-lg font-black dark:bg-slate-700"
             onClick={() => handleAddToCartClick()}
           >
             ADD TO CART
@@ -179,12 +178,12 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* --------------- Description & Specs -------------------------*/}
+      {/* --------------- Description & Specs Table -------------------------*/}
       <div className="font-space flex flex-col gap-4 rounded-xl bg-slate-100 p-4 dark:bg-slate-800">
         {/* Description */}
         <div className="flex flex-col gap-2">
           <h3 className="text-2xl">Product Description</h3>
-          <p>
+          <p className="text-sm">
             {showFullDescription
               ? selectedProduct.description
               : selectedProduct.description.slice(0, 200) +
@@ -202,17 +201,17 @@ export default function ProductPage() {
         {/* Specifications */}
         <div className="flex flex-col gap-2">
           <h3 className="text-xl">Specifications</h3>
-          <table className="table-auto border-separate border-spacing-2">
+          <table className="w-full table-fixed border-separate border-spacing-2">
             <tbody>
               {(showFullTable
                 ? SPEC_FIELDS[selectedProduct.product_type]
                 : SPEC_FIELDS[selectedProduct.product_type].slice(0, 5)
               ).map((specs) => (
                 <tr key={specs.key}>
-                  <td className="bg-slate-100 p-2 font-bold dark:bg-slate-700">
+                  <td className="w-1/2 bg-slate-100 p-2 text-left text-sm font-bold break-words dark:bg-slate-700">
                     {specs.label}
                   </td>
-                  <td className="bg-slate-50 p-2 text-center dark:bg-slate-600">
+                  <td className="w-1/3 bg-slate-50 p-2 text-left text-sm break-words dark:bg-slate-600">
                     {
                       (
                         selectedProduct.specifications as Record<

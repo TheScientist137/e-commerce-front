@@ -57,6 +57,7 @@ export type ProductsFiltersType = {
   name: string;
   image_url: string;
   category: string;
+  description: string;
 };
 export type ProductsBrandsType = {
   name: string;
@@ -329,7 +330,7 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
       }
       if (brand) {
         filtered = filtered.filter(
-          (telescope) => telescope.brand_name === brand,
+          (telescope) => telescope.brand === brand,
         );
       }
 
@@ -348,7 +349,7 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
         );
       }
       if (brand) {
-        filtered = filtered.filter((mount) => mount.brand_name === brand);
+        filtered = filtered.filter((mount) => mount.brand === brand);
       }
 
       set({ filteredProducts: filtered });
@@ -366,7 +367,7 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
         );
       }
       if (brand) {
-        filtered = filtered.filter((eyepiece) => eyepiece.brand_name === brand);
+        filtered = filtered.filter((eyepiece) => eyepiece.brand === brand);
       }
 
       setEyepieceFilters(updatedEyepieceFilters);
@@ -384,7 +385,7 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
         );
       }
       if (brand) {
-        filtered = filtered.filter((filter) => filter.brand_name === brand);
+        filtered = filtered.filter((filter) => filter.brand === brand);
       }
 
       setFilterFilters(updatedFiltersFilters);

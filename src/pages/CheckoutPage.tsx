@@ -41,14 +41,14 @@ export default function CheckoutPage() {
               <div className="text-center">
                 <p className="text-sm">{item.product.name}</p>
                 <span className="text-gray-500 dark:text-gray-400">
-                  {item.product.brand_name}
+                  {item.product.brand}
                 </span>
               </div>
             </div>
 
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
               <p className="text-gray-500 dark:text-gray-400">
-                Quantity: <span>{item.quantity}</span>
+                Quantity: <span className="text-black dark:text-white">{item.quantity}</span>
               </p>
               <p className="flex items-center gap-1">
                 {(item.product.price * item.quantity).toFixed(2)}
@@ -81,9 +81,9 @@ export default function CheckoutPage() {
         <AccountModal
           title="Payment"
           isOpen={isModalOpen}
-          onclose={() => setIsModalOpen(false)}
+          onClose={() => setIsModalOpen(false)}
         >
-          <div className="flex h-full flex-col justify-between gap-4 rounded-xl bg-slate-100 p-6 text-center dark:bg-slate-700">
+          <div className="flex h-full flex-col justify-between gap-4 rounded-xl bg-slate-100 dark:bg-slate-700">
             <h3 className="text-xl">
               Thanks a lot for exploring StellarScope!
             </h3>

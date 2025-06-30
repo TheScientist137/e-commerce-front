@@ -4,6 +4,9 @@ import ProductCard from "../components/ProductCard.tsx";
 import FiltersMenu from "../components/FiltersMenu.tsx";
 import SortByMenu from "../components/SortByMenu.tsx";
 
+import { IoIosClose } from "react-icons/io";
+import { GiJesterHat } from "react-icons/gi";
+
 type CategoryConfig = {
   title: string;
   description: string;
@@ -35,20 +38,116 @@ const CATEGORY_CONFIG: CategoryConfigMap = {
 };
 
 export default function ShopPage() {
-  const { filteredProducts, selectedCategory, productFilters } = useProductsStore();
+  const {
+    filteredProducts,
+    selectedCategory,
+    productFilters,
+    telescopeFilters,
+    mountFilters,
+    eyepieceFilters,
+    filterFilters,
+    filterProductsBySubCategory,
+  } = useProductsStore();
 
-  console.log(productFilters);
+  // Main selected filter by selected category
+  const mainFilterNameByCategory: Record<string, string | null> = {
+    telescopes: telescopeFilters?.opticalDesign,
+    mounts: mountFilters?.buildType,
+    eyepieces: eyepieceFilters?.buildType,
+    filters: filterFilters?.buildType,
+  };
+
+  const selectedMainFilterName = selectedCategory
+    ? mainFilterNameByCategory[selectedCategory]
+    : undefined;
+
+  // Filtra los filtros por la categoría seleccionada
+  const relevantFilters = selectedCategory
+    ? productFilters.filter((f) => f.category === selectedCategory)
+    : productFilters;
+
+  // Busca el filtro principal seleccionado solo entre los relevantes
+  const selectedMainFilter = relevantFilters.find(
+    (filter) => filter.name === selectedMainFilterName,
+  );
+
+  const handleRemoveMainFilter = () => {
+    if (selectedCategory === "telescopes") {
+      filterProductsBySubCategory("telescopes", {
+        ...telescopeFilters,
+        opticalDesign: null,
+      });
+    } else if (selectedCategory === "mounts") {
+      filterProductsBySubCategory("mounts", {
+        ...mountFilters,
+        buildType: null,
+      });
+    } else if (selectedCategory === "eyepieces") {
+      filterProductsBySubCategory("eyepieces", {
+        ...eyepieceFilters,
+        buildType: null,
+      });
+    } else if (selectedCategory === "filters") {
+      filterProductsBySubCategory("filters", {
+        ...filterFilters,
+        buildType: null,
+      });
+    }
+  };
+
   return (
     <section className="h-full">
-      {/* Category and Description */}
+      {/* Category Description / Main Selected Filter */}
       {selectedCategory && CATEGORY_CONFIG[selectedCategory] && (
         <div className="mb-4">
-          <h2 className="font-orbitron text-2xl font-bold">
-            {CATEGORY_CONFIG[selectedCategory].title}
-          </h2>
-          <p className="font-space text-sm">
-            {CATEGORY_CONFIG[selectedCategory].description}
-          </p>
+          {selectedMainFilter ? (
+            <>
+              {/* Breadcrumb */}
+              <div className="my-2 flex items-center gap-2">
+                <span className="font-black">
+                  {CATEGORY_CONFIG[selectedCategory].title}
+                </span>
+                <span className="mx-1">→</span>
+                <span className="font-semibold">{selectedMainFilter.name}</span>
+                <button
+                  className=""
+                  aria-label="Remove filter"
+                  onClick={handleRemoveMainFilter}
+                >
+                  <IoIosClose size={32} className="text-red-500" />
+                </button>
+              </div>
+              {/* Main Filter Info */}
+              <div className="mt-4 rounded-xl bg-slate-50 p-4 dark:bg-slate-700">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="flex min-w-[8rem] flex-col items-center">
+                    <img
+                      src={selectedMainFilter.image_url}
+                      alt={selectedMainFilter.name}
+                      className="rounded-full"
+                    />
+                    <h3 className="text-lg font-bold">
+                      {selectedMainFilter.name}
+                    </h3>
+                  </div>
+                  <div>
+                    <p className="text-center text-sm">
+                      {selectedMainFilter.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div>
+              <h2 className="font-orbitron text-2xl font-bold">
+                {CATEGORY_CONFIG[selectedCategory].title}
+              </h2>
+              <p className="font-space text-sm">
+                {CATEGORY_CONFIG[selectedCategory].description}
+              </p>
+            </div>
+          )}
         </div>
       )}
 

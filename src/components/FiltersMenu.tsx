@@ -46,7 +46,7 @@ export default function FiltersMenu() {
     ),
   ];
   const telescopeBrands = [
-    ...new Set(filteredProducts.map((p) => (p as TelescopeType).brand_name)),
+    ...new Set(filteredProducts.map((p) => (p as TelescopeType).brand)),
   ];
 
   // Mount Filters Dynamic Values
@@ -58,7 +58,7 @@ export default function FiltersMenu() {
   ];
   const mountBrands = [
     ...new Set(
-      filteredProducts.map((product) => (product as MountType).brand_name),
+      filteredProducts.map((product) => (product as MountType).brand),
     ),
   ];
 
@@ -73,7 +73,7 @@ export default function FiltersMenu() {
   ];
   const eyepieceBrands = [
     ...new Set(
-      filteredProducts.map((product) => (product as EyepieceType).brand_name),
+      filteredProducts.map((product) => (product as EyepieceType).brand),
     ),
   ];
 
@@ -88,7 +88,7 @@ export default function FiltersMenu() {
   ];
   const filterBrands = [
     ...new Set(
-      filteredProducts.map((product) => (product as FilterType).brand_name),
+      filteredProducts.map((product) => (product as FilterType).brand),
     ),
   ];
 
