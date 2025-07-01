@@ -6,6 +6,46 @@ import {
   FilterType,
 } from "../types/types";
 
+// PREDEFINED ORDER FOR FILTERS
+const OPTICAL_DESIGNS_ORDER = [
+  "Achromat",
+  "Apochromat",
+  "Newton",
+  "Catadioptric",
+  "Schmidt-Cassegrain",
+  "Maksutov-Cassegrain",
+  "Ritchey-Chrétien",
+];
+
+const MOUNT_TYPES_ORDER = [
+  "Alt-azimuth",
+  "Alt-azimuth with GoTo",
+  "Equatorial",
+  "Equatorial with GoTo",
+  "Dobsonian",
+  "Fork Mount",
+];
+
+// Helper function to sort filter objects by predefined order
+const sortFilterObjectsByOrder = (
+  filterObjects: { name: string; image: string }[],
+  orderArray: string[]
+): { name: string; image: string }[] => {
+  // First, add items in the predefined order that exist in filterObjects
+  const sortedFilters = orderArray
+    .map((orderItem) =>
+      filterObjects.find((filterObj) => filterObj.name === orderItem)
+    )
+    .filter(Boolean) as { name: string; image: string }[];
+
+  // Then, add any remaining items that weren't in the predefined order
+  const remainingFilters = filterObjects
+    .filter((filterObj) => !orderArray.includes(filterObj.name))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  return [...sortedFilters, ...remainingFilters];
+};
+
 export default function FiltersButtons() {
   const {
     telescopes,
@@ -23,7 +63,7 @@ export default function FiltersButtons() {
 
   // FILTERS
   // Telescopes Unique Filters and Brands Values
-  const opticalDesigns = Array.from(
+  const opticalDesignsRaw = Array.from(
     new Map(
       [...telescopes].map((product) => [
         (product as TelescopeType).optical_design_name,
@@ -34,7 +74,9 @@ export default function FiltersButtons() {
       ]),
     ).values(),
   );
-  const mountingTypes = Array.from(
+  const opticalDesigns = sortFilterObjectsByOrder(opticalDesignsRaw, OPTICAL_DESIGNS_ORDER);
+  
+  const mountingTypesRaw = Array.from(
     new Map(
       [...telescopes].map((product) => [
         (product as TelescopeType).mount_type_name,
@@ -45,17 +87,19 @@ export default function FiltersButtons() {
       ]),
     ).values(),
   );
+  const mountingTypes = sortFilterObjectsByOrder(mountingTypesRaw, MOUNT_TYPES_ORDER);
+  
   const telescopeBrands = Array.from(
     new Map(
       [...telescopes].map((product) => [
-        (product as TelescopeType).brand_name,
+        (product as TelescopeType).brand,
         {
-          name: (product as TelescopeType).brand_name,
-          image: (product as TelescopeType).brand_image,
+          name: (product as TelescopeType).brand,
+          image: "", // Las marcas no tienen imagen en este contexto
         },
       ]),
     ).values(),
-  );
+  ).sort((a, b) => a.name.localeCompare(b.name));
 
   // Mounts Unique Filters and Brands Values
   const mountTypes = Array.from(
@@ -72,14 +116,14 @@ export default function FiltersButtons() {
   const mountBrands = Array.from(
     new Map(
       [...mounts].map((product) => [
-        (product as MountType).brand_name,
+        (product as MountType).brand,
         {
-          name: (product as MountType).brand_name,
-          image: (product as MountType).brand_image,
+          name: (product as MountType).brand,
+          image: "",
         },
       ]),
     ).values(),
-  );
+  ).sort((a, b) => a.name.localeCompare(b.name));
   // Eyepieces Unique Filters and Brands Values
   const eyepieceTypes = Array.from(
     new Map(
@@ -95,14 +139,14 @@ export default function FiltersButtons() {
   const eyepieceBrands = Array.from(
     new Map(
       [...eyepieces].map((product) => [
-        (product as EyepieceType).brand_name,
+        (product as EyepieceType).brand,
         {
-          name: (product as EyepieceType).brand_name,
-          image: (product as EyepieceType).brand_image,
+          name: (product as EyepieceType).brand,
+          image: "",
         },
       ]),
     ).values(),
-  );
+  ).sort((a, b) => a.name.localeCompare(b.name));
 
   // Filters Unique Filters and Brand Values
   const filterTypes = Array.from(
@@ -119,14 +163,14 @@ export default function FiltersButtons() {
   const filterBrands = Array.from(
     new Map(
       [...filters].map((product) => [
-        (product as FilterType).brand_name,
+        (product as FilterType).brand,
         {
-          name: (product as FilterType).brand_name,
-          image: (product as FilterType).brand_image,
+          name: (product as FilterType).brand,
+          image: "",
         },
       ]),
     ).values(),
-  );
+  ).sort((a, b) => a.name.localeCompare(b.name));
 
   // HANDLERS
   // Telescopes Filter Handlers
@@ -228,13 +272,13 @@ export default function FiltersButtons() {
         <>
           <FilterButtonsSection
             title="Optical Designs"
-            items={opticalDesigns}
+            items={sortFilterObjectsByOrder(opticalDesigns, OPTICAL_DESIGNS_ORDER)}
             onClick={handleOpticalDesignFilter}
           />
 
           <FilterButtonsSection
             title="Mounting Types"
-            items={mountingTypes}
+            items={sortFilterObjectsByOrder(mountingTypes, MOUNT_TYPES_ORDER)}
             onClick={handleTelescopeMountingTypeFilter}
           />
           <FilterButtonsSection

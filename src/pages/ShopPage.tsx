@@ -4,8 +4,9 @@ import ProductCard from "../components/ProductCard.tsx";
 import FiltersMenu from "../components/FiltersMenu.tsx";
 import SortByMenu from "../components/SortByMenu.tsx";
 
+import GoToTopButton from "../components/GoToTopButton.tsx";
+
 import { IoIosClose } from "react-icons/io";
-import { GiJesterHat } from "react-icons/gi";
 
 type CategoryConfig = {
   title: string;
@@ -48,6 +49,8 @@ export default function ShopPage() {
     filterFilters,
     filterProductsBySubCategory,
   } = useProductsStore();
+
+  // IMPROVE LOGIC -- REFACTOR
 
   // Main selected filter by selected category
   const mainFilterNameByCategory: Record<string, string | null> = {
@@ -131,7 +134,7 @@ export default function ShopPage() {
                     </h3>
                   </div>
                   <div>
-                    <p className="text-center text-sm">
+                    <p className="text-sm">
                       {selectedMainFilter.description}
                     </p>
                   </div>
@@ -160,12 +163,16 @@ export default function ShopPage() {
       <FiltersMenu />
       <SortByMenu />
 
+      {/* Go to Top Button */}
+      <GoToTopButton />
+
       {/* PRODUCTS LIST */}
       <div className="mt-4 grid grid-cols-2 gap-4">
         {filteredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
+
     </section>
   );
 }
