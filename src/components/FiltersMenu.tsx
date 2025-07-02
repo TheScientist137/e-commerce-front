@@ -33,16 +33,6 @@ export default function FiltersMenu() {
     setOpenFilterFilters,
   } = useUiStore();
 
-  // Ordenamos los filtros con orden fijo o dinamico ??
-  const OPTICAL_DESIGNS_ORDER = [
-    "Achromat",
-    "Apochromat",
-    "Newton",
-    "Catadioptric",
-    "Solar telescope",
-    "Smart Telescopes",
-  ];
-
   // Telescope Filters Dynamic Values
   // Extracted from filteredProducts
   const opticalDesigns = [

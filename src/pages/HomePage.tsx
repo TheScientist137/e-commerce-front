@@ -1,5 +1,4 @@
 import { useUiStore } from "../stores/uiStore";
-import { GiGalaxy } from "react-icons/gi";
 import { FaRegArrowAltCircleDown } from "react-icons/fa";
 
 export default function HomePage() {

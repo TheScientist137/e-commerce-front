@@ -20,7 +20,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
       {/* Product Info */}
       <div className="my-4 flex flex-grow flex-col justify-between items-center">
         <div className="">
-          <p className="text-gray-400 font-bold">{product.brand_name}</p>
+          <p className="text-gray-400 font-bold">{product.brand}</p>
           <h3 className="my-2 font-mono text-base font-semibold">
             {product.name}
           </h3>

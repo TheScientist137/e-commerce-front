@@ -1,5 +1,4 @@
-import { FaMinus, FaPlus, FaTimes, FaArrowRight } from "react-icons/fa";
-import { IoIosArrowForward } from "react-icons/io";
+import { FaMinus, FaPlus, FaTimes } from "react-icons/fa";
 import { IoMdArrowDropright } from "react-icons/io";
 
 type FiltersSectionProps = {
