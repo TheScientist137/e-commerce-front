@@ -70,7 +70,7 @@ export type FilterItemsSubCategoryType =
   | EyepieceFiltersType
   | FilterFiltersType;
 
-type ProductsStateType = {
+type ProductsStoreType = {
   products: ProductType[];
   telescopes: TelescopeType[];
   mounts: MountType[];
@@ -86,6 +86,13 @@ type ProductsStateType = {
   mountFilters: MountFiltersType;
   eyepieceFilters: EyepieceFiltersType;
   filterFilters: FilterFiltersType;
+
+  currentPage: number;
+  productsPerPage: number; 
+
+  setCurrentPage: (page: number) => void; // Cambiar pagina
+  getCurrentPageProducts: () => FilterItemsCategoryType; // Obtener productos de página actual
+  getTotalPages: () => number; // Calcular total de páginas
 
   setProducts: (products: ProductType[]) => void;
   setTelescopes: (telescopes: TelescopeType[]) => void;
@@ -115,7 +122,7 @@ type ProductsStateType = {
   getIsFiltersActive: () => boolean;
 };
 
-export const useProductsStore = create<ProductsStateType>((set, get) => ({
+export const useProductsStore = create<ProductsStoreType>((set, get) => ({
   // STATE
   products: getItemLocalStorage("products") || [],
   telescopes: getItemLocalStorage("telescopes") || [],
@@ -127,6 +134,9 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
   filteredProducts: [],
   selectedCategory: getItemSessionStorage("category") || "",
   sortBy: getItemSessionStorage("sortBy") || "a-z",
+
+  currentPage: 1,
+  productsPerPage: 10,
 
   telescopeFilters: getItemSessionStorage("productFilters") || {
     opticalDesign: null,
@@ -198,6 +208,24 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
     set({ filterFilters: filters });
     setItemSessionStorage("productFilters", filters);
   },
+
+  setCurrentPage: (page) => set({currentPage: page}),
+
+  getCurrentPageProducts: () => {
+    const {filteredProducts, currentPage, productsPerPage} = get();
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
+    return currentProducts;
+  },
+  getTotalPages: () => {
+    const {filteredProducts, productsPerPage} = get();
+    const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+
+    return totalPages;
+  },
+
 
   // FUNCTIONS
   fetchProducts: async () => {
@@ -279,6 +307,7 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
       eyepieces,
       filters,
       setSelectedCategory,
+      setCurrentPage,
       clearProductFilters,
       sortFilteredProducts,
     } = get();
@@ -299,6 +328,7 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
     clearProductFilters();
     setSelectedCategory(category);
     set({ filteredProducts: filtered });
+    setCurrentPage(1);
     sortFilteredProducts("a-z");
   },
   filterProductsBySubCategory: (category, updatedFilters) => {
@@ -311,7 +341,10 @@ export const useProductsStore = create<ProductsStateType>((set, get) => ({
       setMountFilters,
       setEyepieceFilters,
       setFilterFilters,
+      setCurrentPage
     } = get();
+
+    setCurrentPage(1);
 
     if (category === "telescopes") {
       const updatedTelescopeFilters = updatedFilters as TelescopeFiltersType;
