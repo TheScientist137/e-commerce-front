@@ -79,17 +79,17 @@ export default function Dashboard() {
   if (!initialized) return null;
   return (
     <div className="flex h-screen flex-col text-slate-800 dark:text-indigo-50">
-      <header className="fixed top-0 h-[60px] w-full bg-slate-200 p-4 dark:bg-gray-900">
+      <header className="fixed flex items-center justify-between top-0 z-30 h-[60px] w-full bg-slate-200 p-4 dark:bg-gray-900 md:h-[70px] md:px-6 lg:h-[80px] lg:px-8">
         <Navbar />
       </header>
 
       <CategoriesMenu />
 
-      <main className="font-space mt-[60px] flex-grow bg-white p-4 dark:bg-gray-950">
+      <main className="font-space mt-[60px] flex-grow bg-white p-4 dark:bg-gray-950 md:mt-[70px] md:p-6 lg:mt-[80px] lg:p-8 xl:px-12">
         <Outlet />
       </main>
 
-      <footer className="flex items-center justify-between bg-slate-200 px-4 py-4 dark:bg-gray-900">
+      <footer className="flex items-center justify-between bg-slate-200 px-4 py-4 dark:bg-gray-900 md:px-6 md:py-5 lg:px-8 lg:py-6">
         <Footer />
       </footer>
     </div>

@@ -11,7 +11,6 @@ import { IoIosClose } from "react-icons/io";
 
 export default function ShopPage() {
   const {
-    filteredProducts,
     selectedCategory,
     productFilters,
     telescopeFilters,
@@ -91,57 +90,19 @@ export default function ShopPage() {
       {/* Category Description / Main Selected Filter */}
       {selectedCategory && CATEGORY_CONFIG[selectedCategory] && (
         <div className="mb-4">
-          {selectedMainFilter ? (
-            <>
-              {/* Breadcrumb */}
-              <div className="my-2 flex items-center gap-2">
-                <span className="font-black">
-                  {CATEGORY_CONFIG[selectedCategory].title}
-                </span>
-                <span className="mx-1">→</span>
-                <span className="font-semibold">{selectedMainFilter.name}</span>
-                <button
-                  className=""
-                  aria-label="Remove filter"
-                  onClick={handleRemoveMainFilter}
-                >
-                  <IoIosClose size={32} className="text-red-500" />
-                </button>
-              </div>
-              {/* Main Filter Info */}
-              <div className="mt-4 rounded-xl bg-slate-50 p-4 dark:bg-slate-700">
-                <div className="flex flex-col items-center gap-4">
-                  <div className="flex min-w-[8rem] flex-col items-center">
-                    <img
-                      src={selectedMainFilter.image_url}
-                      alt={selectedMainFilter.name}
-                      className="rounded-full"
-                    />
-                    <h3 className="text-lg font-bold">
-                      {selectedMainFilter.name}
-                    </h3>
-                  </div>
-                  <div>
-                    <p className="text-sm">{selectedMainFilter.description}</p>
-                  </div>
-                </div>
-              </div>
-            </>
-          ) : (
-            <div>
-              <h2 className="font-orbitron text-2xl font-bold">
-                {CATEGORY_CONFIG[selectedCategory].title}
-              </h2>
-              <p className="font-space text-sm">
-                {CATEGORY_CONFIG[selectedCategory].description}
-              </p>
-            </div>
-          )}
+          <div className="text-center md:text-left">
+            <h2 className="font-orbitron text-2xl font-bold md:text-3xl lg:text-4xl">
+              {CATEGORY_CONFIG[selectedCategory].title}
+            </h2>
+            <p className="font-space mt-2 text-sm leading-relaxed md:text-base lg:text-lg">
+              {CATEGORY_CONFIG[selectedCategory].description}
+            </p>
+          </div>
         </div>
       )}
 
       {/* Filters Navbar */}
-      <div className="sticky top-[68px]">
+      <div className="sticky top-[68px] md:top-[78px] lg:top-[88px]">
         <FiltersNavBar />
       </div>
 
@@ -153,7 +114,7 @@ export default function ShopPage() {
       <GoToTopButton />
 
       {/* PRODUCTS LIST - AHORA USA currentPageProducts EN LUGAR DE filteredProducts */}
-      <div className="mt-4 grid grid-cols-2 gap-4">
+      <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {currentPageProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

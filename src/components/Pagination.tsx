@@ -9,6 +9,9 @@ export default function Pagination({
   totalPages,
   onPageChange,
 }: PaginationProps) {
+
+  // REVIEW !!!!! IMPROVE CODE 
+
   // Mostrar máximo 5 páginas: [1] [2] [3] [...] [última]
   const getPages = () => {
     if (totalPages <= 4) {

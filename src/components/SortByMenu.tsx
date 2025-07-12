@@ -26,7 +26,7 @@ export default function SortByMenu() {
       isOpen={isSortMenuOpen}
       onClose={() => setIsSortMenuOpen(false)}
     >
-      <div className="flex h-full flex-col gap-6">
+      <div className="flex h-full flex-col gap-4">
         {sortFilters.map((sortFilter) => (
           <button
             className={`cursor-pointer rounded-xl border-2 border-slate-200 px-4 py-2 dark:border-slate-800 ${
